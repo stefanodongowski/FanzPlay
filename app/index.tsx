@@ -10,6 +10,13 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const auth = FIREBASE_AUTH;
+    const router = useRouter()
+
+    FIREBASE_AUTH.onAuthStateChanged((user) => {
+        if (user) {
+            router.replace('/(app)/one')
+        }
+    })
 
     const signIn = async () => {
         setLoading(true);

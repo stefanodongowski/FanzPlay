@@ -1,15 +1,20 @@
 //import liraries
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
+import { FIREBASE_AUTH } from '../../FirebaseConfig';
+
+const auth = FIREBASE_AUTH;
 
 // create a component
 const Page = () => {
+    const router = useRouter();
     return (
         <View style={styles.container}>
-            <Link href="/" replace asChild>
-                <Text>Logout</Text>
-            </Link>
+            <Button title='Logout' onPress={() => {
+                auth.signOut()
+                router.replace('/')
+            }} />
         </View>
     );
 };

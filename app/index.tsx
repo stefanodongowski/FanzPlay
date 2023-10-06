@@ -1,5 +1,5 @@
 import { Link, useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Button, ActivityIndicator } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { FIREBASE_AUTH } from '../FirebaseConfig';
@@ -12,11 +12,16 @@ const Login = () => {
     const auth = FIREBASE_AUTH;
     const router = useRouter()
 
-    FIREBASE_AUTH.onAuthStateChanged((user) => {
-        if (user) {
-            router.replace('/(app)/one')
-        }
-    })
+    useEffect(() => {
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                router.replace('/(app)/one')
+                console.log("signed in")
+            } else {
+                console.log("signed out")
+            }
+        })
+    }, [])
 
     const signIn = async () => {
         setLoading(true);

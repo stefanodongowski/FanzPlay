@@ -15,7 +15,7 @@ const Login = () => {
     useEffect(() => {
         auth.onAuthStateChanged((user) => {
             if (user) {
-                router.replace('/(app)/one')
+                router.replace('/(app)/home')
                 console.log("signed in")
             } else {
                 console.log("signed out")

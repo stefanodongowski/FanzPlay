@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const PageTwo = () => {
+const ProfilePage = () => {
     return (
         <View style={styles.container}>
             <Text>PageTwo</Text>
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default PageTwo;
+export default ProfilePage;

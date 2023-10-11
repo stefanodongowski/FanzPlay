@@ -9,14 +9,14 @@ const Layout = () => {
     return (
         <Tabs>
             <Tabs.Screen 
-                name="one" 
+                name="home" 
                 options= {{
                     tabBarLabel: "Home",
                     tabBarIcon: ({size, color}) => <Ionicons name='home' size={size} color={color}/>
                 }}
             />
             <Tabs.Screen 
-                name="two" 
+                name="profile" 
                 options= {{
                     tabBarLabel: "Profile",
                     tabBarIcon: ({size, color}) => <Ionicons name='person' size={size} color={color}/>

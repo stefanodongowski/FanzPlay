@@ -1,4 +1,4 @@
-//import liraries
+//import libraries
 import { Link, useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
@@ -7,7 +7,7 @@ import { FIREBASE_AUTH } from '../../FirebaseConfig';
 const auth = FIREBASE_AUTH;
 
 // create a component
-const Page = () => {
+const HomePage = () => {
     const router = useRouter();
     return (
         <View style={styles.container}>
@@ -29,4 +29,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default Page;
+export default HomePage;

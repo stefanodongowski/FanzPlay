@@ -2,10 +2,10 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 // create a component
-const ProfilePage = () => {
+const RewardsPage = () => {
     return (
         <View style={styles.container}>
-            <Text>Profile Page</Text>
+            <Text>Rewards Page</Text>
         </View>
     );
 };
@@ -20,4 +20,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default ProfilePage;
+export default RewardsPage;

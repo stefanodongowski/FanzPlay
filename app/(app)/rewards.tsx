@@ -1,14 +1,16 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const PageTwo = () => {
+// create a component
+const RewardsPage = () => {
     return (
         <View style={styles.container}>
-            <Text>PageTwo</Text>
+            <Text>Rewards Page</Text>
         </View>
     );
 };
 
+// define your styles
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -17,4 +19,5 @@ const styles = StyleSheet.create({
     },
 });
 
-export default PageTwo;
+//make this component available to the app
+export default RewardsPage;

@@ -1,41 +1,52 @@
-//import liraries
-import { Tabs } from 'expo-router';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Ionicons } from "@expo/vector-icons"
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { Ionicons } from "@expo/vector-icons";
+import HomePage from './home';
+import ProfilePage from './profile';
+import RewardsPage from './rewards';
+import GamesPage from './games';
 
-// create a component
+const Drawer = createDrawerNavigator();
+// The navigation will handeled by a drawer style navigator
+
 const Layout = () => {
     return (
-        <Tabs>
-            <Tabs.Screen 
-                name="one" 
-                options= {{
-                    tabBarLabel: "Home",
-                    tabBarIcon: ({size, color}) => <Ionicons name='home' size={size} color={color}/>
+        <Drawer.Navigator initialRouteName="Home">
+            <Drawer.Screen 
+                name="Home" 
+                component={HomePage}
+                options={{
+                    drawerLabel: "Home",
+                    drawerIcon: ({size, color}) => <Ionicons name='home' size={size} color={color}/>
                 }}
             />
-            <Tabs.Screen 
-                name="two" 
-                options= {{
-                    tabBarLabel: "Profile",
-                    tabBarIcon: ({size, color}) => <Ionicons name='person' size={size} color={color}/>
+            <Drawer.Screen 
+                name="Games" 
+                component={GamesPage}
+                options={{
+                    drawerLabel: "Games",
+                    drawerIcon: ({size, color}) => <Ionicons name='game-controller' size={size} color={color}/> 
                 }}
             />
-        </Tabs>
-        
+            <Drawer.Screen 
+                name="Rewards" 
+                component={RewardsPage}
+                options={{
+                    drawerLabel: "Rewards",
+                    drawerIcon: ({size, color}) => <Ionicons name='gift' size={size} color={color}/> 
+                }}
+            />
+            <Drawer.Screen 
+                name="Profile" 
+                component={ProfilePage}
+                options={{
+                    drawerLabel: "Profile",
+                    drawerIcon: ({size, color}) => <Ionicons name='person' size={size} color={color}/>
+                }}
+            />
+        </Drawer.Navigator>
     );
 };
-
-// define your styles
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#2c3e50',
-    },
-});
 
 //make this component available to the app
 export default Layout;

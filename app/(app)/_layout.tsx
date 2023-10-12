@@ -21,11 +21,11 @@ const Layout = () => {
                 }}
             />
             <Drawer.Screen 
-                name="Profile" 
-                component={ProfilePage}
+                name="Games" 
+                component={GamesPage}
                 options={{
-                    drawerLabel: "Profile",
-                    drawerIcon: ({size, color}) => <Ionicons name='person' size={size} color={color}/>
+                    drawerLabel: "Games",
+                    drawerIcon: ({size, color}) => <Ionicons name='game-controller' size={size} color={color}/> 
                 }}
             />
             <Drawer.Screen 
@@ -33,15 +33,15 @@ const Layout = () => {
                 component={RewardsPage}
                 options={{
                     drawerLabel: "Rewards",
-                    drawerIcon: ({size, color}) => <Ionicons name='gift' size={size} color={color}/> // Example icon, you can change it
+                    drawerIcon: ({size, color}) => <Ionicons name='gift' size={size} color={color}/> 
                 }}
             />
             <Drawer.Screen 
-                name="Games" 
-                component={GamesPage}
+                name="Profile" 
+                component={ProfilePage}
                 options={{
-                    drawerLabel: "Games",
-                    drawerIcon: ({size, color}) => <Ionicons name='game-controller' size={size} color={color}/> // Example icon, you can change it
+                    drawerLabel: "Profile",
+                    drawerIcon: ({size, color}) => <Ionicons name='person' size={size} color={color}/>
                 }}
             />
         </Drawer.Navigator>

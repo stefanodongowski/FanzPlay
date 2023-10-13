@@ -10,10 +10,7 @@ const HomePage = () => {
     const router = useRouter();
     return (
         <View style={styles.container}>
-            <Button title='Logout' onPress={() => {
-                auth.signOut()
-                router.replace('/')
-            }} />
+
         </View>
     );
 };

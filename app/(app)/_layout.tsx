@@ -1,52 +1,50 @@
 import React from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from "@expo/vector-icons";
 import HomePage from './home';
 import ProfilePage from './profile';
 import RewardsPage from './rewards';
 import GamesPage from './games';
 
-const Drawer = createDrawerNavigator();
-// The navigation will handeled by a drawer style navigator
+const Tab = createBottomTabNavigator();
 
 const Layout = () => {
     return (
-        <Drawer.Navigator initialRouteName="Home">
-            <Drawer.Screen 
+        <Tab.Navigator initialRouteName="Home">
+            <Tab.Screen 
                 name="Home" 
                 component={HomePage}
                 options={{
-                    drawerLabel: "Home",
-                    drawerIcon: ({size, color}) => <Ionicons name='home' size={size} color={color}/>
+                    tabBarLabel: "Home",
+                    tabBarIcon: ({size, color}) => <Ionicons name='home' size={size} color={color}/>
                 }}
             />
-            <Drawer.Screen 
+            <Tab.Screen 
                 name="Games" 
                 component={GamesPage}
                 options={{
-                    drawerLabel: "Games",
-                    drawerIcon: ({size, color}) => <Ionicons name='game-controller' size={size} color={color}/> 
+                    tabBarLabel: "Games",
+                    tabBarIcon: ({size, color}) => <Ionicons name='game-controller' size={size} color={color}/> 
                 }}
             />
-            <Drawer.Screen 
+            <Tab.Screen 
                 name="Rewards" 
                 component={RewardsPage}
                 options={{
-                    drawerLabel: "Rewards",
-                    drawerIcon: ({size, color}) => <Ionicons name='gift' size={size} color={color}/> 
+                    tabBarLabel: "Rewards",
+                    tabBarIcon: ({size, color}) => <Ionicons name='gift' size={size} color={color}/> 
                 }}
             />
-            <Drawer.Screen 
+            <Tab.Screen 
                 name="Profile" 
                 component={ProfilePage}
                 options={{
-                    drawerLabel: "Profile",
-                    drawerIcon: ({size, color}) => <Ionicons name='person' size={size} color={color}/>
+                    tabBarLabel: "Profile",
+                    tabBarIcon: ({size, color}) => <Ionicons name='person' size={size} color={color}/>
                 }}
             />
-        </Drawer.Navigator>
+        </Tab.Navigator>
     );
 };
 
-//make this component available to the app
 export default Layout;

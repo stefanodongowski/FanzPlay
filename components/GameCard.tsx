@@ -16,13 +16,7 @@ interface GameCardProps extends ViewProps {
   game: Game; 
 }
 
-// Currently using a static photo file, eventually will need to adapt to 
-// render a photo from each team
-
 const GameCard: React.FC<GameCardProps> = ({game}) => {
-  const photo : string = '../assets/temp/uncVduke.png';
-  const logo1 : string = game.team1.logo;
-  console.log(logo1);
   return (
     <View style={styles.container}>
       <View style={styles.card}>

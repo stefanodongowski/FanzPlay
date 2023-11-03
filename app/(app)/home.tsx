@@ -17,10 +17,12 @@ const game1 : Game  =
     team2: {
         name: 'Duke',
         logo: '../assets/temp/duke_logo.png',
+
     },
     date: 'FEB 3',
     time: '8:00PM',
   };
+
 const game2 : Game  =     
 {
     team1: {
@@ -52,6 +54,7 @@ const HomePage = () => {
                 <Text style={styles.upcoming}>Upcoming Games</Text> 
             </View>
             <View style={styles.games}>
+
                 <GameCard game={game1}/>
                 <GameCard game={game2}/>
             </View>

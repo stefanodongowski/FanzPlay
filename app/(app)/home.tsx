@@ -8,28 +8,28 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 const auth = FIREBASE_AUTH;
 
 // Mock Data (to be deleted later)
-export const uncGame : Game  =     
+const game1 : Game  =     
 {
     team1: {
         name: 'UNC',
-        logo: '',
+        logo: '../assets/temp/unc_logo.png',
     },
     team2: {
         name: 'Duke',
-        logo: '',
+        logo: '../assets/temp/duke_logo.png',
     },
     date: 'FEB 3',
     time: '8:00PM',
   };
-export const uvaGame : Game  =     
+const game2 : Game  =     
 {
     team1: {
-        name: 'UNC',
-        logo: '',
+        name: 'Virginia',
+        logo: '../assets/temp/uva_logo.png',
     },
     team2: {
-        name: 'Duke',
-        logo: '',
+        name: 'Virginia Tech',
+        logo: '../assets/temp/vt_logo.png',
     },
     date: 'JAN 17',
     time: '6:30PM',
@@ -52,8 +52,8 @@ const HomePage = () => {
                 <Text style={styles.upcoming}>Upcoming Games</Text> 
             </View>
             <View style={styles.games}>
-                <GameCard game={uvaGame}/>
-                <GameCard game={uncGame}/>
+                <GameCard game={game1}/>
+                <GameCard game={game2}/>
             </View>
             
         </View>

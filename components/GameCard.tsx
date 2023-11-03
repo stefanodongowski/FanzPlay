@@ -16,8 +16,6 @@ interface GameCardProps extends ViewProps {
   game: Game; 
 }
 
-
-
 const GameCard: React.FC<GameCardProps> = ({game}) => {
   const icon1 = (game.team1.name === 'UNC') 
   ? require('../assets/temp/unc_logo.png')

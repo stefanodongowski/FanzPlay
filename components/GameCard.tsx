@@ -16,7 +16,16 @@ interface GameCardProps extends ViewProps {
   game: Game; 
 }
 
+
+
 const GameCard: React.FC<GameCardProps> = ({game}) => {
+  const icon1 = (game.team1.name === 'UNC') 
+  ? require('../assets/temp/unc_logo.png')
+  : require('../assets/temp/uva_logo.png');
+
+  const icon2 = (game.team2.name === 'Duke')
+  ? require('../assets/temp/duke_logo.png')
+  : require('../assets/temp/vt_logo.png');
   return (
     <View style={styles.container}>
       <View style={styles.card}>
@@ -24,9 +33,9 @@ const GameCard: React.FC<GameCardProps> = ({game}) => {
           {game.team1.name + ' vs. ' + game.team2.name}
         </Text>
         <View style={{flexDirection: 'row'}}>
-          <Image style={styles.logo} source={{uri: game.team1.logo}}></Image>
+          <Image style={styles.logo} source={icon1}></Image>
           <View style={styles.divider}></View>
-          <Image style={styles.logo} source={{uri: game.team2.logo}}></Image>
+          <Image style={styles.logo} source={icon2}></Image>
           <View style={styles.timeAndDate}>
           <Text style={styles.dateTime}>
             {game.date}
@@ -93,6 +102,7 @@ const styles = StyleSheet.create({
     width: 2,
     marginHorizontal: 10,
     shadowColor: '#000',
+    backgroundColor: '#FFF',
     shadowOpacity: 0.6,
     shadowRadius: 7,
     elevation: 2,

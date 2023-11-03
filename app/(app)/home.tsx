@@ -45,7 +45,7 @@ const HomePage = () => {
         <View style={[styles.container, styles.dark]}>
             <View style={styles.input}>
                 <MaterialCommunityIcons name="key-variant" size={20} color="white" />
-                <TextInput style={styles.textInput} value={text} placeholder={'Enter a code to join the game'} onChangeText={onChangeText}/>
+                <TextInput style={styles.textInput} value={text} placeholderTextColor={'#FFFFFF'} placeholder={'Enter code to join a game'} onChangeText={onChangeText}/>
             </View>
             <Pressable onPress={()=> console.log('Button Pressed')} style={styles.button}>
                 <Text style={styles.buttonText}>Join</Text>
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontSize: 24,
-        fontColor: '#253031',
+        color: '#253031',
         alignContent: 'center',
         textAlign: 'center',
         padding: 5,

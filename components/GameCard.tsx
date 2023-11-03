@@ -16,11 +16,7 @@ interface GameCardProps extends ViewProps {
   game: Game; 
 }
 
-// Currently using a static photo file, eventually will need to adapt to 
-// render a photo from each team
-
 const GameCard: React.FC<GameCardProps> = ({game}) => {
-  const photo : string = '../assets/temp/uncVduke.png';
   return (
     <View style={styles.container}>
       <View style={styles.card}>
@@ -28,7 +24,9 @@ const GameCard: React.FC<GameCardProps> = ({game}) => {
           {game.team1.name + ' vs. ' + game.team2.name}
         </Text>
         <View style={{flexDirection: 'row'}}>
-          <Image style={styles.image} source={require(photo)}></Image>
+          <Image style={styles.logo} source={{uri: game.team1.logo}}></Image>
+          <View style={styles.divider}></View>
+          <Image style={styles.logo} source={{uri: game.team2.logo}}></Image>
           <View style={styles.timeAndDate}>
           <Text style={styles.dateTime}>
             {game.date}
@@ -83,11 +81,23 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     padding: 10,
   },
-  image: {
-    width: 250,
-    height: 93.75,
+  logo: {
+    width: 100,
+    height: 65,
+    resizeMode: 'contain',
     marginLeft: 5,
     marginBottom: 10,
+  },
+  divider: {
+    height: '90%',
+    width: 2,
+    marginHorizontal: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.6,
+    shadowRadius: 7,
+    elevation: 2,
+    marginBottom: 10,
+    alignSelf: 'center',
   }
 });
 

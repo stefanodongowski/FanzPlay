@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { getFirestore, collection, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
+import { FIRESTORE } from '../FirebaseConfig'
 
 interface Question {
   answer: string[];
@@ -13,7 +14,7 @@ const useQuestions = () => {
   const [loading, setLoading] = useState(true); // Added loading state
 
   useEffect(() => {
-    const db = getFirestore();
+    const db = FIRESTORE;
     const questionsCollection = collection(db, 'questions');
 
     const unsubscribe = onSnapshot(questionsCollection, (snapshot) => {

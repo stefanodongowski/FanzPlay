@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { getFirestore, collection, onSnapshot, Timestamp } from 'firebase/firestore';
+import { collection, onSnapshot, Timestamp } from 'firebase/firestore';
+import { FIRESTORE } from '../FirebaseConfig'
 
 interface Game {
   questionTime: number;
@@ -14,7 +15,7 @@ const useGames = () => {
   const [loading, setLoading] = useState(true);  // Added loading state
 
   useEffect(() => {
-    const db = getFirestore();
+    const db = FIRESTORE;
     const gamesCollection = collection(db, 'games');
 
     const unsubscribe = onSnapshot(gamesCollection, (snapshot) => {

@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import useGames from '../../components/gamesFetcher';
-import useQuestions from '../../components/questionsFetcher';
-import useTeams from '../../components/teamsFetcher';
-import useUsers from '../../components/usersFetcher';
+import useGames from '../../services/gamesFetcher';
+import useQuestions from '../../services/questionsFetcher';
+import useTeams from '../../services/teamsFetcher';
+import useUsers from '../../services/usersFetcher';
 
 // recall needed data from the db from the fetch components
 const GamesPage: React.FC = () => {

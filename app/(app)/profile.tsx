@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button, TextInput, Alert } from 'react-native';
-import { updateUser } from '../../components/updateUserProfile';
+import { updateUser } from '../../services/userUpdater';
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
 import { useRouter } from 'expo-router';
 import { User } from '../../types';

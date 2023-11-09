@@ -23,11 +23,13 @@ const ProfilePage: React.FC = () => {
       Alert.alert("Error", "All fields are required.");
       return;
     }
+
     const userData: Partial<User> = {
       firstName,
       lastName,
       username,
     };
+    
     await updateUser(auth.currentUser?.uid, userData);
     resetFields();
     setIsUpdating(false);

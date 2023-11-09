@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Button, TextInput, Alert } from 'react-native';
 import { updateUser } from '../../services/userUpdater';
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
 import { useRouter } from 'expo-router';
-import { User } from '../../types';
+import { User } from '../../types/User';
 
 const auth = FIREBASE_AUTH;
 

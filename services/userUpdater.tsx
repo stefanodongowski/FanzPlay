@@ -1,6 +1,6 @@
 import { doc, updateDoc } from 'firebase/firestore';
 import { FIRESTORE } from '../FirebaseConfig';
-import { User } from '../types';
+import { User } from '../types/User';
 
 export const updateUser = async (userId: string | undefined, userData: Partial<User>): Promise<void> => {
     if (!userId) {

@@ -23,7 +23,7 @@ const useGames = () => {
         const questionsPromises = gameData.questions.map((ref: { path: string; }) => 
           getDoc(doc(FIRESTORE, ref.path))
         );
-        const questionsDocs = await Promise.all(questionsPromises);
+        const questionsDocs = await Promise.all(questionsPromises); // Make a promise that questions will not be null
 
         // Map the fetched documents to the expected structure
         const questions = questionsDocs.map(doc => doc.data() as Question);

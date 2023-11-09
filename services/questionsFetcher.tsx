@@ -1,13 +1,7 @@
 import { useEffect, useState } from 'react';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { FIRESTORE } from '../FirebaseConfig'
-
-interface Question {
-  answer: string[];
-  gameID: string;
-  points: number;
-  question: string;
-}
+import { Question } from '../types/Question';
 
 const useQuestions = () => {
   const [questions, setQuestions] = useState<Question[]>([]);

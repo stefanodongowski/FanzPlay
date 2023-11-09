@@ -1,13 +1,7 @@
 import { useEffect, useState } from 'react';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { FIRESTORE } from '../FirebaseConfig'
-
-interface Team {
-  color1: string;
-  color2: string;
-  logo: string;
-  name: string;
-}
+import { Team } from '../types/Team';
 
 const useTeams = () => {
   const [teams, setTeams] = useState<Team[]>([]);

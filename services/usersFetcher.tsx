@@ -1,15 +1,7 @@
 import { useEffect, useState } from 'react';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { FIRESTORE } from '../FirebaseConfig'
-
-interface User {
-  email: string;
-  firstName: string;
-  lastName: string;
-  role: string;
-  userID: string;
-  username: string;
-}
+import { User } from '../types/User';
 
 const useUsers = () => {
   const [users, setUsers] = useState<User[]>([]);

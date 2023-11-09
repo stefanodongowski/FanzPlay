@@ -14,8 +14,7 @@ const Register = () => {
     const [username, setUsername] = useState('');
     const [loading, setLoading] = useState(false);
     const auth = FIREBASE_AUTH;
-  
-    
+
     const signUp = async () => {
         setLoading(true);
         try {
@@ -40,7 +39,7 @@ const Register = () => {
 
     return (
         <View style={styles.container}>
-            <TextInput placeholder='Email' autoCapitalize='none' style={styles.input} 
+            <TextInput placeholder='Email' autoCapitalize='none' style={styles.input}
                 onChangeText={(text) => setEmail(text)}>
             </TextInput>
             <TextInput placeholder='First Name' autoCapitalize='none' style={styles.input}
@@ -55,13 +54,12 @@ const Register = () => {
             <TextInput placeholder='Password' secureTextEntry={true} autoCapitalize='none' style={styles.input}
                 onChangeText={(text) => setPassword(text)}>
             </TextInput>
-            { loading ? (
+            {loading ? (
                 <ActivityIndicator size='large' color="#0000ff" />
             ) : (
                 <Button title='Sign up' onPress={signUp} />
             )}
         </View>
-        
     );
 };
 

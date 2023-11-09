@@ -13,15 +13,19 @@ const Login = () => {
     const router = useRouter()
 
     useEffect(() => {
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                router.replace('/(app)/home')
-                console.log("signed in")
-            } else {
-                console.log("signed out")
-            }
-        })
-    }, [])
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+          if (user) {
+            router.replace('/(app)/home');
+            console.log("signed in");
+          } else {
+            console.log("signed out");
+          }
+        });
+      
+        // This will be called when the component unmounts or the auth state changes,
+        // effectively removing the listener
+        return () => unsubscribe();
+      }, []);
 
     const signIn = async () => {
         setLoading(true);

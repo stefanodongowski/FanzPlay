@@ -16,8 +16,7 @@ const useUsers = () => {
   const [loading, setLoading] = useState(true); // Added loading state
 
   useEffect(() => {
-    const db = FIRESTORE;
-    const usersCollection = collection(db, 'users');
+    const usersCollection = collection(FIRESTORE, 'users');
 
     const unsubscribe = onSnapshot(usersCollection, (snapshot) => {
       const newUsers = snapshot.docs.map(doc => doc.data() as User);

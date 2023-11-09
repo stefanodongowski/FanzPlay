@@ -15,8 +15,7 @@ const useGames = () => {
   const [loading, setLoading] = useState(true);  // Added loading state
 
   useEffect(() => {
-    const db = FIRESTORE;
-    const gamesCollection = collection(db, 'games');
+    const gamesCollection = collection(FIRESTORE, 'games');
 
     const unsubscribe = onSnapshot(gamesCollection, (snapshot) => {
       const newGames = snapshot.docs.map(doc => doc.data() as Game);

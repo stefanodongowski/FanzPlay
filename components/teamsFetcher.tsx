@@ -14,8 +14,7 @@ const useTeams = () => {
   const [loading, setLoading] = useState(true); // Added loading state
 
   useEffect(() => {
-    const db = FIRESTORE;
-    const teamsCollection = collection(db, 'teams');
+    const teamsCollection = collection(FIRESTORE, 'teams');
 
     const unsubscribe = onSnapshot(teamsCollection, (snapshot) => {
       const newTeams = snapshot.docs.map(doc => doc.data() as Team);

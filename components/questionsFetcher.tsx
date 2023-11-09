@@ -14,8 +14,7 @@ const useQuestions = () => {
   const [loading, setLoading] = useState(true); // Added loading state
 
   useEffect(() => {
-    const db = FIRESTORE;
-    const questionsCollection = collection(db, 'questions');
+    const questionsCollection = collection(FIRESTORE, 'questions');
 
     const unsubscribe = onSnapshot(questionsCollection, (snapshot) => {
       const newQuestions = snapshot.docs.map(doc => doc.data() as Question);

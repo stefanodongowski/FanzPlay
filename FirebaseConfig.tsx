@@ -19,4 +19,3 @@ const FIREBASE_AUTH = initializeAuth(FIREBASE_APP, {
 const FIRESTORE = getFirestore(FIREBASE_APP);
 
 export {FIREBASE_AUTH, FIRESTORE} ;
-

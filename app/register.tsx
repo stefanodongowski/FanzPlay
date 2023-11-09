@@ -43,13 +43,13 @@ const Register = () => {
             <TextInput placeholder='Email' autoCapitalize='none' style={styles.input} 
                 onChangeText={(text) => setEmail(text)}>
             </TextInput>
-            <TextInput placeholder='First Name' secureTextEntry={true} autoCapitalize='none' style={styles.input}
+            <TextInput placeholder='First Name' autoCapitalize='none' style={styles.input}
                 onChangeText={(text) => setFirstName(text)}>
             </TextInput>
-            <TextInput placeholder='Last Name' secureTextEntry={true} autoCapitalize='none' style={styles.input}
+            <TextInput placeholder='Last Name' autoCapitalize='none' style={styles.input}
                 onChangeText={(text) => setLastName(text)}>
             </TextInput>
-            <TextInput placeholder='Username' secureTextEntry={true} autoCapitalize='none' style={styles.input}
+            <TextInput placeholder='Username' autoCapitalize='none' style={styles.input}
                 onChangeText={(text) => setUsername(text)}>
             </TextInput>
             <TextInput placeholder='Password' secureTextEntry={true} autoCapitalize='none' style={styles.input}

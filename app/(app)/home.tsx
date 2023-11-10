@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontSize: 24,
-        fontColor: '#253031',
+        color: '#253031',
         alignContent: 'center',
         textAlign: 'center',
         padding: 5,

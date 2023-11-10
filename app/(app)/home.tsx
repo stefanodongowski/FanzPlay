@@ -45,7 +45,8 @@ const HomePage = () => {
         <View style={[styles.container, styles.dark]}>
             <View style={styles.input}>
                 <MaterialCommunityIcons name="key-variant" size={20} color="white" />
-                <TextInput style={styles.textInput} value={text} placeholder={'Enter a code to join the game'} onChangeText={onChangeText}/>
+                <TextInput style={styles.textInput} value={text} placeholder={'Enter a code to join the game'} 
+                    placeholderTextColor='white' onChangeText={onChangeText}/>
             </View>
             <Pressable onPress={()=> console.log('Button Pressed')} style={styles.button}>
                 <Text style={styles.buttonText}>Join</Text>

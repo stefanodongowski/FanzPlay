@@ -1,70 +1,79 @@
 import { useEffect, useState } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, onSnapshot, getDoc, collection, getDocs, Timestamp, Unsubscribe } from 'firebase/firestore';
 import { FIRESTORE } from '../FirebaseConfig';
 import { Game } from '../types/Game';
-import { Team } from '../types/Team';
+import { Team, DEFAULT_TEAM } from '../types/Team';
 import { Question } from '../types/Question';
 
+interface GameWithId extends Game {
+  id: string;
+}
+
 const useGame = (gameId: string) => {
-  const [game, setGame] = useState<Game | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [game, setGame] = useState<GameWithId | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!gameId) return;
+    if (!gameId) {
+      setGame(null);
+      setLoading(false);
+      return;
+    }
 
-    const fetchGame = async () => {
-      const gameRef = doc(FIRESTORE, 'games', gameId);
-
-      try {
-        setLoading(true);
-        const gameSnapshot = await getDoc(gameRef);
-
-        if (!gameSnapshot.exists()) {
-          setLoading(false);
-          return;
-        }
-
-        const gameData = gameSnapshot.data() as Omit<Game, 'team1ID' | 'team2ID' | 'questions'> & {
-          team1ID: { path: string };
-          team2ID: { path: string };
-          questions: { path: string }[];
-        };
-
-        // Resolve the team references
-        const team1Snapshot = await getDoc(doc(FIRESTORE, gameData.team1ID.path));
-        const team2Snapshot = await getDoc(doc(FIRESTORE, gameData.team2ID.path));
-
-        const team1Data: Team = team1Snapshot.exists() ? team1Snapshot.data() as Team : {} as Team;
-        const team2Data: Team = team2Snapshot.exists() ? team2Snapshot.data() as Team : {} as Team;
-
-        // Resolve the questions array of references
-        const questionsData: Question[] = await Promise.all(
-          gameData.questions.map(async (ref) => {
-            const questionSnapshot = await getDoc(doc(FIRESTORE, ref.path));
-            return questionSnapshot.exists() ? questionSnapshot.data() as Question : {} as Question;
-          })
-        );
-
-        // Construct the complete game object
-        const completeGame: Game = {
-          ...gameData,
-          team1ID: team1Data,
-          team2ID: team2Data,
-          questions: questionsData,
-        };
-
-        setGame(completeGame);
-      } catch (error) {
-        console.error('Error fetching game:', error);
-      } finally {
+    const gameRef = doc(FIRESTORE, 'games', gameId);
+    const unsubscribeGame = onSnapshot(gameRef, async (docSnapshot) => {
+      if (!docSnapshot.exists()) {
+        setGame(null);
         setLoading(false);
+        return;
       }
-    };
 
-    fetchGame();
+      const gameData = docSnapshot.data() as Game;
+
+      // Resolve team references
+      const team1Ref = docSnapshot.get('team1ID');
+      const team2Ref = docSnapshot.get('team2ID');
+      
+      const team1 = team1Ref ? (await getDoc(team1Ref)).data() as Team : DEFAULT_TEAM;
+      const team2 = team2Ref ? (await getDoc(team2Ref)).data() as Team : DEFAULT_TEAM;
+
+      // Fetch questions
+      const questionsSnapshot = await getDocs(collection(docSnapshot.ref, 'questions'));
+      const questions = questionsSnapshot.docs.map(doc => doc.data() as Question);
+
+      const initialGame: GameWithId = {
+        ...gameData,
+        id: docSnapshot.id,
+        team1: team1, 
+        team2: team2,
+        questions: questions
+      };
+
+      setGame(initialGame);
+
+      // Set up real-time listener for questions
+      const questionsRef = collection(docSnapshot.ref, 'questions');
+      const unsubscribeQuestions = onSnapshot(questionsRef, (questionsSnapshot) => {
+        const updatedQuestions = questionsSnapshot.docs.map(doc => doc.data() as Question);
+        setGame(currentGame => {
+          if (currentGame && currentGame.id === gameId) {
+            return { ...currentGame, questions: updatedQuestions };
+          }
+          return currentGame;
+        });
+      });
+
+      setLoading(false);
+
+      // Return a function to unsubscribe both listeners when the component unmounts
+      return () => {
+        unsubscribeGame();
+        unsubscribeQuestions();
+      };
+    });
   }, [gameId]);
 
   return { game, loading };
 };
 
-export default useGame;
+export default useGame

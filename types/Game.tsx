@@ -7,6 +7,6 @@ export interface Game {
     questionTime: number;
     questions: Question[]; // An array of resolved Question documents
     startTime: Timestamp;
-    team1ID: Team; // Resolved Team document
-    team2ID: Team; // Resolved Team document
+    team1: Team; // Resolved Team document
+    team2: Team; // Resolved Team document
   }

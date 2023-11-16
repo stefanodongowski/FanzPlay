@@ -17,6 +17,8 @@ const useGames = () => {
     const gamesCollection = collection(FIRESTORE, 'games');
     let unsubscribeFunctions: Unsubscribe[] = [];
 
+
+    // main game collection snapshot
     const gamesUnsubscribe = onSnapshot(gamesCollection, async (snapshot) => {
       const initialGamesPromises = snapshot.docs.map(async (docSnapshot) => {
         const gameDataRaw = docSnapshot.data();
@@ -28,6 +30,7 @@ const useGames = () => {
         const team1Data = team1Doc.exists() ? team1Doc.data() as Team : DEFAULT_TEAM;
         const team2Data = team2Doc.exists() ? team2Doc.data() as Team : DEFAULT_TEAM;
 
+        // now we can return the initial Games
         return {
           ...gameDataRaw,
           id: gameId,
@@ -37,9 +40,9 @@ const useGames = () => {
         } as GameWithId;
       });
 
-
       const initialGames = await Promise.all(initialGamesPromises);
 
+      // adds the questions from the db one time for loading purposues
       for (let game of initialGames) {
         const questionsSnapshot = await getDocs(collection(FIRESTORE, `games/${game.id}/questions`));
         const questions = questionsSnapshot.docs.map(doc => doc.data() as Question);
@@ -48,8 +51,8 @@ const useGames = () => {
       
       setGames(initialGames);
 
-      // Set up real-time listeners for questions updates
-      initialGames.forEach((game) => {
+      // Set up real-time listeners for questions updates (inner snapshot)
+      initialGames.forEach((game) => { // updates games on question document change
         const unsubscribeQuestions = onSnapshot(
           collection(FIRESTORE, `games/${game.id}/questions`),
           (questionsSnapshot) => {

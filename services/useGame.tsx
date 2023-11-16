@@ -13,7 +13,7 @@ const useGame = (gameId: string) => {
   const [game, setGame] = useState<GameWithId | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  useEffect(() => { // resolves render error if no game
     if (!gameId) {
       setGame(null);
       setLoading(false);
@@ -21,7 +21,7 @@ const useGame = (gameId: string) => {
     }
 
     const gameRef = doc(FIRESTORE, 'games', gameId);
-    const unsubscribeGame = onSnapshot(gameRef, async (docSnapshot) => {
+    const unsubscribeGame = onSnapshot(gameRef, async (docSnapshot) => { 
       if (!docSnapshot.exists()) {
         setGame(null);
         setLoading(false);

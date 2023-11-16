@@ -24,13 +24,13 @@ const GamesPage: React.FC = () => {
     <View style={styles.gameContainer}>
       <Text>Question Time: {game.questionTime}</Text>
       <Text>Start Time: {game.startTime.toDate().toLocaleString()}</Text>
-      <Text>Team 1: {game.team1ID.name}</Text>
-      <Text>Team 2: {game.team2ID.name}</Text>
+      <Text>Team 1: {game.team1.name}</Text>
+      <Text>Team 2: {game.team2.name}</Text>
       <Text>Questions:</Text>
       {game.questions.map((question, qIndex) => (
         <View key={qIndex}>
           <Text>Q{qIndex + 1}: {question.question}</Text>
-          {question.answer.map((ans, aIndex) => (
+          {question.answers.map((ans, aIndex) => (
             <Text key={aIndex}>Answer {aIndex + 1}: {ans}</Text>
           ))}
         </View>

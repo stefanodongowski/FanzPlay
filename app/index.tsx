@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, Button, ActivityIndicator } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler';
 import { FIREBASE_AUTH } from '../FirebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import getUser from './services/userFetcher';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -11,12 +12,12 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const auth = FIREBASE_AUTH;
     const router = useRouter()
+    
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
           if (user) {
-            router.replace('/(app)/home');
-            console.log("signed in");
+            router.replace('/loading');
           } else {
             console.log("signed out");
           }
@@ -31,7 +32,7 @@ const Login = () => {
         setLoading(true);
         try {
             const response = await signInWithEmailAndPassword(auth, email, password);
-            console.log(response)
+            console.log("signed in")
         } catch (e: any) {
             console.log(e);
             alert(e.message)

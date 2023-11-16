@@ -76,4 +76,6 @@ const useGame = (gameId: string) => {
   return { game, loading };
 };
 
-export default useGame
+
+export default useGame;
+

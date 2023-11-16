@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, Pressable, TextInput } from 'react-native';
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
 import GameCard, { Game } from  '../../components/GameCard';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import getUser from '../services/userFetcher';
 
 const auth = FIREBASE_AUTH;
 
@@ -41,6 +42,7 @@ const game2 : Game  =
 const HomePage = () => {
     const router = useRouter();
     const [text, onChangeText] = React.useState('');
+
     return (
         <View style={[styles.container, styles.dark]}>
             <View style={styles.input}>

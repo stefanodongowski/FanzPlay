@@ -4,6 +4,7 @@ export interface Team {
     color2: string;
     logo: string;
     name: string;
+
   }
 
   export const DEFAULT_TEAM: Team = {
@@ -12,3 +13,4 @@ export interface Team {
     logo: 'default_logo_url',
     name: 'Unknown Team'
 };
+

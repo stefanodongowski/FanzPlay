@@ -9,4 +9,5 @@ export interface Game {
     startTime: Timestamp;
     team1: Team; // Resolved Team document
     team2: Team; // Resolved Team document
+
   }

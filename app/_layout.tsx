@@ -19,6 +19,12 @@ const Layout = () => {
                     
                 }}
             />
+            <Stack.Screen
+                name='loading'
+                options={{
+                    headerShown: false
+                }}
+            />
             <Stack.Screen name='(app)' options={{headerShown: false}} />
         </Stack>
     );

@@ -5,7 +5,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import { FIREBASE_AUTH } from '../FirebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { LinearGradient } from 'expo-linear-gradient';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -13,12 +13,12 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const auth = FIREBASE_AUTH;
     const router = useRouter()
+    
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
           if (user) {
-            router.replace('/(app)/home');
-            console.log("signed in");
+            router.replace('/loading');
           } else {
             console.log("signed out");
           }
@@ -33,7 +33,7 @@ const Login = () => {
         setLoading(true);
         try {
             const response = await signInWithEmailAndPassword(auth, email, password);
-            console.log(response)
+            console.log("signed in")
         } catch (e: any) {
             console.log(e);
             alert(e.message)

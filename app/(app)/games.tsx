@@ -1,56 +1,96 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import useGames from '../../components/gamesFetcher';
-import useQuestions from '../../components/questionsFetcher';
-import useTeams from '../../components/teamsFetcher';
-import useUsers from '../../components/usersFetcher';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator, TextInput, Button, ScrollView } from 'react-native';
+import useGames from '../../services/gamesFetcher';
+import useGame from '../../services/useGame'; // This is your hook for fetching a single game
+import { Game } from '../../types/Game';
 
-// recall needed data from the db from the fetch components
 const GamesPage: React.FC = () => {
-  const { games, loading: gamesLoading } = useGames(); // the loading state with games only because we will only print games
-  const { questions } = useQuestions();
-  const { teams } = useTeams();
-  const { users } = useUsers();
+  const { games, loading: gamesLoading } = useGames();
+  const [inputGameId, setInputGameId] = useState<string>('');
+  const { game, loading: gameLoading } = useGame(inputGameId);
+  const [searched, setSearched] = useState<boolean>(false);
 
-  // display the data in the console for testing
-  useEffect(() => {
-    if (!gamesLoading) { 
-      console.log("Games:", games)
-      console.log("Questions:", questions);
-      console.log("Teams:", teams);
-      console.log("Users:", users);
-    }
-  }, [gamesLoading, questions, teams, users]);
+  const handleSearchGame = () => {
+    setSearched(true);
+  };
 
-  // print games data for testing
-  return (
-    <View style={styles.container}>
-      {gamesLoading ? (
-        <ActivityIndicator size="large" color="#0000ff" /> // temporary loading circle untill data is displayed
-      ) : (
-        <>
-          <Text>Games Page</Text>
-          <Text>Games:</Text>
-          {games.map((game, index) => (
-            <View key={index}>
-              <Text>Game {index + 1}</Text>
-              <Text>Question Time: {game.questionTime}</Text>
-              <Text>Start Time: {game.startTime.toDate().toLocaleString()}</Text>
-              {/* References are omitted and was unable to print */}
-            </View>
+  const handleReloadGames = () => {
+    setSearched(false);
+    setInputGameId(''); // Clear the input to show all games again
+  };
+
+  // Render the details of a single game
+  const renderGameDetails = (game: Game) => (
+    <View style={styles.gameContainer}>
+      <Text>Question Time: {game.questionTime}</Text>
+      <Text>Start Time: {game.startTime.toDate().toLocaleString()}</Text>
+      <Text>Team 1: {game.team1.name}</Text>
+      <Text>Team 2: {game.team2.name}</Text>
+      <Text>Questions:</Text>
+      {game.questions.map((question, qIndex) => (
+        <View key={qIndex}>
+          <Text>Q{qIndex + 1}: {question.question}</Text>
+          {question.answers.map((ans, aIndex) => (
+            <Text key={aIndex}>Answer {aIndex + 1}: {ans}</Text>
           ))}
-        </>
-      )}
+        </View>
+      ))}
     </View>
+  );
+
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
+      <TextInput
+        style={styles.input}
+        onChangeText={setInputGameId}
+        value={inputGameId}
+        placeholder="Enter Game ID"
+      />
+      <Button onPress={handleSearchGame} title="Search Game" />
+
+      {searched ? (
+        gameLoading ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : game ? (
+          <>
+            {renderGameDetails(game)}
+            <Button onPress={handleReloadGames} title="Reload All Games" />
+          </>
+        ) : (
+          <Text>No game found with that ID.</Text>
+        )
+      ) : gamesLoading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        games.map((game, index) => (
+          <View key={index}>
+            {renderGameDetails(game)}
+          </View>
+        ))
+      )}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  gameContainer: {
+    marginBottom: 20,
+    // Add any additional styling for the game container here
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    width: '80%',
+  },
+  // ... other styles
 });
 
 export default GamesPage;

@@ -1,20 +1,14 @@
 import { useEffect, useState } from 'react';
-import { getFirestore, collection, onSnapshot } from 'firebase/firestore';
-
-interface Team {
-  color1: string;
-  color2: string;
-  logo: string;
-  name: string;
-}
+import { collection, onSnapshot } from 'firebase/firestore';
+import { FIRESTORE } from '../FirebaseConfig'
+import { Team } from '../types/Team';
 
 const useTeams = () => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true); // Added loading state
 
   useEffect(() => {
-    const db = getFirestore();
-    const teamsCollection = collection(db, 'teams');
+    const teamsCollection = collection(FIRESTORE, 'teams');
 
     const unsubscribe = onSnapshot(teamsCollection, (snapshot) => {
       const newTeams = snapshot.docs.map(doc => doc.data() as Team);

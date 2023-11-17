@@ -2,66 +2,42 @@ import { Link, useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, Pressable, TextInput } from 'react-native';
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
-import GameCard, { Game } from  '../../components/GameCard';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import GameCard from '../../components/GameCard';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import getUser from '../services/userFetcher';
+import useGames from '../../services/gamesFetcher';
 
 const auth = FIREBASE_AUTH;
-
-// Mock Data (to be deleted later)
-const game1 : Game  =     
-{
-    team1: {
-        name: 'UNC',
-        logo: '../assets/temp/unc_logo.png',
-    },
-    team2: {
-        name: 'Duke',
-        logo: '../assets/temp/duke_logo.png',
-
-    },
-    date: 'FEB 3',
-    time: '8:00PM',
-  };
-
-const game2 : Game  =     
-{
-    team1: {
-        name: 'Virginia',
-        logo: '../assets/temp/uva_logo.png',
-    },
-    team2: {
-        name: 'Virginia Tech',
-        logo: '../assets/temp/vt_logo.png',
-    },
-    date: 'JAN 17',
-    time: '6:30PM',
-  };
 
 // create a component
 const HomePage = () => {
     const router = useRouter();
+    const { games, loading: gamesLoading } = useGames();
     const [text, onChangeText] = React.useState('');
 
     return (
         <View style={[styles.container, styles.dark]}>
             <View style={styles.input}>
                 <MaterialCommunityIcons name="key-variant" size={20} color="white" />
-                <TextInput style={styles.textInput} value={text} placeholder={'Enter a code to join the game'} 
-                    placeholderTextColor='white' onChangeText={onChangeText}/>
+                <TextInput style={styles.textInput} value={text} placeholder={'Enter a code to join the game'}
+                    placeholderTextColor='white' onChangeText={onChangeText} />
             </View>
-            <Pressable onPress={()=> console.log('Button Pressed')} style={styles.button}>
+            <Pressable onPress={()=> console.log('Button Pressed')}
+                style={({ pressed }) => [
+                    styles.button,
+                    pressed && styles.buttonPressed,
+                  ]}
+            >
                 <Text style={styles.buttonText}>Join</Text>
             </Pressable>
-            <View style={{borderBottomColor: 'white', borderBottomWidth: 2, marginBottom: 5}}> 
-                <Text style={styles.upcoming}>Upcoming Games</Text> 
+            <View style={{borderBottomColor: 'white', borderBottomWidth: 2, marginBottom: 5}}>
+                <Text style={styles.upcoming}>Upcoming Games</Text>
             </View>
             <View style={styles.games}>
-
-                <GameCard game={game1}/>
-                <GameCard game={game2}/>
+                {games.map((game, index) => (
+                    <GameCard key={index} game={game} />
+                ))}
             </View>
-            
         </View>
     );
 };
@@ -72,8 +48,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection: 'column', 
-        padding: 20, 
+        flexDirection: 'column',
+        padding: 20,
     },
     dark: {
         backgroundColor: '#253031',
@@ -97,8 +73,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: {
-        width: 0,
-        height: 4,
+            width: 0,
+            height: 4,
         },
         shadowOpacity: 0.5,
         shadowRadius: 6,
@@ -116,7 +92,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 5,
         fontWeight: '500',
-        },
+    },
+    buttonPressed: {
+        opacity: 0.8,
+        transform: [{ scale: 0.96 }],
+    },
     upcoming: {
         fontSize: 30,
         fontWeight: '600',
@@ -126,7 +106,7 @@ const styles = StyleSheet.create({
         borderBottomColor: 'white',
         borderBottomWidth: 2,
         width: 360,
-    }, 
+    },
     games: {
         justifyContent: 'flex-start',
         flex: 1,

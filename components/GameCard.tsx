@@ -1,20 +1,16 @@
 import {StyleSheet, View, Text, ViewProps, Image} from 'react-native';
-
-export type Game = {
-  team1: Team;
-  team2: Team;
-  date: string;
-  time: string;
-};
-
-export type Team = {
-  name: string;
-  logo: string;
-};
+import { Game } from '../types/Game';
+import { Timestamp } from 'firebase/firestore';
 
 interface GameCardProps extends ViewProps {
   game: Game; 
 }
+
+const formatDate = (timestamp: { toDate: () => any; }) => {
+  const date = timestamp.toDate();
+  const options = { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+  return date.toLocaleDateString('en-US', options);
+};
 
 const GameCard: React.FC<GameCardProps> = ({game}) => {
   const icon1 = (game.team1.name === 'UNC') 
@@ -36,10 +32,7 @@ const GameCard: React.FC<GameCardProps> = ({game}) => {
           <Image style={styles.logo} source={icon2}></Image>
           <View style={styles.timeAndDate}>
           <Text style={styles.dateTime}>
-            {game.date}
-          </Text>
-          <Text style={styles.dateTime}>
-            {game.time}
+          {formatDate(game.startTime)}
           </Text>
           </View>
         </View>
@@ -79,7 +72,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontStyle: 'normal',
     fontWeight: '300',
-    width: 70,
+    width: 85,
   },
   timeAndDate: {
     flexShrink: 0,

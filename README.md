@@ -21,7 +21,8 @@ What are the major modules in each component? This may well be satisified by the
 You can find more information about the structure and design of our app in our [design document]()!
 
 ## Running the App
-...
+To run the app, run the command `npx expo start` in the terminal. 
 
-
-
+## Linting
+Before merging your branch, be sure to lint the code by running 
+`npm run lint` and `npm run prettier:write` in the terminal. 

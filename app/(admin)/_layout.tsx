@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from "@expo/vector-icons";
 import AdminPage from './admin';
 import ProfilePage from './profile';
+import GamesPage from './games';
 
 const Tab = createBottomTabNavigator();
 
@@ -21,6 +22,16 @@ const Layout = () => {
                     headerShown: false,
                     tabBarLabel: "Admin",
                     tabBarIcon: ({size, color}) => <Ionicons name='checkbox' size={size} color={color}/>
+                }}
+            />
+            <Tab.Screen 
+                name="Games" 
+                component={GamesPage}
+                options={{
+                    title: "Games Page",
+                    headerShown: false,
+                    tabBarLabel: "Games",
+                    tabBarIcon: ({size, color}) => <Ionicons name='game-controller' size={size} color={color}/>
                 }}
             />
             <Tab.Screen 

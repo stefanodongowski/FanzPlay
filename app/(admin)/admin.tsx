@@ -13,11 +13,19 @@ const AdminPage = () => {
         
     }
 
+    const deleteGame = async () => {
+        
+    }
+
     const createTeam = async () => {
         
     }
 
     const editTeam = async () => {
+        
+    }
+
+    const deleteTeam = async () => {
         
     }
 
@@ -32,10 +40,16 @@ const AdminPage = () => {
                         <Text style={styles.buttonText}>Edit game</Text>
                     </Pressable>
                     <Pressable style={styles.button}>
+                        <Text style={styles.buttonText}>Delete game</Text>
+                    </Pressable>
+                    <Pressable style={styles.button}>
                         <Text style={styles.buttonText}>Create new team</Text>
                     </Pressable>
                     <Pressable style={styles.button}>
                         <Text style={styles.buttonText}>Edit team</Text>
+                    </Pressable>
+                    <Pressable style={styles.button}>
+                        <Text style={styles.buttonText}>Delete team</Text>
                     </Pressable>
                 </View>
             </LinearGradient>

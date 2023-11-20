@@ -10,34 +10,18 @@ import useGames from '../../services/gamesFetcher';
 const auth = FIREBASE_AUTH;
 
 // create a component
-const HomePage = () => {
+const GamesPage = () => {
     const router = useRouter();
     const { games, loading: gamesLoading } = useGames();
     const [text, onChangeText] = React.useState('');
 
     return (
         <View style={[styles.container, styles.dark]}>
-            <View style={styles.input}>
-                <MaterialCommunityIcons name="key-variant" size={20} color="white" />
-                <TextInput style={styles.textInput} value={text} placeholder={'Enter a code to join the game'}
-                    placeholderTextColor='white' onChangeText={onChangeText} />
-            </View>
-            <Pressable onPress={()=> console.log('Button Pressed')}
-                style={({ pressed }) => [
-                    styles.button,
-                    pressed && styles.buttonPressed,
-                  ]}
-            >
-                <Text style={styles.buttonText}>Join</Text>
-            </Pressable>
-            <View style={{borderBottomColor: 'white', borderBottomWidth: 2, marginBottom: 5}}>
-                <Text style={styles.upcoming}>Upcoming Games</Text>
-            </View>
             <View style={styles.games}>
                 {games.map((game, index) => (
-                    <GameCard key={index} game={game} />
-                ))}
-            </View>
+             <GameCard key={index} game={game} isAdmin={true} />
+               ))}
+          </View>
         </View>
     );
 };
@@ -115,4 +99,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default HomePage;
+export default GamesPage;

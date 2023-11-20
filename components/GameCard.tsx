@@ -1,22 +1,20 @@
-import {StyleSheet, View, Text, ViewProps, Image} from 'react-native';
-
-export type Game = {
-  team1: Team;
-  team2: Team;
-  date: string;
-  time: string;
-};
-
-export type Team = {
-  name: string;
-  logo: string;
-};
+import {StyleSheet, View, Text, ViewProps, Image, Pressable} from 'react-native';
+import { Game } from '../types/Game';
+import { Timestamp } from 'firebase/firestore';
+import React from 'react';
 
 interface GameCardProps extends ViewProps {
   game: Game; 
+  isAdmin? : boolean
 }
 
-const GameCard: React.FC<GameCardProps> = ({game}) => {
+const formatDate = (timestamp: { toDate: () => any; }) => {
+  const date = timestamp.toDate();
+  const options = { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+  return date.toLocaleDateString('en-US', options);
+};
+
+const GameCard: React.FC<GameCardProps> = ({game, isAdmin = false}) => {
   const icon1 = (game.team1.name === 'UNC') 
   ? require('../assets/temp/unc_logo.png')
   : require('../assets/temp/uva_logo.png');
@@ -30,19 +28,47 @@ const GameCard: React.FC<GameCardProps> = ({game}) => {
         <Text style={styles.title}>
           {game.team1.name + ' vs. ' + game.team2.name}
         </Text>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row', alignItems: 'center' }}>
           <Image style={styles.logo} source={icon1}></Image>
           <View style={styles.divider}></View>
           <Image style={styles.logo} source={icon2}></Image>
           <View style={styles.timeAndDate}>
           <Text style={styles.dateTime}>
-            {game.date}
-          </Text>
-          <Text style={styles.dateTime}>
-            {game.time}
+          {formatDate(game.startTime)}
           </Text>
           </View>
         </View>
+        {isAdmin && (
+          <View style={styles.buttonContainer}>
+            <Pressable
+              style={({ pressed }) => [
+                styles.button,
+                styles.startButton,
+                pressed && styles.buttonPressed,
+              ]}
+            >
+              <Text style={styles.buttonText}>Start</Text>
+            </Pressable>
+            <Pressable
+              style={({ pressed }) => [
+                styles.button,
+                styles.updateButton,
+                pressed && styles.buttonPressed,
+              ]}
+            >
+              <Text style={styles.buttonText}>Update</Text>
+            </Pressable>
+            <Pressable
+              style={({ pressed }) => [
+                styles.button,
+                styles.deleteButton,
+                pressed && styles.buttonPressed,
+              ]}
+            >
+              <Text style={styles.buttonText}>Delete</Text>
+            </Pressable>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -79,7 +105,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontStyle: 'normal',
     fontWeight: '300',
-    width: 70,
+    width: 85,
   },
   timeAndDate: {
     flexShrink: 0,
@@ -106,7 +132,38 @@ const styles = StyleSheet.create({
     elevation: 2,
     marginBottom: 10,
     alignSelf: 'center',
-  }
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    padding: 10,
+  },
+  button: {
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 80, 
+    marginHorizontal: 5,
+  },
+  startButton: {
+    backgroundColor: 'green',
+  },
+  updateButton: {
+    backgroundColor: 'orange',
+  },
+  deleteButton: {
+    backgroundColor: 'red',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  buttonPressed: {
+    opacity: 0.8,
+    transform: [{ scale: 0.96 }],
+  },
 });
 
 export default GameCard;

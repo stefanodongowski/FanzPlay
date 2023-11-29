@@ -5,22 +5,18 @@ import { Game } from '../types/Game';
 import { Team, DEFAULT_TEAM } from '../types/Team';
 import { Question } from '../types/Question';
 
-interface GameWithId extends Game {
-  id: string;
-}
-
-const useGame = (gameId: string) => {
-  const [game, setGame] = useState<GameWithId | null>(null);
+const useGame = (gameID: string) => {
+  const [game, setGame] = useState<Game | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => { // resolves render error if no game
-    if (!gameId) {
+    if (!gameID) {
       setGame(null);
       setLoading(false);
       return;
     }
 
-    const gameRef = doc(FIRESTORE, 'games', gameId);
+    const gameRef = doc(FIRESTORE, 'games', gameID);
     const unsubscribeGame = onSnapshot(gameRef, async (docSnapshot) => { 
       if (!docSnapshot.exists()) {
         setGame(null);
@@ -41,9 +37,8 @@ const useGame = (gameId: string) => {
       const questionsSnapshot = await getDocs(collection(docSnapshot.ref, 'questions'));
       const questions = questionsSnapshot.docs.map(doc => doc.data() as Question);
 
-      const initialGame: GameWithId = {
+      const initialGame: Game = {
         ...gameData,
-        id: docSnapshot.id,
         team1: team1, 
         team2: team2,
         questions: questions
@@ -56,7 +51,7 @@ const useGame = (gameId: string) => {
       const unsubscribeQuestions = onSnapshot(questionsRef, (questionsSnapshot) => {
         const updatedQuestions = questionsSnapshot.docs.map(doc => doc.data() as Question);
         setGame(currentGame => {
-          if (currentGame && currentGame.id === gameId) {
+          if (currentGame && currentGame.gameID === gameID) {
             return { ...currentGame, questions: updatedQuestions };
           }
           return currentGame;
@@ -71,11 +66,9 @@ const useGame = (gameId: string) => {
         unsubscribeQuestions();
       };
     });
-  }, [gameId]);
+  }, [gameID]);
 
   return { game, loading };
 };
 
-
 export default useGame;
-

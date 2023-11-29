@@ -4,6 +4,7 @@ import { Team } from "./Team";
 
 // Interface for a Game document with resolved references
 export interface Game {
+    gameID: string;
     questionTime: number;
     questions: Question[]; // An array of resolved Question documents
     startTime: Timestamp;

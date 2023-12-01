@@ -5,7 +5,8 @@ import React from 'react';
 
 interface GameCardProps extends ViewProps {
   game: Game; 
-  isAdmin? : boolean
+  isAdmin?: boolean;
+  onPress?: () => void;
 }
 
 const formatDate = (timestamp: { toDate: () => any; }) => {
@@ -14,7 +15,7 @@ const formatDate = (timestamp: { toDate: () => any; }) => {
   return date.toLocaleDateString('en-US', options);
 };
 
-const GameCard: React.FC<GameCardProps> = ({game, isAdmin = false}) => {
+const GameCard: React.FC<GameCardProps> = ({game, isAdmin = false, onPress}) => {
   const icon1 = (game.team1.name === 'UNC') 
   ? require('../assets/temp/unc_logo.png')
   : require('../assets/temp/uva_logo.png');
@@ -24,52 +25,54 @@ const GameCard: React.FC<GameCardProps> = ({game, isAdmin = false}) => {
   : require('../assets/temp/vt_logo.png');
   return (
     <View style={styles.container}>
-      <View style={styles.card}>
-        <Text style={styles.title}>
-          {game.team1.name + ' vs. ' + game.team2.name}
-        </Text>
-        <View style={{flexDirection: 'row', alignItems: 'center' }}>
-          <Image style={styles.logo} source={icon1}></Image>
-          <View style={styles.divider}></View>
-          <Image style={styles.logo} source={icon2}></Image>
-          <View style={styles.timeAndDate}>
-          <Text style={styles.dateTime}>
-          {formatDate(game.startTime)}
+      <Pressable onPress={onPress}>
+        <View style={styles.card}>
+          <Text style={styles.title}>
+            {game.team1.name + ' vs. ' + game.team2.name}
           </Text>
+          <View style={{flexDirection: 'row', alignItems: 'center' }}>
+            <Image style={styles.logo} source={icon1}></Image>
+            <View style={styles.divider}></View>
+            <Image style={styles.logo} source={icon2}></Image>
+            <View style={styles.timeAndDate}>
+            <Text style={styles.dateTime}>
+            {formatDate(game.startTime)}
+            </Text>
+            </View>
           </View>
+          {isAdmin && (
+            <View style={styles.buttonContainer}>
+              <Pressable
+                style={({ pressed }) => [
+                  styles.button,
+                  styles.startButton,
+                  pressed && styles.buttonPressed,
+                ]}
+              >
+                <Text style={styles.buttonText}>Start</Text>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [
+                  styles.button,
+                  styles.updateButton,
+                  pressed && styles.buttonPressed,
+                ]}
+              >
+                <Text style={styles.buttonText}>Update</Text>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [
+                  styles.button,
+                  styles.deleteButton,
+                  pressed && styles.buttonPressed,
+                ]}
+              >
+                <Text style={styles.buttonText}>Delete</Text>
+              </Pressable>
+            </View>
+          )}
         </View>
-        {isAdmin && (
-          <View style={styles.buttonContainer}>
-            <Pressable
-              style={({ pressed }) => [
-                styles.button,
-                styles.startButton,
-                pressed && styles.buttonPressed,
-              ]}
-            >
-              <Text style={styles.buttonText}>Start</Text>
-            </Pressable>
-            <Pressable
-              style={({ pressed }) => [
-                styles.button,
-                styles.updateButton,
-                pressed && styles.buttonPressed,
-              ]}
-            >
-              <Text style={styles.buttonText}>Update</Text>
-            </Pressable>
-            <Pressable
-              style={({ pressed }) => [
-                styles.button,
-                styles.deleteButton,
-                pressed && styles.buttonPressed,
-              ]}
-            >
-              <Text style={styles.buttonText}>Delete</Text>
-            </Pressable>
-          </View>
-        )}
-      </View>
+      </Pressable>
     </View>
   );
 }

@@ -1,7 +1,7 @@
 import { User } from "firebase/auth";
 import { query, collection, where, onSnapshot } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import { FIRESTORE } from "../../FirebaseConfig";
+import { FIRESTORE } from "../FirebaseConfig";
 
 const getUser = (userID: String) => {
     const [user, setUser] = useState<any>();

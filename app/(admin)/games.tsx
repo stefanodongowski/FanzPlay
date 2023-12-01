@@ -4,7 +4,6 @@ import { View, Text, StyleSheet, Pressable, TextInput } from 'react-native';
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
 import GameCard from '../../components/GameCard';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import getUser from '../services/userFetcher';
 import useGames from '../../services/gamesFetcher';
 
 const auth = FIREBASE_AUTH;

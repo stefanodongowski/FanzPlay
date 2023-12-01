@@ -6,4 +6,5 @@ export interface Question {
     points: number;
     question: string;
     questionTime: number;
+    correctAnswer: number; //index of correct answer choice
   }

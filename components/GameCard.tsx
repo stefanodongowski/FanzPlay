@@ -7,7 +7,6 @@ import { FIRESTORE } from '../FirebaseConfig';
 
 interface GameCardProps extends ViewProps {
   game: Game; 
-  isAdmin? : boolean;
 }
 
 const formatDate = (timestamp: { toDate: () => any; }) => {
@@ -16,32 +15,7 @@ const formatDate = (timestamp: { toDate: () => any; }) => {
   return date.toLocaleDateString('en-US', options);
 };
 
-const GameCard: React.FC<GameCardProps> = ({game, isAdmin = false}) => {
-  const [gameState, setGameState] = useState(game.gameState); // 'inactive', 'active', 'paused'
-
-  const updateGameState = async (newState: string) => {
-    setGameState(newState);
-    const gameRef = doc(FIRESTORE, 'games', game.gameID);
-    await updateDoc(gameRef, { gameState: newState });
-  };
-
-  const confirmDelete = () => {
-    Alert.alert(
-      "Delete Game",
-      "Are you sure you want to delete this game?",
-      [
-        { text: "Cancel", onPress: () => console.log("Deletion cancelled"), style: "cancel" },
-        { text: "Yes", onPress: deleteGame }
-      ],
-      { cancelable: false }
-    );
-  };
-
-  const deleteGame = async () => {
-    const gameRef = doc(FIRESTORE, 'games', game.gameID);
-    await deleteDoc(gameRef);
-  };
-
+const GameCard: React.FC<GameCardProps> = ({game}) => {
   const icon1 = (game.team1.name === 'UNC') 
   ? require('../assets/temp/unc_logo.png')
   : require('../assets/temp/uva_logo.png');
@@ -65,33 +39,6 @@ const GameCard: React.FC<GameCardProps> = ({game, isAdmin = false}) => {
           </Text>
           </View>
         </View>
-        {isAdmin && (
-          <View style={styles.buttonContainer}>
-            {gameState === 'inactive' && (
-              <Pressable style={({ pressed }) => [styles.button, styles.startButton, pressed && styles.buttonPressed]} onPress={() => updateGameState('active')}>
-                <Text style={styles.buttonText}>Start</Text>
-              </Pressable>
-            )}
-            {(gameState === 'active' || gameState === 'paused') && (
-              <Pressable style={({ pressed }) => [styles.button, styles.stopButton, pressed && styles.buttonPressed]} onPress={() => updateGameState('inactive')}>
-                <Text style={styles.buttonText}>Stop</Text>
-              </Pressable>
-            )}
-            {gameState === 'active' && (
-              <Pressable style={({ pressed }) => [styles.button, styles.pauseButton, pressed && styles.buttonPressed]} onPress={() => updateGameState('paused')}>
-                <Text style={styles.buttonText}>Pause</Text>
-              </Pressable>
-            )}
-            {gameState === 'paused' && (
-              <Pressable style={({ pressed }) => [styles.button, styles.continueButton, pressed && styles.buttonPressed]} onPress={() => updateGameState('active')}>
-                <Text style={styles.buttonText}>Continue</Text>
-              </Pressable>
-            )}
-            <Pressable style={({ pressed }) => [styles.button, styles.deleteButton, pressed && styles.buttonPressed]} onPress={confirmDelete}>
-              <Text style={styles.buttonText}>Delete</Text>
-            </Pressable>
-          </View>
-        )}
       </View>
     </View>
   );
@@ -155,43 +102,6 @@ const styles = StyleSheet.create({
     elevation: 2,
     marginBottom: 10,
     alignSelf: 'center',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    padding: 10,
-  },
-  button: {
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    minWidth: 80, 
-    marginHorizontal: 5,
-  },
-  startButton: {
-    backgroundColor: 'green',
-  },
-  stopButton: {
-    backgroundColor: 'red',
-  },
-  pauseButton: {
-    backgroundColor: 'orange',
-  },
-  continueButton: {
-    backgroundColor: 'blue',
-  },
-  deleteButton: {
-    backgroundColor: 'red',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  buttonPressed: {
-    opacity: 0.8,
-    transform: [{ scale: 0.96 }],
   },
 });
 

@@ -1,11 +1,13 @@
-import {StyleSheet, View, Text, ViewProps, Image, Pressable} from 'react-native';
+import {StyleSheet, View, Text, ViewProps, Image, Pressable, Alert} from 'react-native';
 import { Game } from '../types/Game';
 import { Timestamp } from 'firebase/firestore';
-import React from 'react';
+import React, { useState } from 'react';
+import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { FIRESTORE } from '../FirebaseConfig';
 
 interface GameCardProps extends ViewProps {
   game: Game; 
-  isAdmin? : boolean
+  isAdmin? : boolean;
 }
 
 const formatDate = (timestamp: { toDate: () => any; }) => {
@@ -15,6 +17,31 @@ const formatDate = (timestamp: { toDate: () => any; }) => {
 };
 
 const GameCard: React.FC<GameCardProps> = ({game, isAdmin = false}) => {
+  const [gameState, setGameState] = useState(game.gameState); // 'inactive', 'active', 'paused'
+
+  const updateGameState = async (newState: string) => {
+    setGameState(newState);
+    const gameRef = doc(FIRESTORE, 'games', game.gameID);
+    await updateDoc(gameRef, { gameState: newState });
+  };
+
+  const confirmDelete = () => {
+    Alert.alert(
+      "Delete Game",
+      "Are you sure you want to delete this game?",
+      [
+        { text: "Cancel", onPress: () => console.log("Deletion cancelled"), style: "cancel" },
+        { text: "Yes", onPress: deleteGame }
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const deleteGame = async () => {
+    const gameRef = doc(FIRESTORE, 'games', game.gameID);
+    await deleteDoc(gameRef);
+  };
+
   const icon1 = (game.team1.name === 'UNC') 
   ? require('../assets/temp/unc_logo.png')
   : require('../assets/temp/uva_logo.png');
@@ -40,31 +67,27 @@ const GameCard: React.FC<GameCardProps> = ({game, isAdmin = false}) => {
         </View>
         {isAdmin && (
           <View style={styles.buttonContainer}>
-            <Pressable
-              style={({ pressed }) => [
-                styles.button,
-                styles.startButton,
-                pressed && styles.buttonPressed,
-              ]}
-            >
-              <Text style={styles.buttonText}>Start</Text>
-            </Pressable>
-            <Pressable
-              style={({ pressed }) => [
-                styles.button,
-                styles.updateButton,
-                pressed && styles.buttonPressed,
-              ]}
-            >
-              <Text style={styles.buttonText}>Update</Text>
-            </Pressable>
-            <Pressable
-              style={({ pressed }) => [
-                styles.button,
-                styles.deleteButton,
-                pressed && styles.buttonPressed,
-              ]}
-            >
+            {gameState === 'inactive' && (
+              <Pressable style={({ pressed }) => [styles.button, styles.startButton, pressed && styles.buttonPressed]} onPress={() => updateGameState('active')}>
+                <Text style={styles.buttonText}>Start</Text>
+              </Pressable>
+            )}
+            {(gameState === 'active' || gameState === 'paused') && (
+              <Pressable style={({ pressed }) => [styles.button, styles.stopButton, pressed && styles.buttonPressed]} onPress={() => updateGameState('inactive')}>
+                <Text style={styles.buttonText}>Stop</Text>
+              </Pressable>
+            )}
+            {gameState === 'active' && (
+              <Pressable style={({ pressed }) => [styles.button, styles.pauseButton, pressed && styles.buttonPressed]} onPress={() => updateGameState('paused')}>
+                <Text style={styles.buttonText}>Pause</Text>
+              </Pressable>
+            )}
+            {gameState === 'paused' && (
+              <Pressable style={({ pressed }) => [styles.button, styles.continueButton, pressed && styles.buttonPressed]} onPress={() => updateGameState('active')}>
+                <Text style={styles.buttonText}>Continue</Text>
+              </Pressable>
+            )}
+            <Pressable style={({ pressed }) => [styles.button, styles.deleteButton, pressed && styles.buttonPressed]} onPress={confirmDelete}>
               <Text style={styles.buttonText}>Delete</Text>
             </Pressable>
           </View>
@@ -149,8 +172,14 @@ const styles = StyleSheet.create({
   startButton: {
     backgroundColor: 'green',
   },
-  updateButton: {
+  stopButton: {
+    backgroundColor: 'red',
+  },
+  pauseButton: {
     backgroundColor: 'orange',
+  },
+  continueButton: {
+    backgroundColor: 'blue',
   },
   deleteButton: {
     backgroundColor: 'red',

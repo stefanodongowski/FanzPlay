@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Pressable, Modal, Image, Alert } from 'react-native';
+import { StyleSheet, View, Text, Pressable, Modal, Image, Alert, ScrollView, Button } from 'react-native';
 import { Game } from '../types/Game';
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { FIRESTORE } from '../FirebaseConfig';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Question } from '../types/Question';
+import QuestionEditModal from './QuestionEditModal';
+import GameEditModal from './GameEditModal';
+import QuestionSelectionModal from './QuestionSelectionModal';
+import ManageModal from './ManageModal';
 
 interface AdminGameCardProps {
   game: Game;
@@ -18,7 +23,11 @@ const formatDate = (timestamp: { toDate: () => any; }) => {
 const AdminGameCard: React.FC<AdminGameCardProps> = ({ game }) => {
   const [showModal, setShowModal] = useState(false);
   const [gameState, setGameState] = useState(game.gameState);
-  const [isFirstQuestion, setIsFirstQuestion] = useState(true);
+  const [isFirstQuestion, setIsFirstQuestion] = useState(game.currentQuestion === 0);
+
+  const [showQuestionEditModal, setShowQuestionEditModal] = useState(false);
+  const [showGameEditModal, setShowGameEditModal] = useState(false);
+  const [showQuestionSelectionModal, setShowQuestionSelectionModal] = useState(false);
 
   const updateGameState = async (newState: string) => {
     setGameState(newState);
@@ -26,7 +35,7 @@ const AdminGameCard: React.FC<AdminGameCardProps> = ({ game }) => {
     await updateDoc(gameRef, { gameState: newState });
   };
 
-  const handleNextQuestion = async () => {
+   const handleNextQuestion = async () => {
     let nextIndex = isFirstQuestion ? 0 : game.currentQuestion + 1;
     if (nextIndex < game.questions.length) {
       const gameRef = doc(FIRESTORE, 'games', game.gameID);
@@ -34,7 +43,7 @@ const AdminGameCard: React.FC<AdminGameCardProps> = ({ game }) => {
       setIsFirstQuestion(false);
     } else {
       updateGameState('finalLeaderboard');
-      Alert.alert("End of Round", "Please add more questions to continue or reset to fully end the game");
+      Alert.alert("Game Ended", "Please reset to play again. You can also edit your game");
       setShowModal(false);
     }
   };
@@ -70,6 +79,17 @@ const AdminGameCard: React.FC<AdminGameCardProps> = ({ game }) => {
     await deleteDoc(gameRef);
   };
 
+  const handleEditGame = () => {
+    setShowGameEditModal(true);
+  };
+
+  const handleEditQuestions = () => {
+    setShowQuestionSelectionModal(true);
+  };
+
+  
+ 
+
   const icon1 = game.team1.name === 'UNC' ? require('../assets/temp/unc_logo.png') : require('../assets/temp/uva_logo.png');
   const icon2 = game.team2.name === 'Duke' ? require('../assets/temp/duke_logo.png') : require('../assets/temp/vt_logo.png');
 
@@ -93,13 +113,24 @@ const AdminGameCard: React.FC<AdminGameCardProps> = ({ game }) => {
               <Text style={styles.buttonText}>Start</Text>
             </Pressable>
           )}
-          {(gameState === 'lobby' || gameState === 'finalLeaderboard') && (<Pressable style={({ pressed }) => [styles.button, styles.manageButton, pressed && styles.buttonPressed]} onPress={() => setShowModal(true)}>
+          {gameState !== 'inactive' && (<Pressable style={({ pressed }) => [styles.button, styles.manageButton, pressed && styles.buttonPressed]} onPress={() => setShowModal(true)}>
             <Text style={styles.buttonText}>Manage</Text>
           </Pressable>
           )}
-          <Pressable style={({ pressed }) => [styles.button, styles.editButton, pressed && styles.buttonPressed]} onPress={() => { /* Handle Edit Logic */ }}>
-          <Text style={styles.buttonText}>Edit</Text>
-          </Pressable>
+                <Pressable style={({ pressed }) => [styles.button, styles.editButton, pressed && styles.buttonPressed]} onPress={() => {
+        // Display options to choose which part to edit
+        Alert.alert(
+          "Edit Options",
+          "What do you want to edit?",
+          [
+            { text: "Questions", onPress: handleEditQuestions },
+            { text: "Game Time", onPress: handleEditGame }
+          ],
+          { cancelable: true }
+        );
+      }}>
+        <Text style={styles.buttonText}> Edit</Text>
+      </Pressable>
           <Pressable style={({ pressed }) => [styles.button, styles.resetButton, pressed && styles.buttonPressed]} onPress={handleResetGame}>
             <Text style={styles.buttonText}>Reset</Text>
           </Pressable>
@@ -109,35 +140,27 @@ const AdminGameCard: React.FC<AdminGameCardProps> = ({ game }) => {
         </View>
       </View>
 
-      <Modal
-        animationType="slide"
-        transparent={false}
+      <ManageModal
         visible={showModal}
-        onRequestClose={() => setShowModal(false)}
-      >
-          <View style={styles.modalBackground}>
-    <LinearGradient colors={['#000000', '#253031']} style={styles.modalGradient}>
-        <View style={styles.modalContainer}>
-          {isFirstQuestion ? (
-            <Text style={styles.modalText}>
-              Please click "Next Question" to start
-            </Text>
-          ) : (
-            <Text style={styles.modalText}>
-              Current Question: {game.questions[game.currentQuestion]?.question}
-            </Text>
-          )}
-          <Pressable style={({ pressed }) => [styles.modalButton, pressed && styles.buttonPressed]} onPress={handleNextQuestion}>
-            <Text style={styles.modalButtonText}>Next Question</Text>
-          </Pressable>
-          <Pressable style={({ pressed }) => [styles.modalButton, pressed && styles.buttonPressed]} onPress={() => setShowModal(false)}>
-            <Text style={styles.modalButtonText}>Close</Text>
-          </Pressable>
-        </View>
-        </LinearGradient>
-        </View>
+        onClose={() => setShowModal(false)}
+        game={game}
+        handleNextQuestion={handleNextQuestion}
+        isFirstQuestion={isFirstQuestion}
+        setIsFirstQuestion={setIsFirstQuestion} 
+      />
+     
+    <QuestionSelectionModal
+        visible={showQuestionSelectionModal}
+        onClose={() => setShowQuestionSelectionModal(false)}
+        gameID={game.gameID}
+        questions={game.questions}
         
-      </Modal>
+      />
+      <GameEditModal
+        visible={showGameEditModal}
+        onClose={() => setShowGameEditModal(false)}
+        game={game}
+      />
     </View>
   );
 };

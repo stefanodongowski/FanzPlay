@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Modal, Pressable, Alert } from 'react-native';
+import { View, Text, StyleSheet, Modal, Pressable, Alert, SafeAreaView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Game } from '../types/Game'; 
 import { FIRESTORE } from '../FirebaseConfig';
@@ -36,7 +36,7 @@ const AdminManageGame: React.FC<AdminManageGameProps> = ({ visible, onClose, gam
       visible={visible}
       onRequestClose={onClose}>
       
-      <View style={styles.modalBackground}>
+      <SafeAreaView style={styles.modalBackground}>
         <LinearGradient colors={['#000000', '#253031']} style={styles.modalGradient}>
           <View style={styles.modalContainer}>
             <Text style={styles.modalText}>Manage Game: {game.team1.name} vs {game.team2.name}</Text>
@@ -57,7 +57,7 @@ const AdminManageGame: React.FC<AdminManageGameProps> = ({ visible, onClose, gam
           </Pressable>
           </View>
         </LinearGradient>
-      </View>
+      </SafeAreaView>
 
     </Modal>
   );

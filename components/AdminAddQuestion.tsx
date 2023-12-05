@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, View, Text, TextInput, Pressable, ScrollView, StyleSheet } from 'react-native';
+import { Modal, View, SafeAreaView, Text, TextInput, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { collection, addDoc, updateDoc } from 'firebase/firestore';
 import { FIRESTORE } from '../FirebaseConfig';
@@ -47,7 +47,7 @@ const AdminAddQuestion: React.FC<AdminAddQuestionProps> = ({ visible, onClose, g
 
   return (
     <Modal animationType="slide" transparent={false} visible={visible} onRequestClose={handleCancel}>
-      <View style={styles.modalBackground}>
+      <SafeAreaView style={styles.modalBackground}>
         <LinearGradient colors={['#000000', '#253031']} style={styles.modalGradient}>
           <ScrollView style={styles.modalContainer}>
             <Text style={styles.label}>Question:</Text>
@@ -102,13 +102,13 @@ const AdminAddQuestion: React.FC<AdminAddQuestionProps> = ({ visible, onClose, g
             </Pressable>
           </ScrollView>
         </LinearGradient>
-      </View>
+      </SafeAreaView>
     </Modal>
   );
 };
 const styles = StyleSheet.create({
   modalBackground: {
-    flex: 1,
+      flex: 1,
   },
   modalGradient: {
     flex: 1,

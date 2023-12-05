@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, View, Text, TextInput, StyleSheet, Pressable, ScrollView } from 'react-native';
+import { Modal, View, Text, TextInput, StyleSheet, Pressable, ScrollView, SafeAreaView } from 'react-native';
 import { updateDoc, doc } from 'firebase/firestore';
 import { FIRESTORE } from '../FirebaseConfig';
 import { Question } from '../types/Question';
@@ -48,7 +48,7 @@ const handleClose = () => {
 
 return (
     <Modal animationType="slide" transparent={false} visible={visible} onRequestClose={onClose}>
-        <View style={styles.modalBackground}>
+        <SafeAreaView style={styles.modalBackground}>
             <LinearGradient colors={['#000000', '#253031']} style={styles.modalGradient}>
                 <ScrollView style={styles.modalContainer}>
                     <Text style={styles.label}>Question:</Text>
@@ -102,7 +102,7 @@ return (
                     </Pressable>
                 </ScrollView>
             </LinearGradient>
-        </View>
+        </SafeAreaView>
     </Modal>
 );
 };

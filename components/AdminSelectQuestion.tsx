@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, ScrollView, View, Text, StyleSheet, Pressable, Alert } from 'react-native';
+import { Modal, ScrollView, View, Text, StyleSheet, Pressable, Alert, SafeAreaView } from 'react-native';
 import { Question } from '../types/Question'; 
 import { LinearGradient } from 'expo-linear-gradient';
 import AdminAddQuestion from './AdminAddQuestion';
@@ -48,7 +48,7 @@ const AdminSelectQuestion: React.FC<AdminSelectQuestionProps> = ({ visible, onCl
     
   return (
     <Modal visible={visible} onRequestClose={onClose} animationType="slide">
-        <View style={styles.modalBackground}>
+        <SafeAreaView style={styles.modalBackground}>
         <LinearGradient colors={['#000000', '#253031']} style={styles.modalGradient}>
       <ScrollView style={styles.container}>
         {questions.map((question, index) => (
@@ -78,7 +78,7 @@ const AdminSelectQuestion: React.FC<AdminSelectQuestionProps> = ({ visible, onCl
       />
       
         </LinearGradient>
-      </View>
+      </SafeAreaView>
       {showAdminEditQuestions && (
         <AdminEditQuestions
           visible={showAdminEditQuestions}

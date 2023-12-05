@@ -6,13 +6,13 @@ import { FIRESTORE } from '../FirebaseConfig';
 import { Game } from '../types/Game';
 import { LinearGradient } from 'expo-linear-gradient';
 
-interface GameEditModalProps {
+interface AdminEditGameProps {
   visible: boolean;
   onClose: () => void;
   game: Game;
 }
 
-const GameEditModal: React.FC<GameEditModalProps> = ({ visible, onClose, game }) => {
+const AdminEditGame: React.FC<AdminEditGameProps> = ({ visible, onClose, game }) => {
   const [date, setDate] = useState(game.startTime.toDate());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
@@ -124,4 +124,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GameEditModal;
+export default AdminEditGame;

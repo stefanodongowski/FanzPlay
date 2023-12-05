@@ -5,13 +5,13 @@ import { collection, addDoc, updateDoc } from 'firebase/firestore';
 import { FIRESTORE } from '../FirebaseConfig';
 import { DEFAULT_QUESTION, Question } from '../types/Question'; 
 
-interface CreateQuestionModalProps {
+interface AdminAddQuestionProps {
   visible: boolean;
   onClose: () => void;
   gameID: string;
 }
 
-const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({ visible, onClose, gameID }) => {
+const AdminAddQuestion: React.FC<AdminAddQuestionProps> = ({ visible, onClose, gameID }) => {
     const [newQuestion, setNewQuestion] = useState<Question>(DEFAULT_QUESTION);
 
       const handleSave = async () => {
@@ -158,4 +158,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateQuestionModal;
+export default AdminAddQuestion;

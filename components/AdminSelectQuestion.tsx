@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { Modal, ScrollView, View, Text, Button, StyleSheet, Pressable, Alert } from 'react-native';
+import { Modal, ScrollView, View, Text, StyleSheet, Pressable, Alert } from 'react-native';
 import { Question } from '../types/Question'; 
 import { LinearGradient } from 'expo-linear-gradient';
-import CreateQuestionModal from './AddQuestionModal';
-import { Game } from '../types/Game';
-import QuestionEditModal from './QuestionEditModal';
+import AdminAddQuestion from './AdminAddQuestion';
+import AdminEditQuestions from './AdminEditQuestions';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { FIRESTORE } from '../FirebaseConfig';
 
-interface QuestionSelectionModalProps {
+interface AdminSelectQuestionProps {
   visible: boolean;
   onClose: () => void;
   gameID: string;
@@ -16,18 +15,18 @@ interface QuestionSelectionModalProps {
   
 }
 
-const QuestionSelectionModal: React.FC<QuestionSelectionModalProps> = ({ visible, onClose, questions, gameID }) => {
-    const [showCreateModal, setShowCreateModal] = useState(false);
-    const [showQuestionEditModal, setShowQuestionEditModal] = useState(false);
+const AdminSelectQuestion: React.FC<AdminSelectQuestionProps> = ({ visible, onClose, questions, gameID }) => {
+    const [showAdminAddQuestion, setShowAdminAddQuestion] = useState(false);
+    const [showAdminEditQuestions, setShowAdminEditQuestions] = useState(false);
     const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(null);
   
     const handleQuestionEdit = (question: Question) => {
       setSelectedQuestion(question);
-      setShowQuestionEditModal(true);
+      setShowAdminEditQuestions(true);
     };
   
-    const closeEditModal = () => {
-      setShowQuestionEditModal(false);
+    const closeAdminEditQuestions = () => {
+      setShowAdminEditQuestions(false);
     };
 
     const handleDeleteQuestion = (questionID: string) => {
@@ -42,8 +41,8 @@ const QuestionSelectionModal: React.FC<QuestionSelectionModalProps> = ({ visible
         );
       };
     
-      const deleteQuestion = async (questionID: string) => {
-        await deleteDoc(doc(FIRESTORE, 'games', gameID, 'questions', questionID));
+    const deleteQuestion = async (questionID: string) => {
+      await deleteDoc(doc(FIRESTORE, 'games', gameID, 'questions', questionID));
       };
     
   return (
@@ -63,7 +62,7 @@ const QuestionSelectionModal: React.FC<QuestionSelectionModalProps> = ({ visible
           </View>
         ))}
       </ScrollView>
-      <Pressable style={({ pressed }) => [styles.modalButton, pressed && styles.buttonPressed]} onPress={() => setShowCreateModal(true)}>
+      <Pressable style={({ pressed }) => [styles.modalButton, pressed && styles.buttonPressed]} onPress={() => setShowAdminAddQuestion(true)}>
         <Text style={styles.modalButtonText}>Add Question</Text>
       </Pressable>
       <Pressable style={({ pressed }) => [styles.modalButton, pressed && styles.buttonPressed]} onPress={onClose}>
@@ -71,18 +70,18 @@ const QuestionSelectionModal: React.FC<QuestionSelectionModalProps> = ({ visible
           </Pressable>
           
                
-      <CreateQuestionModal
-        visible={showCreateModal}
-        onClose={() => setShowCreateModal(false)}
+      <AdminAddQuestion
+        visible={showAdminAddQuestion}
+        onClose={() => setShowAdminAddQuestion(false)}
         gameID= {gameID}
       />
       
         </LinearGradient>
       </View>
-      {showQuestionEditModal && (
-        <QuestionEditModal
-          visible={showQuestionEditModal}
-          onClose={closeEditModal}
+      {showAdminEditQuestions && (
+        <AdminEditQuestions
+          visible={showAdminEditQuestions}
+          onClose={closeAdminEditQuestions}
           gameID={gameID}
           question={selectedQuestion!}
         />
@@ -108,7 +107,6 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginTop: 15
   },
-  
   modalButton: {
     backgroundColor: '#DDE819',
     shadowColor: '#000',
@@ -117,7 +115,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     
   },
-
   modalButtonText: {
     textAlign: 'center',
     color: '#000',
@@ -130,7 +127,6 @@ const styles = StyleSheet.create({
     padding: 5,
     margin: 5,
     borderRadius: 5,
-    
   },
   modalEditButtonText: {
     textAlign: 'center',
@@ -161,4 +157,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuestionSelectionModal;
+export default AdminSelectQuestion;

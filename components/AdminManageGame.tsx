@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, Modal, Pressable } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Game } from '../types/Game'; 
-import { doc, updateDoc } from 'firebase/firestore';
-import { FIRESTORE } from '../FirebaseConfig';
 
-interface ManageModalProps {
+interface AdminManageGameProps {
     visible: boolean;
     onClose: () => void;
     game: Game;
@@ -14,7 +12,7 @@ interface ManageModalProps {
     setIsFirstQuestion: (isFirst: boolean) => void;
   }
 
-const ManageModal: React.FC<ManageModalProps> = ({ visible, onClose, game, handleNextQuestion, isFirstQuestion }) => {
+const AdminManageGame: React.FC<AdminManageGameProps> = ({ visible, onClose, game, handleNextQuestion, isFirstQuestion }) => {
       
   return (
     <Modal
@@ -87,7 +85,6 @@ const styles = StyleSheet.create({
     opacity: 0.8,
     transform: [{ scale: 0.96 }],
   },
-  
 });
 
-export default ManageModal;
+export default AdminManageGame;

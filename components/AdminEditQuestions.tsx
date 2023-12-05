@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, View, Text, TextInput, Button, StyleSheet, Pressable, ScrollView } from 'react-native';
-import { updateDoc, doc, DocumentData } from 'firebase/firestore';
+import { Modal, View, Text, TextInput, StyleSheet, Pressable, ScrollView } from 'react-native';
+import { updateDoc, doc } from 'firebase/firestore';
 import { FIRESTORE } from '../FirebaseConfig';
-import { DEFAULT_QUESTION, Question } from '../types/Question';
+import { Question } from '../types/Question';
 import { LinearGradient } from 'expo-linear-gradient';
 
-interface QuestionEditModalProps {
+interface AdminEditQuestionsProps {
   visible: boolean;
   onClose: () => void;
   gameID: string;
   question: Question | null; 
 }
 
-const QuestionEditModal: React.FC<QuestionEditModalProps> = ({ visible, onClose, gameID, question }) => {
+const AdminEditQuestions: React.FC<AdminEditQuestionsProps> = ({ visible, onClose, gameID, question }) => {
 
     if (!question) {
         return null 
@@ -159,4 +159,4 @@ buttonPressed: {
 },
 });
 
-export default QuestionEditModal;
+export default AdminEditQuestions;

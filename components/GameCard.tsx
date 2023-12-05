@@ -15,6 +15,7 @@ const formatDate = (timestamp: { toDate: () => any; }) => {
   return date.toLocaleDateString('en-US', options);
 };
 
+
 const GameCard: React.FC<GameCardProps> = ({game}) => {
   const icon1 = (game.team1.name === 'UNC') 
   ? require('../assets/temp/unc_logo.png')

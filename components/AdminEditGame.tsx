@@ -42,11 +42,7 @@ const AdminEditGame: React.FC<AdminEditGameProps> = ({ visible, onClose, game })
         <LinearGradient colors={['#000000', '#253031']} style={styles.modalGradient}>
           <View style={styles.modalContainer}>
           <Pressable style={({ pressed }) => [styles.modalButton, pressed && styles.buttonPressed]} onPress={() => setShowDatePicker(true)}>
-              <Text style={styles.modalButtonText}>Show date picker</Text>
-            </Pressable>
-
-            <Pressable style={({ pressed }) => [styles.modalButton, pressed && styles.buttonPressed]} onPress={() => setShowTimePicker(true)}>
-              <Text style={styles.modalButtonText}>Show time picker</Text>
+              <Text style={styles.modalButtonText}>Change Date</Text>
             </Pressable>
 
             {showDatePicker && (
@@ -55,8 +51,15 @@ const AdminEditGame: React.FC<AdminEditGameProps> = ({ visible, onClose, game })
                 mode="date"
                 display="default"
                 onChange={onChangeDate}
+                themeVariant={'dark'}
+                style={styles.dateTimePicker}
               />
             )}
+
+            <Pressable style={({ pressed }) => [styles.modalButton, pressed && styles.buttonPressed]} onPress={() => setShowTimePicker(true)}>
+              <Text style={styles.modalButtonText}>Change Time</Text>
+            </Pressable>
+
 
             {showTimePicker && (
               <DateTimePicker
@@ -65,6 +68,8 @@ const AdminEditGame: React.FC<AdminEditGameProps> = ({ visible, onClose, game })
                 is24Hour={true}
                 display="default"
                 onChange={onChangeTime}
+                themeVariant={'dark'}
+                style={styles.dateTimePicker}
               />
             )}
 
@@ -122,6 +127,9 @@ const styles = StyleSheet.create({
     opacity: 0.8,
     transform: [{ scale: 0.96 }],
   },
+  dateTimePicker: {
+    alignSelf: 'center',
+  }
 });
 
 export default AdminEditGame;

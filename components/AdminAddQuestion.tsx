@@ -59,12 +59,14 @@ const AdminAddQuestion: React.FC<AdminAddQuestionProps> = ({ visible, onClose, g
 
             <Text style={styles.label}>Answers:</Text>
             {newQuestion.answers.map((answer, index) => (
-              <TextInput 
-                key={index}
-                style={styles.input} 
-                value={answer} 
-                onChangeText={(text) => handleAnswerChange(text, index)} 
-              />
+               <View key={index} style={styles.answerContainer}>
+                  <Text style={styles.answerIndex}>{index}:</Text>
+                  <TextInput 
+                      value={answer} 
+                      style={styles.input} 
+                      onChangeText={(text) => handleAnswerChange(text, index)} 
+                  />
+                </View>
             ))}
 
             <Pressable style={({ pressed }) => [styles.addButton, pressed && styles.buttonPressed]} onPress={addAnswerField}>
@@ -155,6 +157,17 @@ const styles = StyleSheet.create({
   buttonPressed: {
     opacity: 0.8,
     transform: [{ scale: 0.96 }],
+  },
+  answerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
+},
+  answerIndex: {
+      color: 'white',
+      fontSize: 16,
+      fontWeight: '500',
+      marginRight: 10,
   },
 });
 

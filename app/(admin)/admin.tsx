@@ -5,33 +5,24 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 // create a component
 const AdminPage = () => {
-    const createGame = async () => {
+    const createGame = async () => {};
 
-    }
+    const editGame = async () => {};
 
-    const editGame = async () => {
-        
-    }
+    const deleteGame = async () => {};
 
-    const deleteGame = async () => {
-        
-    }
+    const createTeam = async () => {};
 
-    const createTeam = async () => {
-        
-    }
+    const editTeam = async () => {};
 
-    const editTeam = async () => {
-        
-    }
-
-    const deleteTeam = async () => {
-        
-    }
+    const deleteTeam = async () => {};
 
     return (
         <View style={styles.background}>
-            <LinearGradient colors={['#000000', '#253031']} style={styles.gradient}>
+            <LinearGradient
+                colors={['#000000', '#253031']}
+                style={styles.gradient}
+            >
                 <View style={styles.container}>
                     <Pressable style={styles.button}>
                         <Text style={styles.buttonText}>Create new game</Text>
@@ -66,10 +57,10 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     background: {
-        flex: 1,
+        flex: 1
     },
     gradient: {
-        flex: 1,
+        flex: 1
     },
     buttonText: {
         fontSize: 24,
@@ -77,7 +68,7 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         textAlign: 'center',
         padding: 5,
-        fontWeight: '500',
+        fontWeight: '500'
     },
     button: {
         backgroundColor: '#DDE819',
@@ -85,7 +76,7 @@ const styles = StyleSheet.create({
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
-            height: 4,
+            height: 4
         },
         shadowOpacity: 0.5,
         shadowRadius: 6,
@@ -94,7 +85,7 @@ const styles = StyleSheet.create({
         height: 50,
         alignContent: 'center',
         justifyContent: 'center',
-        margin: 20,
+        margin: 20
     }
 });
 

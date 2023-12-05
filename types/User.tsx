@@ -5,4 +5,4 @@ export interface User {
     role: string;
     userID: string;
     username: string;
-  }
+}

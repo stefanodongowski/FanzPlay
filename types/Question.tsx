@@ -6,7 +6,7 @@ export interface Question {
     question: string;
     questionTime: number;
     correctAnswer: number; //index of correct answer choice
-  }
+}
 
 export const DEFAULT_QUESTION: Question = {
     questionID: '',

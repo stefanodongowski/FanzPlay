@@ -1,18 +1,33 @@
 import React from 'react';
-import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Modal, Pressable, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Game } from '../types/Game'; 
+import { FIRESTORE } from '../FirebaseConfig';
+import { doc, updateDoc } from 'firebase/firestore';
 
 interface AdminManageGameProps {
     visible: boolean;
     onClose: () => void;
     game: Game;
-    handleNextQuestion: () => void;
+    updateGameState: (gameState: string) => void;
     isFirstQuestion: boolean;
     setIsFirstQuestion: (isFirst: boolean) => void;
   }
 
-const AdminManageGame: React.FC<AdminManageGameProps> = ({ visible, onClose, game, handleNextQuestion, isFirstQuestion }) => {
+const AdminManageGame: React.FC<AdminManageGameProps> = ({ visible, onClose, game, isFirstQuestion, setIsFirstQuestion, updateGameState }) => {
+
+  const handleNextQuestion = async () => {
+    let nextIndex = isFirstQuestion ? 0 : game.currentQuestion + 1;
+    if (nextIndex < game.questions.length) {
+      const gameRef = doc(FIRESTORE, 'games', game.gameID);
+      await updateDoc(gameRef, { currentQuestion: nextIndex, gameState: 'question' });
+      setIsFirstQuestion(false);
+    } else {
+      updateGameState('finalLeaderboard');
+      Alert.alert("Game Ended", "Please reset to play again. You can also edit your game");
+      onClose();
+    }
+  };
       
   return (
     <Modal

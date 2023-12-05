@@ -30,19 +30,6 @@ const AdminGameCard: React.FC<AdminGameCardProps> = ({ game }) => {
     await updateDoc(gameRef, { gameState: newState });
   };
 
-   const handleNextQuestion = async () => {
-    let nextIndex = isFirstQuestion ? 0 : game.currentQuestion + 1;
-    if (nextIndex < game.questions.length) {
-      const gameRef = doc(FIRESTORE, 'games', game.gameID);
-      await updateDoc(gameRef, { currentQuestion: nextIndex, gameState: 'question' });
-      setIsFirstQuestion(false);
-    } else {
-      updateGameState('finalLeaderboard');
-      Alert.alert("Game Ended", "Please reset to play again. You can also edit your game");
-      setShowAdminManageGame(false);
-    }
-  };
-
   const handleStartGame = async () => {
     updateGameState('lobby');
   };
@@ -138,7 +125,7 @@ const AdminGameCard: React.FC<AdminGameCardProps> = ({ game }) => {
         visible={showAdminManageGame}
         onClose={() => setShowAdminManageGame(false)}
         game={game}
-        handleNextQuestion={handleNextQuestion}
+        updateGameState={updateGameState}
         isFirstQuestion={isFirstQuestion}
         setIsFirstQuestion={setIsFirstQuestion} 
       />

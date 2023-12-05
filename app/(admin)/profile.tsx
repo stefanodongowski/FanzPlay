@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button, TextInput, Alert, Modal } from 'react-native';
+import { View, Text, StyleSheet, Button, TextInput, Alert, Modal, Pressable } from 'react-native';
 import { updateUser } from '../../services/userUpdater';
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
 import { useRouter } from 'expo-router';
 import { User } from '../../types/User';
 import { handleDeleteAccount } from '../../services/deleteAccount';
+import { LinearGradient } from 'expo-linear-gradient';
+import getUser from '../../services/userFetcher';
+import loading from '../loading';
 
 const auth = FIREBASE_AUTH;
 
@@ -17,6 +20,8 @@ const ProfilePage: React.FC = () => {
   const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { user, loading } = getUser(auth.currentUser?.uid!);
+  
   
   const handleUpdate = async () => {
     if (!firstName.trim() || !lastName.trim() || !username.trim()) {
@@ -68,27 +73,42 @@ const ProfilePage: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      {!isUpdating && <Text style={styles.header}>Profile Page</Text>}
+    <View style={styles.background}>
+      <LinearGradient colors={['#000000', '#253031']} style={styles.gradient}>
+        <View style={styles.container}>
+      {!isUpdating && !loading && user && <Text style={styles.header}>Hello, {user.username}</Text>}
       {isUpdating ? (
         <>
-          <TextInput placeholder="First Name" value={firstName} onChangeText={setFirstName} style={styles.input} />
-          <TextInput placeholder="Last Name" value={lastName} onChangeText={setLastName} style={styles.input} />
-          <TextInput placeholder="Username" value={username} onChangeText={setUsername} style={styles.input} />
-          <Button title="Confirm" onPress={handleUpdate} />
-          <View style={styles.space} />
-          <Button title="Cancel" onPress={handleCancel} />
+              <TextInput placeholder="First Name" value={firstName} onChangeText={setFirstName} style={styles.input} />
+              <TextInput placeholder="Last Name" value={lastName} onChangeText={setLastName} style={styles.input} />
+              <TextInput placeholder="Username" value={username} onChangeText={setUsername} style={styles.input} />
+
+              <Pressable style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]} onPress={handleUpdate}>
+                <Text style={styles.buttonText}>Confirm</Text>
+              </Pressable>
+              
+              <View style={styles.space} />
+
+              <Pressable style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]} onPress={handleCancel}>
+                <Text style={styles.buttonText}>Cancel</Text>
+              </Pressable>
         </>
       ) : (
         <>
-          <Button title="Update My Profile" onPress={() => setIsUpdating(true)} />
+          <Pressable style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]} onPress={() => setIsUpdating(true)}>
+            <Text style={styles.buttonText}>Update My Profile</Text>
+          </Pressable>
           <View style={styles.space} />
-          <Button title="Delete My Account" onPress={handleDelete} color="red" />
+          <Pressable style={({ pressed }) => [styles.button, styles.deleteButton, pressed && styles.buttonPressed]} onPress={handleDelete}>
+            <Text style={styles.buttonText}>Delete My Account</Text>
+          </Pressable>
           <View style={styles.space} />
-          <Button title="Logout" onPress={() => {
+          <Pressable style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]} onPress={() => {
             auth.signOut();
             router.replace('/');
-          }} />
+          }}>
+            <Text style={styles.buttonText}>Logout</Text>
+          </Pressable>
         </>
       )}
 
@@ -122,6 +142,8 @@ const ProfilePage: React.FC = () => {
         </View>
       </Modal>
     </View>
+    </LinearGradient>
+    </View>
   );
 };
 
@@ -132,17 +154,54 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
-  input: {
-    width: '100%',
-    padding: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
-    marginBottom: 10,
+  background: {
+        flex: 1,
+    },
+    gradient: {
+        flex: 1,
+    },
+    deleteButton: {
+      backgroundColor: 'red',
+    },
+    
+    input: {
+      backgroundColor: 'white',
+      color: 'black',
+      borderBottomWidth: 2,
+      borderBottomColor: '#DDE819',
+      padding: 10,
+      width: 300, 
+      fontSize: 16,
+      borderRadius: 5,
+      marginBottom: 15,
+    },
+    button: {
+      backgroundColor: '#DDE819',
+      padding: 10,
+      borderRadius: 5,
+      alignItems: 'center',
+      minWidth: 80,
+      marginHorizontal: 10,
+    },
+    buttonText: {
+      color: '#000',
+      fontSize: 19,
+      fontWeight: '500',
+    },
+    space: {
+      height: 10,
+    },
+
+  textInput: {
+      fontWeight: '300',
+      color: 'white',
+      width: 340,
+      paddingLeft: 20,
+      fontSize: 18,
   },
-  space: {
-    height: 10,
-  },
+  
   header: {
+    color: '#DDE819',
     position: 'absolute',
     top: 20,
     alignSelf: 'center',
@@ -152,13 +211,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Dimmed background
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
   },
   modalContent: {
     backgroundColor: 'white',
     padding: 20,
     width: '80%',
     borderRadius: 10,
+  },
+  buttonPressed: {
+    opacity: 0.8,
+    transform: [{ scale: 0.96 }],
   },
 });
 

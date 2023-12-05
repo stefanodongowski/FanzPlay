@@ -42,7 +42,8 @@ const AdminSelectQuestion: React.FC<AdminSelectQuestionProps> = ({ visible, onCl
       };
     
     const deleteQuestion = async (questionID: string) => {
-      await deleteDoc(doc(FIRESTORE, 'games', gameID, 'questions', questionID));
+      const gameQuestionRef = doc(FIRESTORE, 'games', gameID, 'questions', questionID)
+      await deleteDoc(gameQuestionRef);
       };
     
   return (

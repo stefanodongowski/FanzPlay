@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20, 
     marginLeft: 20,
+    marginRight: 20,
     marginTop: 15
   },
   modalButton: {

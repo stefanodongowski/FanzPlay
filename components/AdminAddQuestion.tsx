@@ -142,8 +142,8 @@ const styles = StyleSheet.create({
   },
   modalButton: {
     backgroundColor: '#DDE819',
-    padding: 10,
-    margin: 10,
+    padding: 5,
+    margin: 7,
     borderRadius: 5,
     alignItems: 'center',
   },

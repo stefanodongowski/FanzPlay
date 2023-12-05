@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Pressable, Image, Alert } from 'react-native';
 import { Game } from '../types/Game';
-import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { FIRESTORE } from '../FirebaseConfig';
 import AdminEditGame from './AdminEditGame';
 import AdminSelectQuestion from './AdminSelectQuestion';
@@ -75,7 +75,12 @@ const AdminGameCard: React.FC<AdminGameCardProps> = ({ game }) => {
   };
 
   const deleteGame = async () => {
-    const gameRef = doc(FIRESTORE, 'games', game.gameID);
+    const gameQuestionsRef = collection(FIRESTORE, 'games', game.gameID, 'questions');
+    const querySnapshot = await getDocs(gameQuestionsRef);
+    for (const docSnapshot of querySnapshot.docs) {  // delete all questions first to avoid orphaned data
+      await deleteDoc(doc(FIRESTORE, 'games', game.gameID, 'questions', docSnapshot.id));
+  }
+    const gameRef = doc(FIRESTORE, 'games', game.gameID); 
     await deleteDoc(gameRef);
   };
 

@@ -22,7 +22,6 @@ const GamesPage: React.FC = () => {
   // Render the details of a single game
   const renderGameDetails = (game: Game) => (
     <View style={styles.gameContainer}>
-      <Text>Question Time: {game.questionTime}</Text>
       <Text>Start Time: {game.startTime.toDate().toLocaleString()}</Text>
       <Text>Team 1: {game.team1.name}</Text>
       <Text>Team 2: {game.team2.name}</Text>

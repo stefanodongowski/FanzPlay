@@ -11,8 +11,8 @@ export interface Game {
     currentQuestion: number; //index of the current question
     questions: Question[]; // An array of resolved Question documents
     startTime: Timestamp;
-    team1: Team; // Resolved Team document
-    team2: Team; // Resolved Team document
+    team1ID: String; // Resolved Team document
+    team2ID: String; // Resolved Team document
     team1score: number; 
     team2score: number; 
   }

@@ -41,7 +41,6 @@ const Register = () => {
                 username: username,
             });
             console.log(response);
-            alert("New user created");
         } catch (e: any) {
             console.log(e);
             if (e instanceof FirebaseError) {

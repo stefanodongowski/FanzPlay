@@ -32,17 +32,29 @@ const AdminPage = () => {
     const [newColor1, setNewColor1] = useState('');
     const [newColor2, setNewColor2] = useState('');
     const [newLogo, setNewLogo] = useState('');
+    
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+    };
+
+    const showTimePicker = () => {
+        setTimePickerVisibility(true);
+    };
 
     const onChangeDate = (event: DateTimePickerEvent, selectedDate?: Date) => {
+        setDatePickerVisibility(false); // Hide the date picker after selection
         const currentDate = selectedDate || date;
         setDate(currentDate);
     };
 
     const onChangeTime = (event: DateTimePickerEvent, selectedTime?: Date) => {
+        setTimePickerVisibility(false); // Hide the time picker after selection
         const currentTime = selectedTime || date;
         setDate(currentTime);
     };
-
     const handleAddGame = async (db: Firestore, team1ID: String, team2ID: String, startTime: Timestamp) => {
         if (team1ID && team2ID && startTime) {
     
@@ -118,6 +130,12 @@ const AdminPage = () => {
                         >
                             <View style={styles.modalContainer}>
                                 <View style={styles.modalContent}>
+                                
+                                
+                                <Pressable onPress={showDatePicker}>
+                                  <Text>Select Time</Text>
+                                </Pressable>
+                                {isDatePickerVisible && (
                                     <View style={styles.dateAndTime}>
                                         <DateTimePicker
                                             value={date}
@@ -125,16 +143,24 @@ const AdminPage = () => {
                                             display="default"
                                             onChange={onChangeDate}
                                         />
+                                     </View>   )}
+                                    
+                                    
 
-                                        
+                                    <Pressable onPress={showTimePicker}>
+                                    <Text>Select Date</Text>
+                                  </Pressable>
+                                  {isTimePickerVisible && (
+                                    <View style={styles.dateAndTime}>
                                         <DateTimePicker
                                             value={date}
                                             mode="time"
                                             is24Hour={true}
                                             display="default"
                                             onChange={onChangeTime}
-                                        /> 
-                                    </View>
+                                       />
+                                       </View>  )}
+                                    
                                         
                                     <TextInput 
                                         placeholder='Team 1 ID'

@@ -133,7 +133,7 @@ const AdminPage = () => {
                                 
                                 
                                 <Pressable onPress={showDatePicker}>
-                                  <Text>Select Time</Text>
+                                  <Text>Select Date</Text>
                                 </Pressable>
                                 {isDatePickerVisible && (
                                     <View style={styles.dateAndTime}>
@@ -148,7 +148,7 @@ const AdminPage = () => {
                                     
 
                                     <Pressable onPress={showTimePicker}>
-                                    <Text>Select Date</Text>
+                                    <Text>Select Time</Text>
                                   </Pressable>
                                   {isTimePickerVisible && (
                                     <View style={styles.dateAndTime}>

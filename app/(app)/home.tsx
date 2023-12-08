@@ -1,20 +1,24 @@
 import { Href, Link, useRouter } from 'expo-router';
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, TextInput, ActivityIndicator } from 'react-native';
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
 import GameCard from '../../components/GameCard';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import useGames from '../../services/gamesFetcher';
+import { Game } from '../../types/Game';
+import GameModal from '../../screens/GameModal';
 
 const auth = FIREBASE_AUTH;
 
-// create a component
+
 const HomePage = () => {
     const router = useRouter();
     const { games, loading: gamesLoading } = useGames();
     const [text, onChangeText] = React.useState('');
+    const [showGameModal, setShowGameModal] = useState(false);
+    const [game, setGame] = useState<Game>();
 
-    // shows loading screen when waiting to fetch games
+    // eventually I think we will want a loading page here 
     // if(gamesLoading){
     //     return (
     //         <ActivityIndicator
@@ -62,12 +66,12 @@ const HomePage = () => {
                     <GameCard
                         key={index}
                         game={game}
-                        onPress={() => {
-                            router.push(`/game/${game.gameID}` as any);
+                        onPress={() => {setGame(game); setShowGameModal(true); console.log('clicked game' + game.team1.name + ' vs. ' + game.team2.name + ' and state is ' + game.gameState );
                         }}
                     />
                 ))}
             </View>
+            {game && (<GameModal visible={showGameModal} onClose={() => setShowGameModal(false)} game={game}></GameModal>)}
         </View>
     );
 };

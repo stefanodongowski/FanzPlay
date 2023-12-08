@@ -11,27 +11,27 @@ interface LobbyProps extends ViewProps {
 const LobbyScreen: React.FC<LobbyProps> = ({ game }) => {
     //const [teamSelected, setTeamSelected] = React.useState(false);
     const [team, setTeam] = React.useState('');
-    return (
-        <View style={styles.container}>
-            <Modal
-                // I have a feeling that this is not the right way to do
-                // this may need a boolean variable
-                visible={team !== ''}
-            >
-                <Text>Choose a team</Text>
-                {/* replace buttons with team logos */}
-                <Button
-                    title={game.team1.name}
-                    onPress={() => setTeam(game.team1.name)}
-                ></Button>
-                <Button
-                    title={game.team1.name}
-                    onPress={() => setTeam(game.team1.name)}
-                ></Button>
-            </Modal>
-            <Text> You're playing for {team}.</Text>
-            <Text>Waiting for others to join...</Text>
-        </View>
+    return ( <Text>Lobby View</Text>
+        // <View style={styles.container}>
+        //     <Modal
+        //         // I have a feeling that this is not the right way to do
+        //         // this may need a boolean variable
+        //         visible={team !== ''}
+        //     >
+        //         <Text>Choose a team</Text>
+        //         {/* replace buttons with team logos */}
+        //         <Button
+        //             title={game.team1.name}
+        //             onPress={() => setTeam(game.team1.name)}
+        //         ></Button>
+        //         <Button
+        //             title={game.team1.name}
+        //             onPress={() => setTeam(game.team1.name)}
+        //         ></Button>
+        //     </Modal>
+        //     <Text> You're playing for {team}.</Text>
+        //     <Text>Waiting for others to join...</Text>
+        // </View>
     );
 };
 

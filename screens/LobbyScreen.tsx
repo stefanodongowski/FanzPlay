@@ -6,13 +6,13 @@ import { Team } from '../types/Team';
 
 interface LobbyProps extends ViewProps {
     game: Game;
-    team?: Team;
+    team: Team;
 }
 
 const LobbyScreen: React.FC<LobbyProps> = ({ game, team }) => {
     //const [teamSelected, setTeamSelected] = React.useState(false);
     const opponent =
-        team?.teamID === game.team1.teamID ? game.team2.name : game.team1.name;
+        team.teamID === game.team1.teamID ? game.team2.name : game.team1.name;
     return (
         <SafeAreaView style={styles.container}>
             <Text>

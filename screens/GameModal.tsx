@@ -1,9 +1,8 @@
-import { Button, Modal, Text, View } from 'react-native';
+import { Button, Modal, StatusBar, Text, View, SafeAreaView } from 'react-native';
 import { Game } from '../types/Game';
 import { useEffect, useState } from 'react';
 import LobbyScreen from './LobbyScreen';
 import subscribeToGameStateChanges from '../services/subscribeToGameState';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet } from 'react-native';
 import { Team } from '../types/Team';
 import QuestionScreen from './QuestionScreen';
@@ -17,7 +16,8 @@ interface GameModalProps {
 const GameModal: React.FC<GameModalProps> = ({ visible, onClose, game }) => {
     const [team, setTeam] = useState<Team>();
     const [gameState, setGameState] = useState<string>(game.gameState);
-    
+    const [playerScore, setPlayerScore] = useState(0);
+
     useEffect(() => {
         if (game.gameID) {
             const unsubscribeGameState = subscribeToGameStateChanges(
@@ -34,6 +34,11 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, game }) => {
         }
     }, [game.gameID]);
 
+    const updatePlayerScore = (points : number) => {
+        setPlayerScore(playerScore + points);
+    }
+
+    // go back to home page if missing game or game state
     if (game === null || gameState === undefined) {
         onClose();
         return null;
@@ -42,6 +47,7 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, game }) => {
     return (
         <Modal visible={visible} onRequestClose={onClose} animationType="slide">
             <SafeAreaView style={styles.modalBackground}>
+                <Button title="Leave Game" color={'red'} onPress={onClose} />
                 {/* force users to select a team if they haven't already */}
                 <Modal visible={team === undefined}>
                     <SafeAreaView style={styles.modalBackground}>
@@ -57,23 +63,27 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, game }) => {
                         ></Button>
                     </SafeAreaView>
                 </Modal>
-                {gameState === undefined && <Text>Undefined</Text>}
-                {gameState === 'inactive' && (
+                {gameState === 'inactive' && team !== undefined && (
                     <View>
                         <Text>This game hasn't started yet. </Text>
                     </View>
                 )}
-                {gameState === 'lobby' && (
+                {gameState === 'lobby' && team !== undefined && (
                     <LobbyScreen game={game} team={team}></LobbyScreen>
                 )}
-                {gameState === 'question' && (
-                    <QuestionScreen game={game} team={team}></QuestionScreen>
+                {gameState === 'question' && team !== undefined && (
+                    <QuestionScreen
+                        game={game}
+                        team={team}
+                        updatePlayerScore={updatePlayerScore}
+                    ></QuestionScreen>
                 )}
-                {gameState === 'leaderboard' && <Text>Leaderboard Page</Text>}
-                {gameState === 'finalLeaderboard' && (
+                {gameState === 'leaderboard' && team !== undefined && (
+                    <Text>Leaderboard Page</Text>
+                )}
+                {gameState === 'finalLeaderboard' && team !== undefined && (
                     <Text>Final Leaderboard Page</Text>
                 )}
-                <Button title="Leave Game" color={'red'} onPress={onClose} />
             </SafeAreaView>
         </Modal>
     );
@@ -82,9 +92,10 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, game }) => {
 const styles = StyleSheet.create({
     modalBackground: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: 'flex-start',
+        alignItems: 'center',
     }
+
 });
 
 export default GameModal;

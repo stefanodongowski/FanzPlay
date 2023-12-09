@@ -8,34 +8,73 @@ import {
     ViewProps
 } from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
-import useGame from '../services/useGame';
 import { Team } from '../types/Team';
 import { Game } from '../types/Game';
 import { FIRESTORE } from '../FirebaseConfig';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, increment, updateDoc } from 'firebase/firestore';
 
 interface QuestionScreenProps extends ViewProps {
     game: Game;
-    team?: Team;
+    team: Team;
+    updatePlayerScore: (points: number) => void;
 }
 
-const QuestionScreen: React.FC<QuestionScreenProps> = ({ game, team }) => {
-    const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-
-    // Save current question as vb
+const QuestionScreen: React.FC<QuestionScreenProps> = ({
+    game,
+    team,
+    updatePlayerScore
+}) => {
+    const [selectedAnswer, setSelectedAnswer] = useState<number>(-1);
+    const [answered, setAnswered] = useState(false);
     const currentQuestion = game.questions[game.currentQuestion];
+    const questionPointValue = game.questions[game.currentQuestion].points;
 
     const updateGameState = async (newState: string) => {
         const gameRef = doc(FIRESTORE, 'games', game.gameID);
         await updateDoc(gameRef, { gameState: newState });
     };
-    
-    const handleAnswerSelect = (index: number) => {
-        // Logic to handle when an answer choice is selected
-        if (game.gameState === 'question') {
-            setSelectedAnswer(index);
+
+    const updateResponses = async () => {
+        const gameRef = doc(FIRESTORE, 'games', game.gameID);
+        if (team.teamID === game.team1.teamID) {
+            await updateDoc(gameRef, {
+                team1responses: increment(1)
+            });
+        } else if (team.teamID === game.team2.teamID) {
+            await updateDoc(gameRef, {
+                team2responses: increment(1)
+            });
         }
     };
+
+    const submitAnswer = async () => {
+        setAnswered(true);
+        // increment number of responses from that player's team
+        updateResponses();
+        if (selectedAnswer === currentQuestion.correctAnswer) {
+            // add points to indiviual player score, a variable in the GameModal
+            updatePlayerScore(questionPointValue);
+
+            // add points to team score in firestore collection
+            const gameRef = doc(FIRESTORE, 'games', game.gameID);
+            if (team.teamID === game.team1.teamID) {
+                await updateDoc(gameRef, {
+                    team1score: increment(questionPointValue)
+                });
+            } else if (team.teamID === game.team2.teamID) {
+                await updateDoc(gameRef, {
+                    team2score: increment(questionPointValue)
+                });
+            }
+        }
+    };
+
+    // const handleAnswerSelect = (index: number) => {
+    //     // Logic to handle when an answer choice is selected
+    //     if (game.gameState === 'question') {
+    //         setSelectedAnswer(index);
+    //     }
+    // };
 
     // const isCorrectAnswer = (index: number) => {
     //   return index === currentQuestion.correctAnswer;
@@ -51,26 +90,26 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({ game, team }) => {
         return styles.answerButton;
     };
 
-    const handleSubmit = () => {
-        // Answer submission handled here
-        let winner: number = -1; // For testing purposes
-        if (
-            game.gameState === 'question' &&
-            selectedAnswer === currentQuestion.correctAnswer
-        ) {
-            if (team?.teamID === game.team1.teamID) {
-                game.team1score += currentQuestion.points;
-                winner = game.team1score;
-                console.log('points added to team 1');
-            } else if (team?.teamID === game.team2.teamID) {
-                game.team2score += currentQuestion.points;
-                winner = game.team2score;
-                console.log('points added to team 2');
-            }
-            console.log('submitted, winner score is: ', winner);
-        }
-        // Handle when it's not in question state
-    };
+    // const handleSubmit = () => {
+    //     // Answer submission handled here
+    //     let winner: number = -1; // For testing purposes
+    //     if (
+    //         game.gameState === 'question' &&
+    //         selectedAnswer === currentQuestion.correctAnswer
+    //     ) {
+    //         if (team.teamID === game.team1.teamID) {
+    //             game.team1score += currentQuestion.points;
+    //             winner = game.team1score;
+    //             console.log('points added to team 1');
+    //         } else if (team.teamID === game.team2.teamID) {
+    //             game.team2score += currentQuestion.points;
+    //             winner = game.team2score;
+    //             console.log('points added to team 2');
+    //         }
+    //         console.log('submitted, winner score is: ', winner);
+    //     }
+    //     // Handle when it's not in question state
+    // };
 
     return (
         <View style={[styles.container, styles.dark]}>
@@ -79,7 +118,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({ game, team }) => {
                 duration={10}
                 colors="#A30000"
                 onComplete={() => {
-                    updateGameState("leaderboard");
+                    updateGameState('leaderboard');
                 }}
             >
                 {({ remainingTime }) => <Text>{remainingTime}</Text>}
@@ -105,24 +144,25 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({ game, team }) => {
             {currentQuestion.answers.map((answer, index) => (
                 <Pressable
                     key={index}
-                    onPress={() => handleAnswerSelect(index)}
+                    onPress={() => setSelectedAnswer(index)}
                     style={({ pressed }) => [
                         styles.answerButton,
                         pressed && styles.selectedAnswer,
                         answerButtonStyle(index)
                     ]}
-                    disabled={game.gameState !== 'question'}
+                    // prevents users from changing answer once they click submit
+                    disabled={answered}
                 >
                     <Text style={styles.answerText}>{answer}</Text>
                 </Pressable>
             ))}
-
             <Pressable
-                onPress={handleSubmit}
+                onPress={submitAnswer}
                 style={({ pressed }) => [
                     styles.submitButton,
                     pressed && styles.submitButtonPressed
                 ]}
+                disabled={answered}
             >
                 <Text style={styles.submitButtonText}>Submit</Text>
             </Pressable>

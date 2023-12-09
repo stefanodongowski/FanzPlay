@@ -11,6 +11,8 @@ import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import useGame from '../services/useGame';
 import { Team } from '../types/Team';
 import { Game } from '../types/Game';
+import { FIRESTORE } from '../FirebaseConfig';
+import { doc, updateDoc } from 'firebase/firestore';
 
 interface QuestionScreenProps extends ViewProps {
     game: Game;
@@ -23,6 +25,11 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({ game, team }) => {
     // Save current question as vb
     const currentQuestion = game.questions[game.currentQuestion];
 
+    const updateGameState = async (newState: string) => {
+        const gameRef = doc(FIRESTORE, 'games', game.gameID);
+        await updateDoc(gameRef, { gameState: newState });
+    };
+    
     const handleAnswerSelect = (index: number) => {
         // Logic to handle when an answer choice is selected
         if (game.gameState === 'question') {
@@ -72,9 +79,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({ game, team }) => {
                 duration={10}
                 colors="#A30000"
                 onComplete={() => {
-                    // If didn't press submit, answer not saved to database
-                    game.gameState = 'leaderboard';
-                    // Route to leaderboard page
+                    updateGameState("leaderboard");
                 }}
             >
                 {({ remainingTime }) => <Text>{remainingTime}</Text>}

@@ -19,7 +19,7 @@ const LobbyScreen: React.FC<LobbyProps> = ({ game, team }) => {
                 Welcome to FanzPlay! You're in.
             </Text>
             <Text>
-                Ready to beat {opponent}?
+                Get ready to beat {opponent}!
             </Text>
             <Text>Waiting for others to join...</Text>
         </SafeAreaView>

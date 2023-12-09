@@ -66,7 +66,7 @@ const HomePage = () => {
                     <GameCard
                         key={index}
                         game={game}
-                        onPress={() => {setGame(game); setShowGameModal(true); console.log('clicked game' + game.team1.name + ' vs. ' + game.team2.name + ' and state is ' + game.gameState );
+                        onPress={() => {setGame(game); setShowGameModal(true);
                         }}
                     />
                 ))}

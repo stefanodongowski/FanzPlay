@@ -6,6 +6,7 @@ import subscribeToGameStateChanges from '../services/subscribeToGameState';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet } from 'react-native';
 import { Team } from '../types/Team';
+import QuestionScreen from './QuestionScreen';
 
 interface GameModalProps {
     visible: boolean;
@@ -59,13 +60,15 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, game }) => {
                 {gameState === undefined && <Text>Undefined</Text>}
                 {gameState === 'inactive' && (
                     <View>
-                        <Text>Inactive Page</Text>
+                        <Text>This game hasn't started yet. </Text>
                     </View>
                 )}
                 {gameState === 'lobby' && (
                     <LobbyScreen game={game} team={team}></LobbyScreen>
                 )}
-                {gameState === 'question' && <Text>Question Page</Text>}
+                {gameState === 'question' && (
+                    <QuestionScreen game={game} team={team}></QuestionScreen>
+                )}
                 {gameState === 'leaderboard' && <Text>Leaderboard Page</Text>}
                 {gameState === 'finalLeaderboard' && (
                     <Text>Final Leaderboard Page</Text>

@@ -57,7 +57,6 @@ const AdminPage = () => {
         const currentTime = selectedTime || date;
         setDate(currentTime);
     };
-
     const handleAddGame = async (db: Firestore, startTime: Timestamp) => {
         if (team1 && team2 && startTime) {
     
@@ -134,8 +133,8 @@ const AdminPage = () => {
                     </Pressable>
                     { createGameModalVisible &&
                         <Modal
-                            transparent={true}
-                            visible={createGameModalVisible}
+                        transparent={true}
+                        visible={createGameModalVisible}
                         >
                             <View style={styles.modalContainer}>
                                 <View style={styles.modalContent}>
@@ -192,7 +191,7 @@ const AdminPage = () => {
                                 </View>
                             </View>
                     </Modal>
-                }
+                    }
 
 
 

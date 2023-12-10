@@ -6,6 +6,8 @@ import subscribeToGameChanges from '../services/subscribeToGameState';
 import { StyleSheet } from 'react-native';
 import { Team } from '../types/Team';
 import QuestionScreen from './QuestionScreen';
+import LeaderboardScreen from './LeaderboardScreen';
+import FinalLeaderboardScreen from './FinalLeaderboardScreen';
 
 interface GameModalProps {
     visible: boolean;
@@ -82,10 +84,17 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, game }) => {
                     ></QuestionScreen>
                 )}
                 {gameState === 'leaderboard' && team !== undefined && (
-                    <Text>Leaderboard Page</Text>
-                )}
+                    <LeaderboardScreen 
+                        game={game}
+                        team={team}
+                        playerScore={playerScore}
+                        currentQuestion={currentQuestion}
+                    /> )}
                 {gameState === 'finalLeaderboard' && team !== undefined && (
-                    <Text>Final Leaderboard Page</Text>
+                    <FinalLeaderboardScreen
+                        game={game}
+                        team={team}
+                        playerScore={playerScore}/>
                 )}
             </SafeAreaView>
         </Modal>

@@ -117,21 +117,22 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
 
     return (
         <View style={[styles.container, styles.dark]}>
+            <Text style={styles.questionNumber}>
+                Question {currentQuestion + 1} of {game.questions.length}
+            </Text>
+
             <CountdownCircleTimer
                 isPlaying
-                duration={10}
+                duration={game.questions[currentQuestion].questionTime}
                 colors={['#DDE819', '#FF0000']}
                 colorsTime={[game.questions[currentQuestion].questionTime, 0]}
+                size={125}
                 onComplete={() => {
                     updateGameState('leaderboard');
                 }}
             >
                 {({ remainingTime }) => <Text>{remainingTime}</Text>}
             </CountdownCircleTimer>
-
-            <Text style={styles.questionNumber}>
-                Question {currentQuestion + 1} of {game.questions.length}
-            </Text>
 
             <Text style={styles.questionText}>
                 {game.questions[currentQuestion].question}
@@ -148,23 +149,21 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
         </TouchableOpacity>
       ))} */}
 
-            {game.questions[currentQuestion].answers.map(
-                (answer, index) => (
-                    <Pressable
-                        key={index}
-                        onPress={() => setSelectedAnswer(index)}
-                        style={({ pressed }) => [
-                            styles.answerButton,
-                            pressed && styles.selectedAnswer,
-                            answerButtonStyle(index)
-                        ]}
-                        // prevents users from changing answer once they click submit
-                        disabled={answered}
-                    >
-                        <Text style={styles.answerText}>{answer}</Text>
-                    </Pressable>
-                )
-            )}
+            {game.questions[currentQuestion].answers.map((answer, index) => (
+                <Pressable
+                    key={index}
+                    onPress={() => setSelectedAnswer(index)}
+                    style={({ pressed }) => [
+                        styles.answerButton,
+                        pressed && styles.selectedAnswer,
+                        answerButtonStyle(index)
+                    ]}
+                    // prevents users from changing answer once they click submit
+                    disabled={answered}
+                >
+                    <Text style={styles.answerText}>{answer}</Text>
+                </Pressable>
+            ))}
             <Pressable
                 onPress={submitAnswer}
                 style={({ pressed }) => [
@@ -192,7 +191,8 @@ const styles = StyleSheet.create({
     questionNumber: {
         fontSize: 20,
         color: 'white',
-        marginBottom: 10
+        marginBottom: 10,
+        fontWeight: '200'
     },
     questionText: {
         fontSize: 24,

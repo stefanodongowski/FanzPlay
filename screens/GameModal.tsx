@@ -219,7 +219,6 @@ const styles = StyleSheet.create({
         fontSize: 40,
         fontWeight: '800',
         padding: 10
-    }
     },
     button: {
         backgroundColor: '#DDE819',

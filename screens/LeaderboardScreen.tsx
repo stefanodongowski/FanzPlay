@@ -49,12 +49,12 @@ const LeaderboardScreen: React.FC<LeaderboardScreenProps> = ({
                 <Text style={styles.leaderboardText}>Leaderboard</Text>
             </View>
             <Text style={styles.answerText}>
-                The correct answer to the previous question was... 
+                The correct answer to the previous question was:
             </Text>
             <Text style={styles.answer}>
-                {game.questions[currentQuestion].answers[game.questions[currentQuestion].correctAnswer]}!
+                {game.questions[currentQuestion].answers[game.questions[currentQuestion].correctAnswer]}
             </Text>
-            <Text style={styles.currentScoreText}>The current standings are...</Text>
+            <Text style={styles.currentScoreText}>Current Standings:</Text>
 
             <BarChart
                 style={{ height: 200, width: 300 }}
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center'
     },
     dark: {
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
         color: 'white',
         alignContent: 'center',
         textAlign: 'center',
-        padding: 5,
+        padding: 20,
         fontSize: 20,
         fontWeight: '400'
     },
@@ -114,15 +114,16 @@ const styles = StyleSheet.create({
         padding: 5,
         fontWeight: '400',
         marginBottom: 30,
-        fontSize: 20
+        fontSize: 40
     },
     currentScoreText: {
         color: 'white',
         textAlign: 'center',
-        padding: 10,
-        width: 360,
-        fontSize: 20,
-        marginBottom: 20
+        padding: 20,
+        width: 260,
+        fontSize: 30,
+        paddingTop: 40,
+        fontWeight: '500'
     },
     scoreText: {
         color: 'white',
@@ -130,14 +131,14 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 5,
         fontSize: 20,
-        fontWeight: '400'
+        fontWeight: '500'
     },
     scoreLabels: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         width: '100%',
-        marginTop: 10,
-    },
+        marginTop: 10
+    }
 });
 
 export default LeaderboardScreen;

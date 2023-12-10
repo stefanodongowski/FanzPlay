@@ -76,8 +76,8 @@ const AdminPage = () => {
             await updateDoc(docRef, {gameID: docRef.id})
         } else {
             alert("Make sure all fields are filled!")
-            console.log(team1)
-            console.log(team2)
+            console.log(team1ID)
+            console.log(team2ID)
             console.log(startTime)
         }
     }
@@ -91,6 +91,7 @@ const AdminPage = () => {
                 color2: color2,
                 logo: logo
             });
+            await updateDoc(docRef, {teamID: docRef.id})
 
         } else {
             alert("Make sure all fields are filled!")

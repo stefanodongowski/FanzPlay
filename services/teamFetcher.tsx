@@ -10,15 +10,17 @@ const getTeam = (teamID: String) => {
     
   
     useEffect(() => {
-      const teamsCollection = query(collection(FIRESTORE, 'teams'), where('__name__', '==', teamID));
-      
-  
-      return onSnapshot(teamsCollection, (snapshot) => {
-        const newTeam = snapshot.docs.map(doc => doc.data() as Team)[0];
-        setTeam(newTeam);
-        setLoading(false); // Set loading to false once data is loaded
-      });
-  
+      try {
+        const teamsCollection = query(collection(FIRESTORE, 'teams'), where('__name__', '==', teamID));
+
+        return onSnapshot(teamsCollection, (snapshot) => {
+          const newTeam = snapshot.docs.map(doc => doc.data() as Team)[0];
+          setTeam(newTeam);
+          setLoading(false); // Set loading to false once data is loaded
+        });
+      }  catch {
+        return
+      }
     }, []);
   
     return { team, loading }; // Return both games and loading state

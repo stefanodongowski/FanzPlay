@@ -18,6 +18,8 @@ const AdminPage = () => {
     const [createGameModalVisible, setCreateGameModalVisible] = useState(false);
     const [team1ID, setTeam1ID] = useState('');
     const [team2ID, setTeam2ID] = useState('');
+    const team1: Team = getTeam(team1ID).team;
+    const team2: Team = getTeam(team2ID).team
     const [date, setDate] = useState(new Date());
     // create team states
     const [createTeamModalVisible, setCreateTeamModalVisible] = useState(false);
@@ -55,22 +57,28 @@ const AdminPage = () => {
         const currentTime = selectedTime || date;
         setDate(currentTime);
     };
-    const handleAddGame = async (db: Firestore, team1ID: String, team2ID: String, startTime: Timestamp) => {
-        if (team1ID && team2ID && startTime) {
+
+    const handleAddGame = async (db: Firestore, startTime: Timestamp) => {
+        if (team1 && team2 && startTime) {
     
             const docRef = await addDoc(collection(db, "games"), {
                 gameID: '',
                 gameState: "inactive", 
                 currentQuestion: 0,
-                questions: [],
                 startTime: startTime,
-                team1ID: team1ID,
-                team2ID: team2ID, 
-                team1score: 0, 
-                team2score: 0,
+                team1ID: doc(db, "teams/" + team1.teamID),
+                team1Responses: 0,
+                team1Score: 0,
+                team2ID: doc(db, "teams/" + team2.teamID),
+                team2Responses: 0,
+                team2Score: 0
             }); 
+            await updateDoc(docRef, {gameID: docRef.id})
         } else {
             alert("Make sure all fields are filled!")
+            console.log(team1)
+            console.log(team2)
+            console.log(startTime)
         }
     }
 
@@ -125,8 +133,8 @@ const AdminPage = () => {
                     </Pressable>
                     { createGameModalVisible &&
                         <Modal
-                        transparent={true}
-                        visible={createGameModalVisible}
+                            transparent={true}
+                            visible={createGameModalVisible}
                         >
                             <View style={styles.modalContainer}>
                                 <View style={styles.modalContent}>
@@ -174,12 +182,16 @@ const AdminPage = () => {
                                         style={styles.input}
                                         onChangeText={(text) => setTeam2ID(text)}
                                     />
-                                    <Button title="Add Game" onPress={() => handleAddGame(db, team1ID, team2ID, new Timestamp(date.getTime()/1000, 0))} color="red" />
+                                    <Button 
+                                        title="Add Game" 
+                                        onPress={() => handleAddGame(db, new Timestamp(date.getTime()/1000, 0))} 
+                                        color="red" 
+                                    />
                                     <Button title="Cancel" onPress={() => setCreateGameModalVisible(false)} color="blue" />
                                 </View>
                             </View>
                     </Modal>
-                    }
+                }
 
 
 

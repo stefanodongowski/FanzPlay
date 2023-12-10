@@ -117,9 +117,6 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
 
     return (
         <View style={[styles.container, styles.dark]}>
-            <Text style={styles.questionNumber}>
-                Question {currentQuestion + 1} of {game.questions.length}
-            </Text>
 
             <CountdownCircleTimer
                 isPlaying

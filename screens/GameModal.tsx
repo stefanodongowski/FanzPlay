@@ -1,4 +1,4 @@
-import { Button, Modal, StatusBar, Text, View, SafeAreaView } from 'react-native';
+import { Button, Modal, Text, View, SafeAreaView, Pressable } from 'react-native';
 import { Game } from '../types/Game';
 import { useEffect, useState } from 'react';
 import LobbyScreen from './LobbyScreen';
@@ -8,6 +8,7 @@ import { Team } from '../types/Team';
 import QuestionScreen from './QuestionScreen';
 import LeaderboardScreen from './LeaderboardScreen';
 import FinalLeaderboardScreen from './FinalLeaderboardScreen';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface GameModalProps {
     visible: boolean;
@@ -51,7 +52,20 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, game }) => {
     return (
         <Modal visible={visible} onRequestClose={onClose} animationType="slide">
             <SafeAreaView style={styles.modalBackground}>
-                <Button title="Leave Game" color={'red'} onPress={onClose} />
+                <View style={styles.container}>
+                    <Pressable onPress= {onClose}>
+                        <MaterialCommunityIcons
+                            name="window-close"
+                            size={30}
+                            color="white"
+                        />
+                    </Pressable>
+
+                    <Text style={styles.question}>Question {game.currentQuestion+1} of {game.questions.length}</Text>
+
+                    <Text style={styles.question}>{playerScore} / {game.currentQuestion+1}</Text>
+                    </View>
+                
                 {/* force users to select a team if they haven't already */}
                 <Modal visible={team === undefined}>
                     <SafeAreaView style={styles.modalBackground}>
@@ -105,9 +119,25 @@ const styles = StyleSheet.create({
     modalBackground: {
         flex: 1,
         justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    container: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
+        padding: 10,
+        backgroundColor: '#253031',
+        width: '100%'
+    },
+    buttonText: {
+        fontSize: 20,
+        color: 'white'
+    },
+    question: {
+        fontSize: 25,
+        color: 'white',
+        fontWeight: '200'
     }
-
 });
 
 export default GameModal;

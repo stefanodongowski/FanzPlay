@@ -1,11 +1,11 @@
-import { View, ViewProps, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { Game } from "../types/Game";
 import { Team } from "../types/Team";
 
 import React from 'react';
 import { BarChart, Grid } from 'react-native-svg-charts';
 
-interface LeaderboardScreenProps extends ViewProps {
+interface LeaderboardScreenProps{
     game: Game;
     team: Team;
     playerScore: number; //not sure if we want to display this here

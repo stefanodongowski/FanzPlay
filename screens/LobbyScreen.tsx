@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, SafeAreaView } from 'react-native';
+import { Text, StyleSheet, SafeAreaView, View, Image } from 'react-native';
 import { Game } from '../types/Game';
 import { ViewProps } from 'react-native/Libraries/Components/View/ViewPropTypes';
 import { Team } from '../types/Team';
@@ -10,18 +10,36 @@ interface LobbyProps extends ViewProps {
 }
 
 const LobbyScreen: React.FC<LobbyProps> = ({ game, team }) => {
-    //const [teamSelected, setTeamSelected] = React.useState(false);
     const opponent =
         team.teamID === game.team1.teamID ? game.team2.name : game.team1.name;
+    const icon =
+         team.name === 'UNC'
+             ? require('../assets/temp/unc_logo.png')
+        : team.name === 'Duke' 
+            ? require('../assets/temp/duke_logo.png')
+        : team.name === 'UVA' 
+            ? require('../assets/temp/uva_logo.png')
+        : require('../assets/temp/vt_logo.png');
+
     return (
         <SafeAreaView style={styles.container}>
-            <Text>
-                Welcome to FanzPlay! You're in.
-            </Text>
-            <Text>
-                Get ready to beat {opponent}!
-            </Text>
-            <Text>Waiting for others to join...</Text>
+            <View style={styles.text}>
+                <View style={styles.underline}>
+                    <Text style={styles.lobby}>Game Lobby</Text>
+                </View>
+                <Text style={styles.welcome}>
+                    Welcome to the FanzPlay trivia game!
+                </Text>
+                <Text style={styles.intro}>
+                    You're playing on {team.name}'s team.
+                </Text>
+                <View style={styles.card}>
+                        <Image style={styles.logo} source={icon}></Image>
+                </View>
+                <Text style={styles.intro}>Get ready to beat {opponent}!</Text>
+            </View>
+
+            <Text style={styles.waiting}>Waiting for others to join...</Text>
         </SafeAreaView>
     );
 };
@@ -30,8 +48,82 @@ const LobbyScreen: React.FC<LobbyProps> = ({ game, team }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#253031',
+        width: '100%'
+    },
+    text: {
+        flex: 1,
         alignItems: 'center'
+    },
+    underline: {
+        borderBottomColor: 'white',
+        borderBottomWidth: 2,
+        marginBottom: 5,
+        width: 220,
+        paddingTop: 10
+    },
+    lobby: {
+        fontSize: 40,
+        fontWeight: '600',
+        textAlign: 'center',
+        color: 'white',
+        borderBottomColor: 'white',
+        borderBottomWidth: 2
+    },
+    welcome: {
+        fontSize: 30,
+        fontWeight: '500',
+        textAlign: 'center',
+        color: 'white',
+        borderBottomColor: 'white',
+        borderBottomWidth: 2,
+        padding: 20,
+        paddingBottom: 40
+    },
+    intro: {
+        fontSize: 30,
+        fontWeight: '300',
+        textAlign: 'center',
+        color: 'white',
+        padding: 5
+    },
+    waiting: {
+        fontSize: 30,
+        fontWeight: '200',
+        textAlign: 'center',
+        color: 'white',
+        padding: 40
+    },
+    logo: {
+        width: 250,
+        height: 200,
+        resizeMode: 'contain',
+        padding: 20
+    },
+    card: {
+        backgroundColor: 'white',
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 4
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 6,
+        elevation: 4,
+        width: 300,
+        alignItems: 'center',
+        margin: 20,
+        padding: 20
+    },
+    teamName: {
+        color: '#253031',
+        textAlign: 'center',
+        fontSize: 40,
+        fontWeight: '800',
+        padding: 10
     }
 });
 

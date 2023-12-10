@@ -1,4 +1,4 @@
-import { Button, Modal, Text, View, SafeAreaView, Pressable } from 'react-native';
+import { Button, Modal, Text, View, SafeAreaView, Pressable, Image } from 'react-native';
 import { Game } from '../types/Game';
 import { useEffect, useState } from 'react';
 import LobbyScreen from './LobbyScreen';
@@ -9,6 +9,7 @@ import QuestionScreen from './QuestionScreen';
 import LeaderboardScreen from './LeaderboardScreen';
 import FinalLeaderboardScreen from './FinalLeaderboardScreen';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 
 interface GameModalProps {
     visible: boolean;
@@ -49,36 +50,75 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, game }) => {
         return null;
     }
 
+    // conditionally assign team logo assets
+    const logo1 =
+        game.team1.name === 'UNC'
+            ? require('../assets/temp/unc_logo.png')
+            : require('../assets/temp/uva_logo.png');
+
+    const logo2 =
+        game.team2.name === 'Duke'
+            ? require('../assets/temp/duke_logo.png')
+            : require('../assets/temp/vt_logo.png');
+
     return (
         <Modal visible={visible} onRequestClose={onClose} animationType="slide">
             <SafeAreaView style={styles.modalBackground}>
-                <View style={styles.container}>
-                    <Pressable onPress= {onClose}>
-                        <MaterialCommunityIcons
-                            name="window-close"
-                            size={30}
-                            color="white"
-                        />
-                    </Pressable>
+                {/* Top bar for game pages */}
+                {team !== null && (
+                    <View style={styles.container}>
+                        <Pressable onPress={onClose}>
+                            <MaterialCommunityIcons
+                                name="window-close"
+                                size={30}
+                                color="white"
+                            />
+                        </Pressable>
 
-                    <Text style={styles.question}>Question {game.currentQuestion+1} of {game.questions.length}</Text>
+                        <Text style={styles.question}>
+                            Question {game.currentQuestion + 1} of{' '}
+                            {game.questions.length}
+                        </Text>
 
-                    <Text style={styles.question}>{playerScore} / {game.currentQuestion+1}</Text>
+                        <Text style={styles.question}>
+                            {playerScore} / {game.currentQuestion + 1}
+                        </Text>
                     </View>
-                
-                {/* force users to select a team if they haven't already */}
+                )}
+
+                {/* Popup for selecting a team */}
                 <Modal visible={team === undefined}>
                     <SafeAreaView style={styles.modalBackground}>
-                        <Text>Choose a team</Text>
-                        {/* replace buttons with team logos */}
-                        <Button
-                            title={game.team1.name}
-                            onPress={() => setTeam(game.team1)}
-                        ></Button>
-                        <Button
-                            title={game.team2.name}
-                            onPress={() => setTeam(game.team2)}
-                        ></Button>
+                        <LinearGradient
+                            colors={['#000000', '#253031']}
+                            style={styles.gradient}
+                        >
+                            <Text style={styles.joinTeam}>Select a team: </Text>
+                            {/* replace buttons with team logos */}
+                            <View style={styles.card}>
+                                <Pressable onPress={() => setTeam(game.team1)}>
+                                    <Image
+                                        style={styles.logo}
+                                        source={logo1}
+                                    ></Image>
+                                    <Text style={styles.teamName}>
+                                        {game.team1.name}
+                                    </Text>
+                                </Pressable>
+                            </View>
+
+                            <View style={styles.card}>
+                                <Pressable onPress={() => setTeam(game.team2)}>
+                                    <Image
+                                        style={styles.logo}
+                                        source={logo2}
+                                    ></Image>
+                                    <Text style={styles.teamName}>
+                                        {game.team2.name}
+                                    </Text>
+                                </Pressable>
+                            </View>
+                        </LinearGradient>
                     </SafeAreaView>
                 </Modal>
                 {gameState === 'inactive' && team !== undefined && (
@@ -98,17 +138,19 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, game }) => {
                     ></QuestionScreen>
                 )}
                 {gameState === 'leaderboard' && team !== undefined && (
-                    <LeaderboardScreen 
+                    <LeaderboardScreen
                         game={game}
                         team={team}
                         playerScore={playerScore}
                         currentQuestion={currentQuestion}
-                    /> )}
+                    />
+                )}
                 {gameState === 'finalLeaderboard' && team !== undefined && (
                     <FinalLeaderboardScreen
                         game={game}
                         team={team}
-                        playerScore={playerScore}/>
+                        playerScore={playerScore}
+                    />
                 )}
             </SafeAreaView>
         </Modal>
@@ -119,6 +161,17 @@ const styles = StyleSheet.create({
     modalBackground: {
         flex: 1,
         justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    selectTeamPopup: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        width: '100%'
+    },
+    gradient: {
+        flex: 1,
+        width: '100%',
         alignItems: 'center'
     },
     container: {
@@ -137,6 +190,42 @@ const styles = StyleSheet.create({
         fontSize: 25,
         color: 'white',
         fontWeight: '200'
+    },
+    joinTeam: {
+        color: 'white',
+        fontSize: 35,
+        fontWeight: '500',
+        textAlign: 'center',
+        padding: 30
+    },
+    logo: {
+        width: 250,
+        height: 200,
+        resizeMode: 'contain',
+        padding: 20
+    },
+    card: {
+        backgroundColor: 'white',
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 4
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 6,
+        elevation: 4,
+        width: 300,
+        alignItems: 'center',
+        margin: 20,
+        paddingTop: 20
+    },
+    teamName: {
+        color: '#253031',
+        textAlign: 'center',
+        fontSize: 40,
+        fontWeight: '800',
+        padding: 10
     }
 });
 

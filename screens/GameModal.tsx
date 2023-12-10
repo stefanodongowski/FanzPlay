@@ -228,11 +228,6 @@ const styles = StyleSheet.create({
         minWidth: 80,
         marginHorizontal: 10,
     },
-    buttonText: {
-        color: '#000',
-        fontSize: 19,
-        fontWeight: '500',
-    },
     leaveButton: {
         backgroundColor: 'red',
     },

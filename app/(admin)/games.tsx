@@ -2,9 +2,10 @@ import { Link, useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, Pressable, TextInput } from 'react-native';
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
-import GameCard from '../../components/GameCard';
+import AdminGameCard from '../../components/AdminGameCard';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import useGames from '../../services/gamesFetcher';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const auth = FIREBASE_AUTH;
 
@@ -15,12 +16,14 @@ const GamesPage = () => {
     const [text, onChangeText] = React.useState('');
 
     return (
-        <View style={[styles.container, styles.dark]}>
+        <View style={styles.background}>
+            <LinearGradient colors={['#000000', '#253031']} style={styles.gradient}>
             <View style={styles.games}>
                 {games.map((game, index) => (
-             <GameCard key={index} game={game} isAdmin={true} />
+             <AdminGameCard key={index} game={game} />
                ))}
           </View>
+          </LinearGradient>
         </View>
     );
 };
@@ -33,6 +36,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'column',
         padding: 20,
+    },
+    background: {
+        flex: 1,
+    },
+    gradient: {
+        flex: 1,
     },
     dark: {
         backgroundColor: '#253031',

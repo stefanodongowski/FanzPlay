@@ -65,7 +65,7 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, game }) => {
         <Modal visible={visible} onRequestClose={onClose} animationType="slide">
             <SafeAreaView style={styles.modalBackground}>
                 {/* Top bar for game pages */}
-                {team !== null && (
+                {team !== undefined && (
                     <View style={styles.container}>
                         <Pressable onPress={onClose}>
                             <MaterialCommunityIcons

@@ -1,8 +1,8 @@
-import { Button, Modal, Text, View, SafeAreaView, Pressable, Image } from 'react-native';
+
+import { Button, Modal, StatusBar, Text, View, SafeAreaView, Pressable, Image } from 'react-native';
 import { Game } from '../types/Game';
 import { useEffect, useState } from 'react';
 import LobbyScreen from './LobbyScreen';
-import subscribeToGameChanges from '../services/subscribeToGameState';
 import { StyleSheet } from 'react-native';
 import { Team } from '../types/Team';
 import QuestionScreen from './QuestionScreen';
@@ -10,44 +10,36 @@ import LeaderboardScreen from './LeaderboardScreen';
 import FinalLeaderboardScreen from './FinalLeaderboardScreen';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import useGame from '../services/useGame';
 
 interface GameModalProps {
     visible: boolean;
     onClose: () => void;
-    game: Game;
+    gameID: string;
 }
 
-const GameModal: React.FC<GameModalProps> = ({ visible, onClose, game }) => {
+const GameModal: React.FC<GameModalProps> = ({ visible, onClose, gameID }) => {
+    const {game, loading: gameLoading } = useGame(gameID);
     const [team, setTeam] = useState<Team>();
-    const [gameState, setGameState] = useState<string>(game.gameState);
-    const [currentQuestion, setCurrentQuestion] = useState(game.currentQuestion);
     const [playerScore, setPlayerScore] = useState(0);
 
-    useEffect(() => {
-        if (game.gameID) {
-            const unsubscribeGameState = subscribeToGameChanges(
-                game.gameID,
-                (newGameState, newCurrentQuestion) => {
-                    setGameState(newGameState);
-                    setCurrentQuestion(newCurrentQuestion);
-                }
-            );
-
-            return () => {
-                // Clean up the subscription when the modal is unmounted
-                unsubscribeGameState();
-            };
-        }
-    }, [game.gameID]);
-
+   
     const updatePlayerScore = (points : number) => {
         setPlayerScore(playerScore + points);
     }
 
     // go back to home page if missing game or game state
-    if (game === null || gameState === undefined) {
-        onClose();
-        return null;
+    if (game === null || game.gameState === undefined) {    // this is needed to remove a react native error that happens when useEffect is removed 
+        return (                                                          //and close is not triggered by the user
+            <Modal visible={visible} onRequestClose={onClose} animationType="slide">
+                <SafeAreaView style={styles.modalBackground}>
+                    <Text>Game data is unavailable.</Text>
+                    <Pressable onPress={onClose}>
+                        <Text>Close</Text>
+                    </Pressable>
+                </SafeAreaView>
+            </Modal>
+        );
     }
 
     // conditionally assign team logo assets
@@ -62,7 +54,7 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, game }) => {
             : require('../assets/temp/vt_logo.png');
 
     return (
-        <Modal visible={visible} onRequestClose={onClose} animationType="slide">
+        <Modal visible={visible} onRequestClose={() => onClose} animationType="slide">
             <SafeAreaView style={styles.modalBackground}>
                 {/* Top bar for game pages */}
                 {team !== undefined && (
@@ -87,6 +79,7 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, game }) => {
                 )}
 
                 {/* Popup for selecting a team */}
+
                 <Modal visible={team === undefined}>
                     <SafeAreaView style={styles.modalBackground}>
                         <LinearGradient
@@ -121,31 +114,31 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, game }) => {
                         </LinearGradient>
                     </SafeAreaView>
                 </Modal>
-                {gameState === 'inactive' && team !== undefined && (
+                {game.gameState === 'inactive' && team !== undefined && (
                     <View>
                         <Text>This game hasn't started yet. </Text>
                     </View>
                 )}
-                {gameState === 'lobby' && team !== undefined && (
+                {game.gameState === 'lobby' && team !== undefined && (
                     <LobbyScreen game={game} team={team}></LobbyScreen>
                 )}
-                {gameState === 'question' && team !== undefined && (
+                {game.gameState === 'question' && team !== undefined && (
                     <QuestionScreen
                         game={game}
                         team={team}
                         updatePlayerScore={updatePlayerScore}
-                        currentQuestion={currentQuestion}
+                        currentQuestion={game.currentQuestion}
                     ></QuestionScreen>
                 )}
-                {gameState === 'leaderboard' && team !== undefined && (
-                    <LeaderboardScreen
+
+                {game.gameState === 'leaderboard' && team !== undefined && (
+                    <LeaderboardScreen 
                         game={game}
                         team={team}
                         playerScore={playerScore}
-                        currentQuestion={currentQuestion}
-                    />
-                )}
-                {gameState === 'finalLeaderboard' && team !== undefined && (
+                        currentQuestion={game.currentQuestion}
+                    /> )}
+                {game.gameState === 'finalLeaderboard' && team !== undefined && (
                     <FinalLeaderboardScreen
                         game={game}
                         team={team}
@@ -227,6 +220,28 @@ const styles = StyleSheet.create({
         fontWeight: '800',
         padding: 10
     }
+    },
+    button: {
+        backgroundColor: '#DDE819',
+        padding: 10,
+        borderRadius: 5,
+        alignSelf: 'center',
+        minWidth: 80,
+        marginHorizontal: 10,
+    },
+    buttonText: {
+        color: '#000',
+        fontSize: 19,
+        fontWeight: '500',
+    },
+    leaveButton: {
+        backgroundColor: 'red',
+    },
+    buttonPressed: {
+        opacity: 0.8,
+        transform: [{ scale: 0.96 }],
+    },
+
 });
 
 export default GameModal;

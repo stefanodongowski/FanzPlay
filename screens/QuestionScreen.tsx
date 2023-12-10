@@ -1,4 +1,4 @@
-import React, { useState, ReactElement } from 'react';
+import React, { useState } from 'react';
 import {
     View,
     Text,
@@ -17,17 +17,18 @@ interface QuestionScreenProps extends ViewProps {
     game: Game;
     team: Team;
     updatePlayerScore: (points: number) => void;
+    currentQuestion: number;
 }
 
 const QuestionScreen: React.FC<QuestionScreenProps> = ({
     game,
     team,
-    updatePlayerScore
+    updatePlayerScore,
+    currentQuestion
 }) => {
     const [selectedAnswer, setSelectedAnswer] = useState<number>(-1);
     const [answered, setAnswered] = useState(false);
-    const currentQuestion = game.questions[game.currentQuestion];
-    const questionPointValue = game.questions[game.currentQuestion].points;
+    const questionPointValue = game.questions[currentQuestion].points;
 
     const updateGameState = async (newState: string) => {
         const gameRef = doc(FIRESTORE, 'games', game.gameID);
@@ -51,7 +52,10 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
         setAnswered(true);
         // increment number of responses from that player's team
         updateResponses();
-        if (selectedAnswer === currentQuestion.correctAnswer) {
+        if (
+            selectedAnswer ===
+            game.questions[currentQuestion].correctAnswer
+        ) {
             // add points to indiviual player score, a variable in the GameModal
             updatePlayerScore(questionPointValue);
 
@@ -84,7 +88,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
         // Styles logic for selected answer
         game.gameState = 'question';
         if (game.gameState === 'question' && selectedAnswer === index) {
-            console.log('Selected Answer:', selectedAnswer);
+            // console.log('Selected Answer:', selectedAnswer);
             return [styles.answerButton, styles.selectedAnswer];
         }
         return styles.answerButton;
@@ -116,7 +120,8 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
             <CountdownCircleTimer
                 isPlaying
                 duration={10}
-                colors="#A30000"
+                colors={['#DDE819', '#FF0000']}
+                colorsTime={[game.questions[currentQuestion].questionTime, 0]}
                 onComplete={() => {
                     updateGameState('leaderboard');
                 }}
@@ -125,10 +130,12 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
             </CountdownCircleTimer>
 
             <Text style={styles.questionNumber}>
-                Question {game.currentQuestion + 1} of {game.questions.length}
+                Question {currentQuestion + 1} of {game.questions.length}
             </Text>
 
-            <Text style={styles.questionText}>{currentQuestion.question}</Text>
+            <Text style={styles.questionText}>
+                {game.questions[currentQuestion].question}
+            </Text>
 
             {/* {currentQuestion.answers.map((answer, index) => (
         <TouchableOpacity
@@ -141,21 +148,23 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
         </TouchableOpacity>
       ))} */}
 
-            {currentQuestion.answers.map((answer, index) => (
-                <Pressable
-                    key={index}
-                    onPress={() => setSelectedAnswer(index)}
-                    style={({ pressed }) => [
-                        styles.answerButton,
-                        pressed && styles.selectedAnswer,
-                        answerButtonStyle(index)
-                    ]}
-                    // prevents users from changing answer once they click submit
-                    disabled={answered}
-                >
-                    <Text style={styles.answerText}>{answer}</Text>
-                </Pressable>
-            ))}
+            {game.questions[currentQuestion].answers.map(
+                (answer, index) => (
+                    <Pressable
+                        key={index}
+                        onPress={() => setSelectedAnswer(index)}
+                        style={({ pressed }) => [
+                            styles.answerButton,
+                            pressed && styles.selectedAnswer,
+                            answerButtonStyle(index)
+                        ]}
+                        // prevents users from changing answer once they click submit
+                        disabled={answered}
+                    >
+                        <Text style={styles.answerText}>{answer}</Text>
+                    </Pressable>
+                )
+            )}
             <Pressable
                 onPress={submitAnswer}
                 style={({ pressed }) => [

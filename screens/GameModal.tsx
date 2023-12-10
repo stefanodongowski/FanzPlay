@@ -2,7 +2,7 @@ import { Button, Modal, StatusBar, Text, View, SafeAreaView } from 'react-native
 import { Game } from '../types/Game';
 import { useEffect, useState } from 'react';
 import LobbyScreen from './LobbyScreen';
-import subscribeToGameStateChanges from '../services/subscribeToGameState';
+import subscribeToGameChanges from '../services/subscribeToGameState';
 import { StyleSheet } from 'react-native';
 import { Team } from '../types/Team';
 import QuestionScreen from './QuestionScreen';
@@ -16,14 +16,16 @@ interface GameModalProps {
 const GameModal: React.FC<GameModalProps> = ({ visible, onClose, game }) => {
     const [team, setTeam] = useState<Team>();
     const [gameState, setGameState] = useState<string>(game.gameState);
+    const [currentQuestion, setCurrentQuestion] = useState(game.currentQuestion);
     const [playerScore, setPlayerScore] = useState(0);
 
     useEffect(() => {
         if (game.gameID) {
-            const unsubscribeGameState = subscribeToGameStateChanges(
+            const unsubscribeGameState = subscribeToGameChanges(
                 game.gameID,
-                (newGameState) => {
+                (newGameState, newCurrentQuestion) => {
                     setGameState(newGameState);
+                    setCurrentQuestion(newCurrentQuestion);
                 }
             );
 
@@ -76,6 +78,7 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, game }) => {
                         game={game}
                         team={team}
                         updatePlayerScore={updatePlayerScore}
+                        currentQuestion={currentQuestion}
                     ></QuestionScreen>
                 )}
                 {gameState === 'leaderboard' && team !== undefined && (

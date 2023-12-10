@@ -71,7 +71,7 @@ const HomePage = () => {
                     />
                 ))}
             </View>
-            {game && (<GameModal visible={showGameModal} onClose={() => setShowGameModal(false)} game={game}></GameModal>)}
+            {game && (<GameModal visible={showGameModal} onClose={() => setShowGameModal(false)} gameID={game.gameID}></GameModal>)}
         </View>
     );
 };

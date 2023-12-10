@@ -7,6 +7,7 @@ import { FIRESTORE } from '../FirebaseConfig';
 
 interface GameCardProps extends ViewProps {
   game: Game; 
+  onPress?: () => void; 
 }
 
 const formatDate = (timestamp: { toDate: () => any; }) => {
@@ -16,7 +17,7 @@ const formatDate = (timestamp: { toDate: () => any; }) => {
 };
 
 
-const GameCard: React.FC<GameCardProps> = ({game}) => {
+const GameCard: React.FC<GameCardProps> = ({game, onPress}) => {
   const icon1 = (game.team1.name === 'UNC') 
   ? require('../assets/temp/unc_logo.png')
   : require('../assets/temp/uva_logo.png');
@@ -26,6 +27,7 @@ const GameCard: React.FC<GameCardProps> = ({game}) => {
   : require('../assets/temp/vt_logo.png');
   return (
     <View style={styles.container}>
+      <Pressable onPress={onPress}>
       <View style={styles.card}>
         <Text style={styles.title}>
           {game.team1.name + ' vs. ' + game.team2.name}
@@ -41,6 +43,7 @@ const GameCard: React.FC<GameCardProps> = ({game}) => {
           </View>
         </View>
       </View>
+      </Pressable>
     </View>
   );
 }

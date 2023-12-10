@@ -2,6 +2,9 @@ import { View, ViewProps, Text, StyleSheet } from "react-native";
 import { Game } from "../types/Game";
 import { Team } from "../types/Team";
 
+import React from 'react';
+import { BarChart, Grid } from 'react-native-svg-charts';
+
 interface LeaderboardScreenProps extends ViewProps {
     game: Game;
     team: Team;
@@ -14,6 +17,25 @@ const LeaderboardScreen: React.FC<LeaderboardScreenProps> = ({
     team,
     currentQuestion
 }) => {
+    const team1Score = (game.team1score / game.team1responses) * 100;
+    const team2Score = (game.team2score / game.team2responses) * 100;
+
+    const data = [
+        {
+            value: team1Score,
+            svg: {
+                fill: game.team1.color1,
+            },
+            label: game.team1.name,
+        },
+        {
+            value: team2Score,
+            svg: {
+                fill: game.team2.color1,
+            },
+            label: game.team2.name,
+        },
+    ];
 
     return (
         <View style={[styles.container, styles.dark]}>
@@ -33,14 +55,26 @@ const LeaderboardScreen: React.FC<LeaderboardScreenProps> = ({
                 {game.questions[currentQuestion].answers[game.questions[currentQuestion].correctAnswer]}!
             </Text>
             <Text style={styles.currentScoreText}>The current standings are...</Text>
-            <Text style={styles.scoreText}>
-                {game.team1.name}:{' '}
-                {(game.team1score / game.team1responses) * 100}
-            </Text>
-            <Text style={styles.scoreText}>
-                {game.team2.name}:{' '}
-                {(game.team2score / game.team2responses) * 100}
-            </Text>
+
+            <BarChart
+                style={{ height: 200, width: 300 }}
+                data={data}
+                yAccessor={({ item }) => item.value}
+                svg={{ fill: 'grey' }}
+                contentInset={{ top: 20, bottom: 20 }}
+                // spacing={0.2}
+                gridMin={0}
+            >
+                <Grid direction={Grid.Direction.HORIZONTAL} />
+            </BarChart>
+
+            <View style={styles.scoreLabels}>
+                {data.map((item, index) => (
+                    <Text key={index} style={styles.scoreText}>
+                        {item.label}: {item.value.toFixed(2)}%
+                    </Text>
+                ))}
+            </View>
         </View>
     );
 };
@@ -97,6 +131,12 @@ const styles = StyleSheet.create({
         padding: 5,
         fontSize: 20,
         fontWeight: '400'
+    },
+    scoreLabels: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%',
+        marginTop: 10,
     },
 });
 

@@ -1,6 +1,6 @@
 import { Link, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Button, ActivityIndicator, Image, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Button, ActivityIndicator, Image, Pressable, Alert, ScrollView } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { FIREBASE_AUTH } from '../FirebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -36,15 +36,16 @@ const Login = () => {
             console.log("signed in")
         } catch (e: any) {
             console.log(e);
-            alert(e.message)
+            Alert.alert("Failed to Sign In", "Please make sure you entered all information correctly")
         } finally {
             setLoading(false);
         }
     }
 
     return (
-        <View style={styles.background}>
-            <LinearGradient colors={['#000000', '#253031']} style={styles.gradient}>
+
+        <LinearGradient colors={['#000000', '#253031']} style={styles.gradient}>
+            <ScrollView contentContainerStyle={styles.scrollView}>
                 <View style={styles.container}>
                     <Image source={require('../assets/fanzplay_logo_transparent.png')} style={styles.logo}></Image>
                     <Text style={styles.text}>Sign in to your account: </Text>
@@ -71,13 +72,14 @@ const Login = () => {
                     }
                     <Text style={styles.text}>Don't have an account?</Text>
                     <Link href='/register' asChild>
-                            <Pressable onPress={signIn} style={styles.button}>
+                            <Pressable onPress={() => router.push('/register')} style={styles.button}>
                                 <Text style={styles.buttonText}>Sign Up</Text>
                             </Pressable>
                     </Link>
                 </View>
-            </LinearGradient>
-        </View>
+            </ScrollView>
+        </LinearGradient>
+       
     );
 };
 
@@ -87,6 +89,11 @@ const styles = StyleSheet.create({
     },
     gradient: {
         flex: 1,
+    },
+    scrollView: {
+        flexGrow: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     logo: {
         width: 230,

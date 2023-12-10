@@ -4,7 +4,6 @@ import { Ionicons } from "@expo/vector-icons";
 import HomePage from './home';
 import ProfilePage from './profile';
 import RewardsPage from './rewards';
-import GamesPage from './games';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,14 +16,6 @@ const Layout = () => {
                 options={{
                     tabBarLabel: "Home",
                     tabBarIcon: ({size, color}) => <Ionicons name='home' size={size} color={color}/>
-                }}
-            />
-            <Tab.Screen 
-                name="Games" 
-                component={GamesPage}
-                options={{
-                    tabBarLabel: "Games",
-                    tabBarIcon: ({size, color}) => <Ionicons name='game-controller' size={size} color={color}/> 
                 }}
             />
             <Tab.Screen 

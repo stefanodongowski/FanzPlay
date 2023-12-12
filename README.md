@@ -46,6 +46,7 @@ This app has unit testing for our database operations. To test our Firestore dat
 ```firebase emulators:start``` 
 3. Open a separate terminal and run the tests: 
 ```npm test```
+4. Restart the emulators each time you test
 
 ## Linting
 Before merging your branch, be sure to lint the code by running 

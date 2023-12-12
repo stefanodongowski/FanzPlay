@@ -22,7 +22,7 @@ For detailed information on how to run the app, please refer to both the User Ma
 
 You can also refer to your [Handoff Plan](https://tarheels.live/comp523teami/handoff-plan/) which includes helpful videos on how to access and run the app.
 
-## Implementation details
+## Implementation Details
 
 For an overview of the implementation, code interactions, and discussed limitations please view the docs folder:
 

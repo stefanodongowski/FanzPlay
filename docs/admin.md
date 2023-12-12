@@ -4,7 +4,10 @@
 ## Running the app as an Admin
 
 
-To run the app as an admin, you need to log in using an admin email and password. Those roles are defined in the Firestore db inside the users' collection.
+To run the app as an admin, you need to log in using an admin email and password. Those roles are defined in the Firestore db inside the users' collection. For example, you can use this login:
+
+- Email: admin@gmail.com 
+- Password: 123456
 
 
 The admin role has three main pages available:

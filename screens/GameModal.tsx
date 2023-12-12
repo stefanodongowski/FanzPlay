@@ -1,5 +1,13 @@
-
-import { Button, Modal, StatusBar, Text, View, SafeAreaView, Pressable, Image } from 'react-native';
+import {
+    Button,
+    Modal,
+    StatusBar,
+    Text,
+    View,
+    SafeAreaView,
+    Pressable,
+    Image
+} from 'react-native';
 import { Game } from '../types/Game';
 import { useEffect, useState } from 'react';
 import LobbyScreen from './LobbyScreen';
@@ -19,19 +27,27 @@ interface GameModalProps {
 }
 
 const GameModal: React.FC<GameModalProps> = ({ visible, onClose, gameID }) => {
-    const {game, loading: gameLoading }: { game: Game | null, loading: boolean }= useGame(gameID);
+    const {
+        game,
+        loading: gameLoading
+    }: { game: Game | null; loading: boolean } = useGame(gameID);
     const [team, setTeam] = useState<Team>();
     const [playerScore, setPlayerScore] = useState(0);
 
-   
-    const updatePlayerScore = (points : number) => {
+    const updatePlayerScore = (points: number) => {
         setPlayerScore(playerScore + points);
-    }
+    };
 
     // go back to home page if missing game or game state
-    if (game === null || game.gameState === undefined) {    // this is needed to remove a react native error that happens when useEffect is removed 
-        return (                                                          //and close is not triggered by the user
-            <Modal visible={visible} onRequestClose={onClose} animationType="slide">
+    if (game === null || game.gameState === undefined) {
+        // this is needed to remove a react native error that happens when useEffect is removed
+        return (
+            //and close is not triggered by the user
+            <Modal
+                visible={visible}
+                onRequestClose={onClose}
+                animationType="slide"
+            >
                 <SafeAreaView style={styles.modalBackground}>
                     <Text>Game data is unavailable.</Text>
                     <Pressable onPress={onClose}>
@@ -54,7 +70,11 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, gameID }) => {
             : require('../assets/temp/vt_logo.png');
 
     return (
-        <Modal visible={visible} onRequestClose={() => onClose} animationType="slide">
+        <Modal
+            visible={visible}
+            onRequestClose={() => onClose}
+            animationType="slide"
+        >
             <SafeAreaView style={styles.modalBackground}>
                 {/* Top bar for game pages */}
                 {team !== undefined && (
@@ -90,10 +110,7 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, gameID }) => {
                             {/* replace buttons with team logos */}
                             <View style={styles.card}>
                                 <Pressable onPress={() => setTeam(game.team1)}>
-                                    <Image
-                                        style={styles.logo}
-                                        source={logo1}
-                                    ></Image>
+                                    <Image style={styles.logo} source={logo1} />
                                     <Text style={styles.teamName}>
                                         {game.team1.name}
                                     </Text>
@@ -102,10 +119,7 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, gameID }) => {
 
                             <View style={styles.card}>
                                 <Pressable onPress={() => setTeam(game.team2)}>
-                                    <Image
-                                        style={styles.logo}
-                                        source={logo2}
-                                    ></Image>
+                                    <Image style={styles.logo} source={logo2} />
                                     <Text style={styles.teamName}>
                                         {game.team2.name}
                                     </Text>
@@ -120,7 +134,7 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, gameID }) => {
                     </View>
                 )}
                 {game.gameState === 'lobby' && team !== undefined && (
-                    <LobbyScreen game={game} team={team}></LobbyScreen>
+                    <LobbyScreen game={game} team={team} />
                 )}
                 {game.gameState === 'question' && team !== undefined && (
                     <QuestionScreen
@@ -128,23 +142,25 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, gameID }) => {
                         team={team}
                         updatePlayerScore={updatePlayerScore}
                         currentQuestion={game.currentQuestion}
-                    ></QuestionScreen>
+                    />
                 )}
 
                 {game.gameState === 'leaderboard' && team !== undefined && (
-                    <LeaderboardScreen 
+                    <LeaderboardScreen
                         game={game}
                         team={team}
                         playerScore={playerScore}
                         currentQuestion={game.currentQuestion}
-                    /> )}
-                {game.gameState === 'finalLeaderboard' && team !== undefined && (
-                    <FinalLeaderboardScreen
-                        game={game}
-                        team={team}
-                        playerScore={playerScore}
                     />
                 )}
+                {game.gameState === 'finalLeaderboard' &&
+                    team !== undefined && (
+                        <FinalLeaderboardScreen
+                            game={game}
+                            team={team}
+                            playerScore={playerScore}
+                        />
+                    )}
             </SafeAreaView>
         </Modal>
     );
@@ -153,7 +169,7 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, gameID }) => {
 const styles = StyleSheet.create({
     modalBackground: {
         flex: 1,
-        justifyContent: 'flex-start',
+        justifyContent: 'flex-start'
     },
     selectTeamPopup: {
         flex: 1,
@@ -225,16 +241,15 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         alignSelf: 'center',
         minWidth: 80,
-        marginHorizontal: 10,
+        marginHorizontal: 10
     },
     leaveButton: {
-        backgroundColor: 'red',
+        backgroundColor: 'red'
     },
     buttonPressed: {
         opacity: 0.8,
-        transform: [{ scale: 0.96 }],
-    },
-
+        transform: [{ scale: 0.96 }]
+    }
 });
 
 export default GameModal;

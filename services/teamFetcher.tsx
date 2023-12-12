@@ -14,15 +14,24 @@ const useFetchTeam = (teamID: string) => {
             return;
         }
 
-        const teamsCollection = query(collection(FIRESTORE, 'teams'), where('__name__', '==', teamID));
-        const unsubscribe = onSnapshot(teamsCollection, (snapshot) => {
-            const newTeam = snapshot.docs.map(doc => doc.data() as Team)[0];
-            setTeam(newTeam);
-            setLoading(false);
-        }, (error) => {
-            console.error("Error fetching team data: ", error);
-            setLoading(false);
-        });
+        const teamsCollection = query(
+            collection(FIRESTORE, 'teams'),
+            where('__name__', '==', teamID)
+        );
+        const unsubscribe = onSnapshot(
+            teamsCollection,
+            (snapshot) => {
+                const newTeam = snapshot.docs.map(
+                    (doc) => doc.data() as Team
+                )[0];
+                setTeam(newTeam);
+                setLoading(false);
+            },
+            (error) => {
+                console.error('Error fetching team data: ', error);
+                setLoading(false);
+            }
+        );
 
         return () => unsubscribe();
     }, [teamID]);

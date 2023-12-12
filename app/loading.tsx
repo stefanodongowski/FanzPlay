@@ -3,30 +3,33 @@ import { useRouter } from 'expo-router';
 import React, { Component, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { FIREBASE_AUTH } from '../FirebaseConfig';
-import getUser from '../services/userFetcher'
+import getUser from '../services/userFetcher';
 import { ActivityIndicator } from 'react-native';
 
 // create a component
 const Loading = () => {
     const router = useRouter();
-    const uid = FIREBASE_AUTH.currentUser?.uid
-    const { loading, user} = getUser(uid as String)
+    const uid = FIREBASE_AUTH.currentUser?.uid;
+    const { loading, user } = getUser(uid as string);
 
     useEffect(() => {
         if (!loading) {
-            if (user.role == "admin") {
-                router.replace("/(admin)/admin")
+            if (user.role == 'admin') {
+                router.replace('/(admin)/admin');
             } else {
-                router.replace("/(app)/home")
+                router.replace('/(app)/home');
             }
         }
-    }, [loading])
-
+    }, [loading]);
 
     return (
-        <ActivityIndicator size='large' color="#0000ff" style={styles.container}/>
-    )
-}
+        <ActivityIndicator
+            size="large"
+            color="#0000ff"
+            style={styles.container}
+        />
+    );
+};
 
 // define your styles
 const styles = StyleSheet.create({
@@ -34,7 +37,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
-    },
+    }
 });
 
 //make this component available to the app

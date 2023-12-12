@@ -30,12 +30,9 @@ For an overview of the implementation, code interactions, and discussed limitati
 - [User implementation supplementary documentation](https://github.com/stefanodongowski/FanzPlay/blob/stage/docs/user.md)
 
 ## Testing
-
 Check out our [Test Plan](https://tarheels.live/comp523teami/test-plan/)! This includes tests we planned and tests we were able to do. You can use this as a guide to the testing requirements of the app in general.
-
 The testing is done inside the [test folder](https://github.com/stefanodongowski/FanzPlay/tree/stage/test) in this repo.
 
-## Testing
 This app has unit testing for our database operations. To test our Firestore database functionality, we use a Firestore Emulator. This emulator allows us to test without worrying about modifying our live database. 
 ### Prerequisites (one time setup): 
 1. Ensure you are an editor or owner for the FanzPlay (if you do not have access, request access by emailing brennamehl@gmail.com and sharing the Google account you would like to use).
@@ -61,9 +58,10 @@ This app has unit testing for our database operations. To test our Firestore dat
 4. Restart the emulators each time you test
 
 ## Linting
+This respository is set up for linting using ESLint. Not all linting suggestions have been implemented yet. To lint the repository, run`npm run lint`
 
-Before merging your branch, be sure to lint the code by running
-`npm run lint` and `npm run prettier:write` in the terminal. This will properly format your code and lint to maintain code readability and consistency.
+## Code Formatting
+To make your changes comply with this repository's code styling, run  `npm run prettier:write` in the terminal before commintting your code to maintain code readability and consistency.
 
 ## Maintainability
 

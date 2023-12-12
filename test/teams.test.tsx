@@ -42,9 +42,7 @@ describe('Teams Firestore collection', () => {
 
         const db = getFirestore(userAuth);
         const testDoc = db.collection('teams').doc(teamId);
-        await firebase.assertSucceeds(
-            testDoc.update({ color1: 'blue' })
-        );
+        await firebase.assertSucceeds(testDoc.update({ color1: 'blue' }));
     });
 
     it('Prevents unauthenticated users from updating team documents', async () => {
@@ -55,9 +53,7 @@ describe('Teams Firestore collection', () => {
 
         const db = getFirestore();
         const testDoc = db.collection('teams').doc(teamId);
-        await firebase.assertFails(
-            testDoc.update({ color1: 'blue' })
-        );
+        await firebase.assertFails(testDoc.update({ color1: 'blue' }));
     });
 
     it('Allows authenticated users to delete team documents', async () => {

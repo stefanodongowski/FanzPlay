@@ -1,11 +1,11 @@
-import { View, Text, StyleSheet } from "react-native";
-import { Game } from "../types/Game";
-import { Team } from "../types/Team";
+import { View, Text, StyleSheet } from 'react-native';
+import { Game } from '../types/Game';
+import { Team } from '../types/Team';
 
 import React from 'react';
 import { BarChart, Grid } from 'react-native-svg-charts';
 
-interface LeaderboardScreenProps{
+interface LeaderboardScreenProps {
     game: Game;
     team: Team;
     playerScore: number; //not sure if we want to display this here
@@ -24,17 +24,17 @@ const LeaderboardScreen: React.FC<LeaderboardScreenProps> = ({
         {
             value: team1Score,
             svg: {
-                fill: game.team1.color1,
+                fill: game.team1.color1
             },
-            label: game.team1.name,
+            label: game.team1.name
         },
         {
             value: team2Score,
             svg: {
-                fill: game.team2.color1,
+                fill: game.team2.color1
             },
-            label: game.team2.name,
-        },
+            label: game.team2.name
+        }
     ];
 
     return (
@@ -52,7 +52,11 @@ const LeaderboardScreen: React.FC<LeaderboardScreenProps> = ({
                 The correct answer to the previous question was:
             </Text>
             <Text style={styles.answer}>
-                {game.questions[currentQuestion].answers[game.questions[currentQuestion].correctAnswer]}
+                {
+                    game.questions[currentQuestion].answers[
+                        game.questions[currentQuestion].correctAnswer
+                    ]
+                }
             </Text>
             <Text style={styles.currentScoreText}>Current Standings:</Text>
 

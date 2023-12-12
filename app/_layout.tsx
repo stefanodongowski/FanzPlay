@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 import React from 'react';
-import { View, Text} from 'react-native';
+import { View, Text } from 'react-native';
 
 const Layout = () => {
     return (
@@ -15,11 +15,16 @@ const Layout = () => {
                 name="register"
                 options={{
                     headerShown: true,
-                    title: "Sign up"
-                    
+                    title: 'Sign up'
                 }}
             />
-            <Stack.Screen name='(app)' options={{headerShown: false}} />
+            <Stack.Screen
+                name="loading"
+                options={{
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen name="(app)" options={{ headerShown: false }} />
         </Stack>
     );
 };

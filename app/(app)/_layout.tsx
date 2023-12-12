@@ -1,41 +1,47 @@
-//import liraries
-import { Tabs } from 'expo-router';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Ionicons } from "@expo/vector-icons"
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
+import HomePage from './home';
+import ProfilePage from './profile';
+import RewardsPage from './rewards';
 
-// create a component
+const Tab = createBottomTabNavigator();
+
 const Layout = () => {
     return (
-        <Tabs>
-            <Tabs.Screen 
-                name="one" 
-                options= {{
-                    tabBarLabel: "Home",
-                    tabBarIcon: ({size, color}) => <Ionicons name='home' size={size} color={color}/>
+        <Tab.Navigator initialRouteName="Home">
+            <Tab.Screen
+                name="Home"
+                component={HomePage}
+                options={{
+                    tabBarLabel: 'Home',
+                    tabBarIcon: ({ size, color }) => (
+                        <Ionicons name="home" size={size} color={color} />
+                    )
                 }}
             />
-            <Tabs.Screen 
-                name="two" 
-                options= {{
-                    tabBarLabel: "Profile",
-                    tabBarIcon: ({size, color}) => <Ionicons name='person' size={size} color={color}/>
+            <Tab.Screen
+                name="Rewards"
+                component={RewardsPage}
+                options={{
+                    tabBarLabel: 'Rewards',
+                    tabBarIcon: ({ size, color }) => (
+                        <Ionicons name="gift" size={size} color={color} />
+                    )
                 }}
             />
-        </Tabs>
-        
+            <Tab.Screen
+                name="Profile"
+                component={ProfilePage}
+                options={{
+                    tabBarLabel: 'Profile',
+                    tabBarIcon: ({ size, color }) => (
+                        <Ionicons name="person" size={size} color={color} />
+                    )
+                }}
+            />
+        </Tab.Navigator>
     );
 };
 
-// define your styles
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#2c3e50',
-    },
-});
-
-//make this component available to the app
 export default Layout;

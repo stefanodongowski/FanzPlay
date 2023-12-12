@@ -19,7 +19,7 @@ interface GameModalProps {
 }
 
 const GameModal: React.FC<GameModalProps> = ({ visible, onClose, gameID }) => {
-    const {game, loading: gameLoading } = useGame(gameID);
+    const {game, loading: gameLoading }: { game: Game | null, loading: boolean }= useGame(gameID);
     const [team, setTeam] = useState<Team>();
     const [playerScore, setPlayerScore] = useState(0);
 

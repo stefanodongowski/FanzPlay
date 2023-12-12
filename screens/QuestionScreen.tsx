@@ -5,7 +5,6 @@ import {
     TouchableOpacity,
     StyleSheet,
     Pressable,
-    ViewProps
 } from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { Team } from '../types/Team';
@@ -13,7 +12,7 @@ import { Game } from '../types/Game';
 import { FIRESTORE } from '../FirebaseConfig';
 import { doc, increment, updateDoc } from 'firebase/firestore';
 
-interface QuestionScreenProps extends ViewProps {
+interface QuestionScreenProps {
     game: Game;
     team: Team;
     updatePlayerScore: (points: number) => void;
@@ -34,6 +33,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
         const gameRef = doc(FIRESTORE, 'games', game.gameID);
         await updateDoc(gameRef, { gameState: newState });
     };
+    
 
     const updateResponses = async () => {
         const gameRef = doc(FIRESTORE, 'games', game.gameID);

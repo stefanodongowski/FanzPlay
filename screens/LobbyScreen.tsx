@@ -1,10 +1,9 @@
 import React from 'react';
 import { Text, StyleSheet, SafeAreaView, View, Image } from 'react-native';
 import { Game } from '../types/Game';
-import { ViewProps } from 'react-native/Libraries/Components/View/ViewPropTypes';
 import { Team } from '../types/Team';
 
-interface LobbyProps extends ViewProps {
+interface LobbyProps {
     game: Game;
     team: Team;
 }

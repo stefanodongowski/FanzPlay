@@ -5,7 +5,6 @@ import {
     TouchableOpacity,
     StyleSheet,
     Pressable,
-    ViewProps
 } from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { Team } from '../types/Team';
@@ -13,7 +12,7 @@ import { Game } from '../types/Game';
 import { FIRESTORE } from '../FirebaseConfig';
 import { doc, increment, updateDoc } from 'firebase/firestore';
 
-interface QuestionScreenProps extends ViewProps {
+interface QuestionScreenProps {
     game: Game;
     team: Team;
     updatePlayerScore: (points: number) => void;
@@ -34,6 +33,7 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
         const gameRef = doc(FIRESTORE, 'games', game.gameID);
         await updateDoc(gameRef, { gameState: newState });
     };
+    
 
     const updateResponses = async () => {
         const gameRef = doc(FIRESTORE, 'games', game.gameID);
@@ -117,8 +117,8 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
 
     return (
         <View style={[styles.container, styles.dark]}>
-
-            <CountdownCircleTimer
+            <View style={styles.timerBox}>
+                 <CountdownCircleTimer
                 isPlaying
                 duration={game.questions[currentQuestion].questionTime}
                 colors={['#DDE819', '#FF0000']}
@@ -128,8 +128,10 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({
                     updateGameState('leaderboard');
                 }}
             >
-                {({ remainingTime }) => <Text>{remainingTime}</Text>}
+                {({ remainingTime }) => <Text style={styles.remainingTime}>{remainingTime}</Text>}
             </CountdownCircleTimer>
+            </View>
+           
 
             <Text style={styles.questionText}>
                 {game.questions[currentQuestion].question}
@@ -234,6 +236,11 @@ const styles = StyleSheet.create({
         padding: 5,
         fontWeight: '500'
     },
+    remainingTime: {
+        fontSize: 40,
+        color: 'white',
+        textAlign: 'center'
+    },
     submitButton: {
         backgroundColor: '#DDE819',
         borderRadius: 10,
@@ -262,6 +269,9 @@ const styles = StyleSheet.create({
     submitButtonPressed: {
         opacity: 0.8,
         transform: [{ scale: 0.96 }]
+    }, 
+    timerBox: {
+        padding: 20
     }
 });
 

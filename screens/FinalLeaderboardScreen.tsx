@@ -18,7 +18,7 @@ const FinalLeaderboardScreen: React.FC<FinalLeaderboardScreenProps> = ({
 }) => {
 
     const team1Score = (game.team1score / game.team1responses) * 100;
-    const team2Score = (game.team1score / game.team1responses) * 100;
+    const team2Score = (game.team2score / game.team2responses) * 100;
     const finalPlayerScore = (playerScore / game.questions.length) * 100;
     const winner = team1Score > team2Score ? game.team1.name : game.team2.name;
     const isUserOnWinningTeam = team.name === winner;

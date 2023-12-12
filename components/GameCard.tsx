@@ -1,11 +1,11 @@
-import {StyleSheet, View, Text, ViewProps, Image, Pressable, Alert} from 'react-native';
+import {StyleSheet, View, Text, Image, Pressable, Alert} from 'react-native';
 import { Game } from '../types/Game';
 import { Timestamp } from 'firebase/firestore';
 import React, { useState } from 'react';
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { FIRESTORE } from '../FirebaseConfig';
 
-interface GameCardProps extends ViewProps {
+interface GameCardProps {
   game: Game; 
   onPress?: () => void; 
 }

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, Button, TouchableOpacity, Share, Image, Linking } from 'react-native';
 import { Game } from '../types/Game';
 import { Team } from '../types/Team';

@@ -23,9 +23,30 @@ You can find more information about the structure and design of our app in our [
 ## Running the App
 To run the app, run the command `npx expo start` in the terminal. 
 
+## Testing
+This app has unit testing for our database operations. To test our Firestore database functionality, we use a Firestore Emulator. This emulator allows us to test without worrying about modifying our live database. 
+### Prerequisites (one time setup): 
+1. Ensure you are an editor or owner for the FanzPlay (if you do not have access, request access by emailing brennamehl@gmail.com and sharing the Google account you would like to use).
+2. Ensure your Node.js version is >=18.0.0 || >=20.0.0
+3. Install Firebase CLI: `npm install -g firebase-tools`
+### Initialize the Emulator (one time setup):
+1. In the terminal, login to Firebase: `firebase login`
+2. Initialize Firebase: `firebase init`
+3. Select  `firestore` and `emulators`
+4. Select `use an existing project`
+5. Choose `fanzplay-6229f`
+6. Choose `Firestore Emulator`
+7. Use default port
+8. Select `download now`
+### Launch Emulator and Run Tests:
+1. In a terminal, login to Firebase: `firebase login`
+2. Start emulators: `firebase emulators:start`
+3. Open a separate terminal and run the tests: `npm test`
+
 ## Linting
 Before merging your branch, be sure to lint the code by running 
 `npm run lint` and `npm run prettier:write` in the terminal. 
+
 
 
 

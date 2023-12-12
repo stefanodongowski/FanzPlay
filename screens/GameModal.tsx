@@ -154,7 +154,6 @@ const styles = StyleSheet.create({
     modalBackground: {
         flex: 1,
         justifyContent: 'flex-start',
-        alignItems: 'center'
     },
     selectTeamPopup: {
         flex: 1,

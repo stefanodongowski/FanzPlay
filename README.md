@@ -35,6 +35,31 @@ Check out our [Test Plan](https://tarheels.live/comp523teami/test-plan/)! This i
 
 The testing is done inside the [test folder](https://github.com/stefanodongowski/FanzPlay/tree/stage/test) in this repo.
 
+## Testing
+This app has unit testing for our database operations. To test our Firestore database functionality, we use a Firestore Emulator. This emulator allows us to test without worrying about modifying our live database. 
+### Prerequisites (one time setup): 
+1. Ensure you are an editor or owner for the FanzPlay (if you do not have access, request access by emailing brennamehl@gmail.com and sharing the Google account you would like to use).
+2. Ensure your Node.js version is >=18.0.0 || >=20.0.0
+3. Install Firebase CLI: `npm install -g firebase-tools`
+4. Install all project dependencies (including testing modules): `npm install`
+### Initialize the Emulator (one time setup):
+1. In the terminal, login to Firebase: `firebase login`
+2. Initialize Firebase: `firebase init`
+3. Select  `firestore` and `emulators`
+4. Select `use an existing project`
+5. Choose `fanzplay-6229f`
+6. Choose `Firestore Emulator`
+7. Use default port
+8. Select `download now`
+### Launch Emulator and Run Tests:
+1. In a terminal, login to Firebase: 
+```firebase login```
+2. Start emulators:
+```firebase emulators:start``` 
+3. Open a separate terminal and run the tests: 
+```npm test```
+4. Restart the emulators each time you test
+
 ## Linting
 
 Before merging your branch, be sure to lint the code by running
@@ -57,3 +82,4 @@ Also, check Firebase to ensure it is continuing to be active.
 ### Compatibility Testing
 
 Ensure that both Android and iOS are functional and function as similarly as possible. While React Native is made to be cross-compatible, advanced functions and libraries may behave differently between iOS and Android. There may be different ways data is pulled from Firebase between the two platforms, creating unexpected and hard-to-find bugs. For every test or change, both platforms need to be accounted for.
+

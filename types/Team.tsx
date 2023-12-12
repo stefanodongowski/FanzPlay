@@ -1,6 +1,9 @@
 // Interface for a Team document
+
+import { doc, DocumentReference } from "firebase/firestore";
+import { FIRESTORE } from "../FirebaseConfig";
 export interface Team {
-    teamID: string; 
+    teamID: DocumentReference; 
     color1: string;
     color2: string;
     logo: string;
@@ -9,7 +12,7 @@ export interface Team {
   }
 
   export const DEFAULT_TEAM: Team = {
-    teamID: 'defaultTeamId',
+    teamID: doc(FIRESTORE, 'teams/' + 'defaultTeamId'),
     color1: 'gray',
     color2: 'gray',
     logo: 'default_logo_url',

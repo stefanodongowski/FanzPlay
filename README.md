@@ -44,7 +44,7 @@ This app has unit testing for our database operations. To test our Firestore dat
 ```firebase login```
 2. Start emulators:
 ```firebase emulators:start``` 
-3. Open a separate terminal and run the tests: `
+3. Open a separate terminal and run the tests: 
 ```npm test```
 
 ## Linting

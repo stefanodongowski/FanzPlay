@@ -40,7 +40,7 @@ The testing is done inside the [test folder](https://github.com/stefanodongowski
 Before merging your branch, be sure to lint the code by running
 `npm run lint` and `npm run prettier:write` in the terminal. This will properly format your code and lint to maintain code readability and consistency.
 
-## Maintabality
+## Maintainability
 
 As mentioned in the Admin Manual, it is critical to monitor and test the app regularly or the app may become dysfunctional. Here is an overview of how to properly maintain this app to avoid that:
 

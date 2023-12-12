@@ -10,7 +10,6 @@ import {
     TextInput
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import GameModal from './components/GameModal';
 import { FIRESTORE } from '../../FirebaseConfig';
 import {
     addDoc,

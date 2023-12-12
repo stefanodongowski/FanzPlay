@@ -12,13 +12,13 @@ const LobbyScreen: React.FC<LobbyProps> = ({ game, team }) => {
     const opponent =
         team.teamID === game.team1.teamID ? game.team2.name : game.team1.name;
     const icon =
-         team.name === 'UNC'
-             ? require('../assets/temp/unc_logo.png')
-        : team.name === 'Duke' 
-            ? require('../assets/temp/duke_logo.png')
-        : team.name === 'UVA' 
-            ? require('../assets/temp/uva_logo.png')
-        : require('../assets/temp/vt_logo.png');
+        team.name === 'UNC'
+            ? require('../assets/temp/unc_logo.png')
+            : team.name === 'Duke'
+              ? require('../assets/temp/duke_logo.png')
+              : team.name === 'UVA'
+                ? require('../assets/temp/uva_logo.png')
+                : require('../assets/temp/vt_logo.png');
 
     return (
         <SafeAreaView style={styles.container}>
@@ -33,7 +33,7 @@ const LobbyScreen: React.FC<LobbyProps> = ({ game, team }) => {
                     You're playing on {team.name}'s team.
                 </Text>
                 <View style={styles.card}>
-                        <Image style={styles.logo} source={icon}></Image>
+                    <Image style={styles.logo} source={icon}></Image>
                 </View>
                 <Text style={styles.intro}>Get ready to beat {opponent}!</Text>
             </View>

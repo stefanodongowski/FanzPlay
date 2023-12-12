@@ -1,6 +1,13 @@
 import { Href, Link, useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable, TextInput, ActivityIndicator } from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    Pressable,
+    TextInput,
+    ActivityIndicator
+} from 'react-native';
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
 import GameCard from '../../components/GameCard';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -10,7 +17,6 @@ import GameModal from '../../screens/GameModal';
 
 const auth = FIREBASE_AUTH;
 
-
 const HomePage = () => {
     const router = useRouter();
     const { games, loading: gamesLoading } = useGames();
@@ -18,7 +24,7 @@ const HomePage = () => {
     const [showGameModal, setShowGameModal] = useState(false);
     const [game, setGame] = useState<Game>();
 
-    // eventually I think we will want a loading page here 
+    // eventually I think we will want a loading page here
     // if(gamesLoading){
     //     return (
     //         <ActivityIndicator
@@ -66,12 +72,20 @@ const HomePage = () => {
                     <GameCard
                         key={index}
                         game={game}
-                        onPress={() => {setGame(game); setShowGameModal(true);
+                        onPress={() => {
+                            setGame(game);
+                            setShowGameModal(true);
                         }}
                     />
                 ))}
             </View>
-            {game && (<GameModal visible={showGameModal} onClose={() => setShowGameModal(false)} gameID={game.gameID}></GameModal>)}
+            {game && (
+                <GameModal
+                    visible={showGameModal}
+                    onClose={() => setShowGameModal(false)}
+                    gameID={game.gameID}
+                ></GameModal>
+            )}
         </View>
     );
 };

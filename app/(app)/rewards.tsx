@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: '#253031', 
-        padding: 20,
+        backgroundColor: '#253031',
+        padding: 20
     },
     image: {
         margin: 15
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         padding: 5,
         borderBottomColor: 'white',
         borderBottomWidth: 2,
-        width: 360,
+        width: 360
     }
 });
 

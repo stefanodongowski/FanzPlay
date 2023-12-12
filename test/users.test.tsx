@@ -38,11 +38,13 @@ describe('Users Firestore collection', () => {
         const adminDb = getAdminFirestore();
         const userId = 'test_user_id1';
         const setupDoc = adminDb.collection('users').doc(userId);
-        await setupDoc.set({userID: userId, username: 'username1' });
+        await setupDoc.set({ userID: userId, username: 'username1' });
 
         const db = getFirestore(userAuth);
         const testDoc = db.collection('users').doc(userId);
-        await firebase.assertSucceeds(testDoc.update({ username: 'newUsername1' }));
+        await firebase.assertSucceeds(
+            testDoc.update({ username: 'newUsername1' })
+        );
     });
 
     it('Prevents unauthenticated users from updating user documents', async () => {
@@ -53,7 +55,9 @@ describe('Users Firestore collection', () => {
 
         const db = getFirestore();
         const testDoc = db.collection('users').doc(userId);
-        await firebase.assertFails(testDoc.update({ username: 'newUsername2' }));
+        await firebase.assertFails(
+            testDoc.update({ username: 'newUsername2' })
+        );
     });
 
     it('Allows authenticated users to delete user documents', async () => {

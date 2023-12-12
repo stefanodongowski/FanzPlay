@@ -1,16 +1,33 @@
 //import liraries
 import React, { Component, useState } from 'react';
-import { View, Text, StyleSheet, Button, Pressable, Modal, TextInput } from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    Button,
+    Pressable,
+    Modal,
+    TextInput
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import GameModal from './components/GameModal';
 import { FIRESTORE } from '../../FirebaseConfig';
-import { addDoc, collection, doc, Firestore, setDoc, Timestamp, updateDoc } from 'firebase/firestore';
+import {
+    addDoc,
+    collection,
+    doc,
+    Firestore,
+    setDoc,
+    Timestamp,
+    updateDoc
+} from 'firebase/firestore';
 import getTeam from '../../services/teamFetcher';
 import { Team } from '../../types/Team';
 import { Game } from '../../types/Game';
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker'
+import DateTimePicker, {
+    DateTimePickerEvent
+} from '@react-native-community/datetimepicker';
 import useFetchTeam from '../../services/teamFetcher';
-
 
 // create a component
 const AdminPage = () => {
@@ -35,7 +52,7 @@ const AdminPage = () => {
     const [newColor1, setNewColor1] = useState('');
     const [newColor2, setNewColor2] = useState('');
     const [newLogo, setNewLogo] = useState('');
-    
+
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
 
@@ -60,231 +77,314 @@ const AdminPage = () => {
     };
     const handleAddGame = async (db: Firestore, startTime: Timestamp) => {
         if (team1 && team2 && startTime) {
-    
-            const docRef = await addDoc(collection(db, "games"), {
+            const docRef = await addDoc(collection(db, 'games'), {
                 gameID: '',
-                gameState: "inactive", 
+                gameState: 'inactive',
                 currentQuestion: 0,
                 startTime: startTime,
-                team1ID: doc(db, "teams/" + team1.teamID),
+                team1ID: doc(db, 'teams/' + team1.teamID),
                 team1Responses: 0,
                 team1Score: 0,
-                team2ID: doc(db, "teams/" + team2.teamID),
+                team2ID: doc(db, 'teams/' + team2.teamID),
                 team2Responses: 0,
                 team2Score: 0
-            }); 
-            await updateDoc(docRef, {gameID: docRef.id})
+            });
+            await updateDoc(docRef, { gameID: docRef.id });
         } else {
-            alert("Make sure all fields are filled!")
-            console.log(team1ID)
-            console.log(team2ID)
-            console.log(startTime)
+            alert('Make sure all fields are filled!');
+            console.log(team1ID);
+            console.log(team2ID);
+            console.log(startTime);
         }
-    }
+    };
 
-    const handleAddTeam = async (db: Firestore, teamName: String, color1: String, color2: String, logo: String) => {
+    const handleAddTeam = async (
+        db: Firestore,
+        teamName: String,
+        color1: String,
+        color2: String,
+        logo: String
+    ) => {
         if (teamName && color1 && color2 && logo) {
-            const docRef = await addDoc(collection(db, "teams"), {
+            const docRef = await addDoc(collection(db, 'teams'), {
                 teamID: '',
                 teamName: teamName,
-                color1: color1, 
+                color1: color1,
                 color2: color2,
                 logo: logo
             });
-            await updateDoc(docRef, {teamID: docRef.id})
-
+            await updateDoc(docRef, { teamID: docRef.id });
         } else {
-            alert("Make sure all fields are filled!")
+            alert('Make sure all fields are filled!');
         }
-    }
+    };
 
-    const handleEditTeam = async (db: Firestore, teamID: String, teamName: String, color1: String, color2: String, logo: String) => {
+    const handleEditTeam = async (
+        db: Firestore,
+        teamID: String,
+        teamName: String,
+        color1: String,
+        color2: String,
+        logo: String
+    ) => {
         if (teamID) {
             if (teamName) {
-                const docRef = await updateDoc(doc(db, "teams/" + teamID), {
+                const docRef = await updateDoc(doc(db, 'teams/' + teamID), {
                     name: teamName
                 });
             }
             if (color1) {
-                const docRef = await updateDoc(doc(db, "teams/" + teamID), {
+                const docRef = await updateDoc(doc(db, 'teams/' + teamID), {
                     color1: color1
                 });
             }
             if (color2) {
-                const docRef = await updateDoc(doc(db, "teams/" + teamID), {
+                const docRef = await updateDoc(doc(db, 'teams/' + teamID), {
                     color2: color2
                 });
             }
             if (logo) {
-                const docRef = await updateDoc(doc(db, "teams/" + teamID), {
+                const docRef = await updateDoc(doc(db, 'teams/' + teamID), {
                     logo: logo
                 });
             }
         } else {
-            alert('Fill at least one field!')
+            alert('Fill at least one field!');
         }
-    }
+    };
 
     return (
         <View style={styles.background}>
-            <LinearGradient colors={['#000000', '#253031']} style={styles.gradient}>
+            <LinearGradient
+                colors={['#000000', '#253031']}
+                style={styles.gradient}
+            >
                 <View style={styles.container}>
-                    <Pressable style={styles.button} onPress={() => setCreateGameModalVisible(true)}>
+                    <Pressable
+                        style={styles.button}
+                        onPress={() => setCreateGameModalVisible(true)}
+                    >
                         <Text style={styles.buttonText}>Create new game</Text>
                     </Pressable>
-                    { createGameModalVisible &&
+                    {createGameModalVisible && (
                         <Modal
-                        transparent={true}
-                        visible={createGameModalVisible}
+                            transparent={true}
+                            visible={createGameModalVisible}
                         >
                             <View style={styles.modalContainer}>
                                 <View style={styles.modalContent}>
-                                
-                                
-                                <Pressable onPress={showDatePicker}>
-                                  <Text>Select Date</Text>
-                                </Pressable>
-                                {isDatePickerVisible && (
-                                    <View style={styles.dateAndTime}>
-                                        <DateTimePicker
-                                            value={date}
-                                            mode="date"
-                                            display="default"
-                                            onChange={onChangeDate}
-                                        />
-                                     </View>   )}
-                                    
-                                    
+                                    <Pressable onPress={showDatePicker}>
+                                        <Text>Select Date</Text>
+                                    </Pressable>
+                                    {isDatePickerVisible && (
+                                        <View style={styles.dateAndTime}>
+                                            <DateTimePicker
+                                                value={date}
+                                                mode="date"
+                                                display="default"
+                                                onChange={onChangeDate}
+                                            />
+                                        </View>
+                                    )}
 
                                     <Pressable onPress={showTimePicker}>
-                                    <Text>Select Time</Text>
-                                  </Pressable>
-                                  {isTimePickerVisible && (
-                                    <View style={styles.dateAndTime}>
-                                        <DateTimePicker
-                                            value={date}
-                                            mode="time"
-                                            is24Hour={true}
-                                            display="default"
-                                            onChange={onChangeTime}
-                                       />
-                                       </View>  )}
-                                    
-                                        
-                                    <TextInput 
-                                        placeholder='Team 1 ID'
+                                        <Text>Select Time</Text>
+                                    </Pressable>
+                                    {isTimePickerVisible && (
+                                        <View style={styles.dateAndTime}>
+                                            <DateTimePicker
+                                                value={date}
+                                                mode="time"
+                                                is24Hour={true}
+                                                display="default"
+                                                onChange={onChangeTime}
+                                            />
+                                        </View>
+                                    )}
+
+                                    <TextInput
+                                        placeholder="Team 1 ID"
                                         value={team1ID}
                                         style={styles.input}
-                                        onChangeText={(text) => setTeam1ID(text)}
+                                        onChangeText={(text) =>
+                                            setTeam1ID(text)
+                                        }
                                     />
-                                    <TextInput 
-                                        placeholder='Team 2 ID'
+                                    <TextInput
+                                        placeholder="Team 2 ID"
                                         value={team2ID}
                                         style={styles.input}
-                                        onChangeText={(text) => setTeam2ID(text)}
+                                        onChangeText={(text) =>
+                                            setTeam2ID(text)
+                                        }
                                     />
-                                    <Button 
-                                        title="Add Game" 
-                                        onPress={() => handleAddGame(db, new Timestamp(date.getTime()/1000, 0))} 
-                                        color="red" 
+                                    <Button
+                                        title="Add Game"
+                                        onPress={() =>
+                                            handleAddGame(
+                                                db,
+                                                new Timestamp(
+                                                    date.getTime() / 1000,
+                                                    0
+                                                )
+                                            )
+                                        }
+                                        color="red"
                                     />
-                                    <Button title="Cancel" onPress={() => setCreateGameModalVisible(false)} color="blue" />
+                                    <Button
+                                        title="Cancel"
+                                        onPress={() =>
+                                            setCreateGameModalVisible(false)
+                                        }
+                                        color="blue"
+                                    />
                                 </View>
                             </View>
-                    </Modal>
-                    }
+                        </Modal>
+                    )}
 
-
-
-                    <Pressable style={styles.button} onPress={() => setCreateTeamModalVisible(true)}>
+                    <Pressable
+                        style={styles.button}
+                        onPress={() => setCreateTeamModalVisible(true)}
+                    >
                         <Text style={styles.buttonText}>Create new team</Text>
                     </Pressable>
-                    { createTeamModalVisible &&
+                    {createTeamModalVisible && (
                         <Modal
-                        transparent={true}
-                        visible={createTeamModalVisible}
+                            transparent={true}
+                            visible={createTeamModalVisible}
                         >
                             <View style={styles.modalContainer}>
                                 <View style={styles.modalContent}>
-                                    <TextInput 
-                                        placeholder='Team name'
+                                    <TextInput
+                                        placeholder="Team name"
                                         value={teamName}
                                         style={styles.input}
-                                        onChangeText={(text) => setTeamName(text)}
-                                    />    
-                                    <TextInput 
-                                        placeholder='Color 1'
+                                        onChangeText={(text) =>
+                                            setTeamName(text)
+                                        }
+                                    />
+                                    <TextInput
+                                        placeholder="Color 1"
                                         value={color1}
                                         style={styles.input}
                                         onChangeText={(text) => setColor1(text)}
                                     />
-                                    <TextInput 
-                                        placeholder='Color 2'
+                                    <TextInput
+                                        placeholder="Color 2"
                                         value={color2}
                                         style={styles.input}
                                         onChangeText={(text) => setColor2(text)}
                                     />
-                                    <TextInput 
-                                        placeholder='Logo'
+                                    <TextInput
+                                        placeholder="Logo"
                                         value={logo}
                                         style={styles.input}
                                         onChangeText={(text) => setLogo(text)}
                                     />
-                                    <Button title="Add Team" onPress={() => handleAddTeam(db, teamName, color1, color2, logo)} color="red" />
-                                    <Button title="Cancel" onPress={() => setCreateTeamModalVisible(false)} color="blue" />
+                                    <Button
+                                        title="Add Team"
+                                        onPress={() =>
+                                            handleAddTeam(
+                                                db,
+                                                teamName,
+                                                color1,
+                                                color2,
+                                                logo
+                                            )
+                                        }
+                                        color="red"
+                                    />
+                                    <Button
+                                        title="Cancel"
+                                        onPress={() =>
+                                            setCreateTeamModalVisible(false)
+                                        }
+                                        color="blue"
+                                    />
                                 </View>
                             </View>
-                    </Modal>
-                    }
+                        </Modal>
+                    )}
 
-
-
-                    <Pressable style={styles.button} onPress={() => setEditTeamModalVisible(true)}>
+                    <Pressable
+                        style={styles.button}
+                        onPress={() => setEditTeamModalVisible(true)}
+                    >
                         <Text style={styles.buttonText}>Edit a team</Text>
                     </Pressable>
-                    { editTeamModalVisible &&
+                    {editTeamModalVisible && (
                         <Modal
-                        transparent={true}
-                        visible={editTeamModalVisible}
+                            transparent={true}
+                            visible={editTeamModalVisible}
                         >
                             <View style={styles.modalContainer}>
                                 <View style={styles.modalContent}>
-                                    <TextInput 
-                                        placeholder='Team ID'
+                                    <TextInput
+                                        placeholder="Team ID"
                                         value={oldTeamID}
                                         style={styles.input}
-                                        onChangeText={(text) => setOldTeamID(text)}
-                                    />  
-                                    <TextInput 
-                                        placeholder='New team name'
+                                        onChangeText={(text) =>
+                                            setOldTeamID(text)
+                                        }
+                                    />
+                                    <TextInput
+                                        placeholder="New team name"
                                         value={newTeamName}
                                         style={styles.input}
-                                        onChangeText={(text) => setNewTeamName(text)}
-                                    />    
-                                    <TextInput 
-                                        placeholder='New color 1'
+                                        onChangeText={(text) =>
+                                            setNewTeamName(text)
+                                        }
+                                    />
+                                    <TextInput
+                                        placeholder="New color 1"
                                         value={newColor1}
                                         style={styles.input}
-                                        onChangeText={(text) => setNewColor1(text)}
+                                        onChangeText={(text) =>
+                                            setNewColor1(text)
+                                        }
                                     />
-                                    <TextInput 
-                                        placeholder='New color 2'
+                                    <TextInput
+                                        placeholder="New color 2"
                                         value={newColor2}
                                         style={styles.input}
-                                        onChangeText={(text) => setNewColor2(text)}
+                                        onChangeText={(text) =>
+                                            setNewColor2(text)
+                                        }
                                     />
-                                    <TextInput 
-                                        placeholder='New Logo'
+                                    <TextInput
+                                        placeholder="New Logo"
                                         value={newLogo}
                                         style={styles.input}
-                                        onChangeText={(text) => setNewLogo(text)}
+                                        onChangeText={(text) =>
+                                            setNewLogo(text)
+                                        }
                                     />
-                                    <Button title="Submit changes" onPress={() => handleEditTeam(db, oldTeamID, newTeamName, newColor1, newColor2, newLogo)} color="red" />
-                                    <Button title="Cancel" onPress={() => setEditTeamModalVisible(false)} color="blue" />
+                                    <Button
+                                        title="Submit changes"
+                                        onPress={() =>
+                                            handleEditTeam(
+                                                db,
+                                                oldTeamID,
+                                                newTeamName,
+                                                newColor1,
+                                                newColor2,
+                                                newLogo
+                                            )
+                                        }
+                                        color="red"
+                                    />
+                                    <Button
+                                        title="Cancel"
+                                        onPress={() =>
+                                            setEditTeamModalVisible(false)
+                                        }
+                                        color="blue"
+                                    />
                                 </View>
                             </View>
-                    </Modal>
-                    }
+                        </Modal>
+                    )}
                 </View>
             </LinearGradient>
         </View>
@@ -300,10 +400,10 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     background: {
-        flex: 1,
+        flex: 1
     },
     gradient: {
-        flex: 1,
+        flex: 1
     },
     buttonText: {
         fontSize: 24,
@@ -311,7 +411,7 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         textAlign: 'center',
         padding: 5,
-        fontWeight: '500',
+        fontWeight: '500'
     },
     button: {
         backgroundColor: '#DDE819',
@@ -319,7 +419,7 @@ const styles = StyleSheet.create({
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
-            height: 4,
+            height: 4
         },
         shadowOpacity: 0.5,
         shadowRadius: 6,
@@ -328,19 +428,19 @@ const styles = StyleSheet.create({
         height: 50,
         alignContent: 'center',
         justifyContent: 'center',
-        margin: 20,
+        margin: 20
     },
     modalContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Dimmed background
+        backgroundColor: 'rgba(0, 0, 0, 0.5)' // Dimmed background
     },
     modalContent: {
         backgroundColor: 'white',
         padding: 20,
         width: '80%',
-        borderRadius: 10,
+        borderRadius: 10
     },
     input: {
         backgroundColor: 'white',
@@ -348,20 +448,20 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         borderBottomColor: '#DDE819',
         padding: 10,
-        width: 250, 
+        width: 250,
         fontSize: 16,
         borderRadius: 5,
-        marginBottom: 15,
+        marginBottom: 15
     },
     selectedLabel: {
         color: 'white',
-        fontSize: 20, 
-        fontWeight: 'bold', 
+        fontSize: 20,
+        fontWeight: 'bold',
         textAlign: 'center',
-        marginVertical: 10, 
+        marginVertical: 10
     },
     dateAndTime: {
-        flexDirection: 'row',
+        flexDirection: 'row'
     }
 });
 

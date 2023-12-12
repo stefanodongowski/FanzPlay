@@ -17,13 +17,11 @@ export function getFirestore(auth?: Auth) {
 
 // initializes test app with admin authorization on Firestore Emulator
 export function getAdminFirestore(auth?: Auth) {
-    return firebase
-        .initializeAdminApp({ projectId: PROJECT_ID})
-        .firestore();
+    return firebase.initializeAdminApp({ projectId: PROJECT_ID }).firestore();
 }
 
 export async function cleanupFirestore() {
-    await firebase.clearFirestoreData({projectId: PROJECT_ID}); 
-    
+    await firebase.clearFirestoreData({ projectId: PROJECT_ID });
+
     firebase.apps().forEach((app) => app.delete());
 }

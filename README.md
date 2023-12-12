@@ -29,6 +29,7 @@ This app has unit testing for our database operations. To test our Firestore dat
 1. Ensure you are an editor or owner for the FanzPlay (if you do not have access, request access by emailing brennamehl@gmail.com and sharing the Google account you would like to use).
 2. Ensure your Node.js version is >=18.0.0 || >=20.0.0
 3. Install Firebase CLI: `npm install -g firebase-tools`
+4. Install all project dependencies (including testing modules): `npm install`
 ### Initialize the Emulator (one time setup):
 1. In the terminal, login to Firebase: `firebase login`
 2. Initialize Firebase: `firebase init`
@@ -39,9 +40,12 @@ This app has unit testing for our database operations. To test our Firestore dat
 7. Use default port
 8. Select `download now`
 ### Launch Emulator and Run Tests:
-1. In a terminal, login to Firebase: `firebase login`
-2. Start emulators: `firebase emulators:start`
-3. Open a separate terminal and run the tests: `npm test`
+1. In a terminal, login to Firebase: 
+```firebase login```
+2. Start emulators:
+```firebase emulators:start``` 
+3. Open a separate terminal and run the tests: `
+```npm test```
 
 ## Linting
 Before merging your branch, be sure to lint the code by running 

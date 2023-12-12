@@ -31,7 +31,7 @@ const AdminManageGame: React.FC<AdminManageGameProps> = ({
     updateGameState
 }) => {
     const handleNextQuestion = async () => {
-        let nextIndex = isFirstQuestion ? 0 : game.currentQuestion + 1;
+        const nextIndex = isFirstQuestion ? 0 : game.currentQuestion + 1;
         if (nextIndex < game.questions.length) {
             const gameRef = doc(FIRESTORE, 'games', game.gameID);
             await updateDoc(gameRef, {

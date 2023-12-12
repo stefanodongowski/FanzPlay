@@ -17,7 +17,7 @@ const RewardsPage = () => {
             <Image
                 source={require('../../assets/mock_rewards.png')}
                 style={styles.image}
-            ></Image>
+            />
         </View>
     );
 };

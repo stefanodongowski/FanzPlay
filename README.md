@@ -58,9 +58,10 @@ This app has unit testing for our database operations. To test our Firestore dat
 4. Restart the emulators each time you test
 
 ## Linting
+This respository is set up for linting using ESLint. Not all linting suggestions have been implemented yet. To lint the repository, run`npm run lint`
 
-Before merging your branch, be sure to lint the code by running
-`npm run lint` and `npm run prettier:write` in the terminal. This will properly format your code and lint to maintain code readability and consistency.
+## Code Formatting
+To make your changes comply with this repository's code styling, run  `npm run prettier:write` in the terminal before commintting your code to maintain code readability and consistency.
 
 ## Maintainability
 

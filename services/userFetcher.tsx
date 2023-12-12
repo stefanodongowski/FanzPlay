@@ -3,7 +3,7 @@ import { query, collection, where, onSnapshot } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { FIRESTORE } from '../FirebaseConfig';
 
-const getUser = (userID: String) => {
+const getUser = (userID: string) => {
     const [user, setUser] = useState<any>();
     const [loading, setLoading] = useState(true); // Added loading state
 

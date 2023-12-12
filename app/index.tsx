@@ -65,7 +65,7 @@ const Login = () => {
                     <Image
                         source={require('../assets/fanzplay_logo_transparent.png')}
                         style={styles.logo}
-                    ></Image>
+                    />
                     <Text style={styles.text}>Sign in to your account: </Text>
 
                     <View style={styles.input}>

@@ -118,7 +118,7 @@ const Register = () => {
                     <Image
                         source={require('../assets/fanzplay_logo_transparent.png')}
                         style={styles.logo}
-                    ></Image>
+                    />
                     <View style={styles.input}>
                         <MaterialCommunityIcons
                             name="email-outline"
@@ -131,7 +131,7 @@ const Register = () => {
                             autoCapitalize="none"
                             style={styles.textInput}
                             onChangeText={(text) => setEmail(text)}
-                        ></TextInput>
+                        />
                     </View>
                     <View style={styles.input}>
                         <MaterialCommunityIcons
@@ -145,7 +145,7 @@ const Register = () => {
                             autoCapitalize="none"
                             style={styles.textInput}
                             onChangeText={(text) => setFirstName(text)}
-                        ></TextInput>
+                        />
                     </View>
                     <View style={styles.input}>
                         <MaterialCommunityIcons
@@ -159,7 +159,7 @@ const Register = () => {
                             autoCapitalize="none"
                             style={styles.textInput}
                             onChangeText={(text) => setLastName(text)}
-                        ></TextInput>
+                        />
                     </View>
                     <View style={styles.input}>
                         <MaterialCommunityIcons
@@ -173,7 +173,7 @@ const Register = () => {
                             autoCapitalize="none"
                             style={styles.textInput}
                             onChangeText={(text) => setUsername(text)}
-                        ></TextInput>
+                        />
                     </View>
                     <View style={styles.input}>
                         <MaterialCommunityIcons
@@ -188,7 +188,7 @@ const Register = () => {
                             autoCapitalize="none"
                             style={styles.textInput}
                             onChangeText={(text) => setPassword(text)}
-                        ></TextInput>
+                        />
                     </View>
 
                     {loading ? (

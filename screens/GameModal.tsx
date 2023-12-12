@@ -110,10 +110,7 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, gameID }) => {
                             {/* replace buttons with team logos */}
                             <View style={styles.card}>
                                 <Pressable onPress={() => setTeam(game.team1)}>
-                                    <Image
-                                        style={styles.logo}
-                                        source={logo1}
-                                    ></Image>
+                                    <Image style={styles.logo} source={logo1} />
                                     <Text style={styles.teamName}>
                                         {game.team1.name}
                                     </Text>
@@ -122,10 +119,7 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, gameID }) => {
 
                             <View style={styles.card}>
                                 <Pressable onPress={() => setTeam(game.team2)}>
-                                    <Image
-                                        style={styles.logo}
-                                        source={logo2}
-                                    ></Image>
+                                    <Image style={styles.logo} source={logo2} />
                                     <Text style={styles.teamName}>
                                         {game.team2.name}
                                     </Text>
@@ -140,7 +134,7 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, gameID }) => {
                     </View>
                 )}
                 {game.gameState === 'lobby' && team !== undefined && (
-                    <LobbyScreen game={game} team={team}></LobbyScreen>
+                    <LobbyScreen game={game} team={team} />
                 )}
                 {game.gameState === 'question' && team !== undefined && (
                     <QuestionScreen
@@ -148,7 +142,7 @@ const GameModal: React.FC<GameModalProps> = ({ visible, onClose, gameID }) => {
                         team={team}
                         updatePlayerScore={updatePlayerScore}
                         currentQuestion={game.currentQuestion}
-                    ></QuestionScreen>
+                    />
                 )}
 
                 {game.gameState === 'leaderboard' && team !== undefined && (

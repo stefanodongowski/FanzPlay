@@ -10,7 +10,7 @@ import { ActivityIndicator } from 'react-native';
 const Loading = () => {
     const router = useRouter();
     const uid = FIREBASE_AUTH.currentUser?.uid;
-    const { loading, user } = getUser(uid as String);
+    const { loading, user } = getUser(uid as string);
 
     useEffect(() => {
         if (!loading) {

@@ -18,7 +18,7 @@ const useGames = () => {
 
     useEffect(() => {
         const gamesCollection = collection(FIRESTORE, 'games');
-        let unsubscribeFunctions: Unsubscribe[] = [];
+        const unsubscribeFunctions: Unsubscribe[] = [];
 
         // main game collection snapshot
         const gamesUnsubscribe = onSnapshot(
@@ -55,7 +55,7 @@ const useGames = () => {
                 const initialGames = await Promise.all(initialGamesPromises);
 
                 // adds the questions from the db one time for loading purposues
-                for (let game of initialGames) {
+                for (const game of initialGames) {
                     const questionsSnapshot = await getDocs(
                         collection(FIRESTORE, `games/${game.gameID}/questions`)
                     );

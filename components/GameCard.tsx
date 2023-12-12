@@ -41,9 +41,9 @@ const GameCard: React.FC<GameCardProps> = ({ game, onPress }) => {
                     <View
                         style={{ flexDirection: 'row', alignItems: 'center' }}
                     >
-                        <Image style={styles.logo} source={icon1}></Image>
-                        <View style={styles.divider}></View>
-                        <Image style={styles.logo} source={icon2}></Image>
+                        <Image style={styles.logo} source={icon1} />
+                        <View style={styles.divider} />
+                        <Image style={styles.logo} source={icon2} />
                         <View style={styles.timeAndDate}>
                             <Text style={styles.dateTime}>
                                 {formatDate(game.startTime)}

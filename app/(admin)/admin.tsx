@@ -99,10 +99,10 @@ const AdminPage = () => {
 
     const handleAddTeam = async (
         db: Firestore,
-        teamName: String,
-        color1: String,
-        color2: String,
-        logo: String
+        teamName: string,
+        color1: string,
+        color2: string,
+        logo: string
     ) => {
         if (teamName && color1 && color2 && logo) {
             const docRef = await addDoc(collection(db, 'teams'), {
@@ -120,11 +120,11 @@ const AdminPage = () => {
 
     const handleEditTeam = async (
         db: Firestore,
-        teamID: String,
-        teamName: String,
-        color1: String,
-        color2: String,
-        logo: String
+        teamID: string,
+        teamName: string,
+        color1: string,
+        color2: string,
+        logo: string
     ) => {
         if (teamID) {
             if (teamName) {

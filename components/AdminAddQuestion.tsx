@@ -49,7 +49,7 @@ const AdminAddQuestion: React.FC<AdminAddQuestionProps> = ({
     };
 
     const handleAnswerChange = (text: string, index: number) => {
-        let updatedAnswers = [...newQuestion.answers];
+        const updatedAnswers = [...newQuestion.answers];
         updatedAnswers[index] = text;
         setNewQuestion({ ...newQuestion, answers: updatedAnswers });
     };

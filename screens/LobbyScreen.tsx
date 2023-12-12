@@ -33,7 +33,7 @@ const LobbyScreen: React.FC<LobbyProps> = ({ game, team }) => {
                     You're playing on {team.name}'s team.
                 </Text>
                 <View style={styles.card}>
-                    <Image style={styles.logo} source={icon}></Image>
+                    <Image style={styles.logo} source={icon} />
                 </View>
                 <Text style={styles.intro}>Get ready to beat {opponent}!</Text>
             </View>

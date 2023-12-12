@@ -1,5 +1,5 @@
 import * as firebase from '@firebase/testing';
-import { userAuth, getFirestore } from './testUtils';
+import { userAuth, getFirestore, cleanupFirestore } from './testUtils';
 
 // Tests read, create, update, and delete functions for our Users Firestore collection
 describe('Users Firestore collection',  () => {
@@ -20,6 +20,7 @@ describe('Users Firestore collection',  () => {
         const testDoc = db.collection('users').doc('testDoc3');
         await firebase.assertFails(testDoc.set({ username: 'test' }));
     });
-    
 
 })
+
+afterAll(cleanupFirestore);

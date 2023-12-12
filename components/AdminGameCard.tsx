@@ -71,8 +71,8 @@ const AdminGameCard: React.FC<AdminGameCardProps> = ({ game }) => {
     await deleteDoc(gameRef);
   };
 
-  const icon1 = game.team1.name === 'UNC' ? require('../assets/temp/unc_logo.png') : require('../assets/temp/uva_logo.png');
-  const icon2 = game.team2.name === 'Duke' ? require('../assets/temp/duke_logo.png') : require('../assets/temp/vt_logo.png');
+  const icon1 = game.team1.name === 'UNC' ? require('../assets/temp/unc_logo.png') : require('../assets/temp/duke_logo.png');
+  const icon2 = game.team2.name === 'Duke' ? require('../assets/temp/duke_logo.png') : require('../assets/temp/unc_logo.png');
 
   return (
     <View style={styles.container}>

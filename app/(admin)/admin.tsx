@@ -9,6 +9,7 @@ import getTeam from '../../services/teamFetcher';
 import { Team } from '../../types/Team';
 import { Game } from '../../types/Game';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker'
+import useFetchTeam from '../../services/teamFetcher';
 
 
 // create a component
@@ -18,8 +19,8 @@ const AdminPage = () => {
     const [createGameModalVisible, setCreateGameModalVisible] = useState(false);
     const [team1ID, setTeam1ID] = useState('');
     const [team2ID, setTeam2ID] = useState('');
-    const team1: Team = getTeam(team1ID).team;
-    const team2: Team = getTeam(team2ID).team
+    const { team: team1, loading: loadingTeam1 } = useFetchTeam(team1ID);
+    const { team: team2, loading: loadingTeam2 } = useFetchTeam(team2ID);
     const [date, setDate] = useState(new Date());
     // create team states
     const [createTeamModalVisible, setCreateTeamModalVisible] = useState(false);
